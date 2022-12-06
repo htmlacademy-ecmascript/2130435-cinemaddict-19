@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Андрей Шитюк](https://up.htmlacademy.ru/ecmascript/19/user/2130435).
-* Наставник: `Неизвестно`.
+* Наставник: [Олег Соловьев](https://htmlacademy.ru/profile/id2282557).
 
 ---
 
