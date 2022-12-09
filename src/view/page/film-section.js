@@ -1,4 +1,4 @@
-import { createElement } from '../../render.js';
+import { createElement, render } from '../../render.js';
 
 function createFilmSection() {
   return '<section class="films"></section>';
@@ -16,7 +16,7 @@ export default class NewFilmSection {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.lists.forEach((list) => this.element.insertAdjacentElement('beforeend', list.getElement()));
+      this.lists.forEach((list) => render(list, this.element));
     }
 
     return this.element;

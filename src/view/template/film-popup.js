@@ -1,4 +1,4 @@
-import { createElement } from '../../render.js';
+import { createElement, render } from '../../render.js';
 
 
 function createFilmPopup() {
@@ -20,8 +20,8 @@ export default class NewFilmPopupView {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.element.insertAdjacentElement('beforeend', this.topContainer.getElement());
-      this.element.insertAdjacentElement('beforeend', this.bottomContainer.getElement());
+      render(this.topContainer, this.element);
+      render(this.bottomContainer, this.element);
     }
 
     return this.element;

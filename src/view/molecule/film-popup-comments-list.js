@@ -1,4 +1,4 @@
-import { createElement } from '../../render.js';
+import { createElement, render } from '../../render.js';
 
 function createFilmPopupCommentsList() {
   return '<ul class="film-details__comments-list"></ul>';
@@ -20,7 +20,7 @@ export default class NewFilmPopupCommentsList {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.comments.forEach((comment) => this.element.insertAdjacentElement('beforeend', comment.getElement()));
+      this.comments.forEach((comment) => render(comment, this.element));
     }
 
     return this.element;

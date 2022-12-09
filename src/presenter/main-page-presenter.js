@@ -21,9 +21,6 @@ export default class MainPagePresenter {
   }
 
   init() {
-    this.cardPopeyeTheSailorComponent.setStateControl(false, true, true);
-    this.cardTheManComponent.setStateControl(true, true, true);
-    this.cardSagebrushTrailComponent.setStateControl(true);
     this.topRatedComponent.setModeExtra(true);
     this.topRatedComponent.setTitle('Top Rated', true);
     this.topRatedComponent.setMoreButtonShow(true);

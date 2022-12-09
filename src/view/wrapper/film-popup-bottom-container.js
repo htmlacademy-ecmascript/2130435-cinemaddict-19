@@ -1,4 +1,4 @@
-import { createElement } from '../../render.js';
+import { createElement, render } from '../../render.js';
 import NewFilmPopupCommentsCounter from '../atom/film-popup-comments-counter.js';
 import NewFormPopupNewCommentView from '../molecule/form-popup-new-comment.js';
 
@@ -22,9 +22,9 @@ export default class NewFilmPopupBottomContainer {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.element.insertAdjacentElement('beforeend', new NewFilmPopupCommentsCounter(this.commentsCounter).getElement());
-      this.element.insertAdjacentElement('beforeend', this.commentsList.getElement());
-      this.element.insertAdjacentElement('beforeend', new NewFormPopupNewCommentView().getElement());
+      render(new NewFilmPopupCommentsCounter(this.commentsCounter), this.element);
+      render(this.commentsList, this.element);
+      render(new NewFormPopupNewCommentView(), this.element);
     }
 
     return this.element;

@@ -1,4 +1,4 @@
-import { createElement } from '../../render.js';
+import { createElement, render } from '../../render.js';
 import NewFilmListTitle from '../atom/film-list-title.js';
 import NewShowMoreButtonView from '../atom/show-more-button.js';
 import NewFilmListContainerView from '../wrapper/film-list-container.js';
@@ -10,7 +10,7 @@ function createFilmList(extra) {
 
 export default class NewFilmListView {
   constructor(...filmList) {
-    this.list = [...filmList];
+    this.list = filmList;
     this.listTitle = 'All movies. Upcoming';
     this.listShowTitle = false;
     this.moreButtonShow = false;
@@ -37,10 +37,10 @@ export default class NewFilmListView {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.element.insertAdjacentElement('beforeend', new NewFilmListTitle(this.listTitle, this.listShowTitle).getElement());
-      this.element.insertAdjacentElement('beforeend', new NewFilmListContainerView(this.list).getElement());
+      render (new NewFilmListTitle(this.listTitle, this.listShowTitle), this.element);
+      render (new NewFilmListContainerView(this.list), this.element);
       if (!this.moreButtonShow) {
-        this.element.insertAdjacentElement('beforeend', new NewShowMoreButtonView().getElement());
+        render (new NewShowMoreButtonView(), this.element);
       }
     }
 

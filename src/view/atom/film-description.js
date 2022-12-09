@@ -1,6 +1,6 @@
 import { createElement } from '../../render.js';
 
-function createCardFilmDescription(title, rating, year, duration, genre, poster, description, counter) {
+function createCardFilmDescription({ title, rating, year, duration, genre, poster, description, counter }) {
   let commentsCounter = 'comment';
   if (Number(counter) > 1) {
     commentsCounter = 'comments';
@@ -20,28 +20,12 @@ function createCardFilmDescription(title, rating, year, duration, genre, poster,
 }
 
 export default class NewCardFilmDescriptionView {
-  constructor (title, rating, year, duration, genre, poster, description, counter) {
-    this.title = title;
-    this.rating = rating;
-    this.year = year;
-    this.duration = duration;
-    this.genre = genre;
-    this.poster = poster;
-    this.description = description;
-    this.counter = counter;
+  constructor (CardFilmModel) {
+    this.filmInfo = CardFilmModel;
   }
 
   getTemplate() {
-    return createCardFilmDescription(
-      this.title,
-      this.rating,
-      this.year,
-      this.duration,
-      this.genre,
-      this.poster,
-      this.description,
-      this.counter
-    );
+    return createCardFilmDescription(this.filmInfo);
   }
 
   getElement() {

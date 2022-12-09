@@ -1,4 +1,4 @@
-import { createElement } from '../../render.js';
+import { createElement, render } from '../../render.js';
 import NewFilmPopupControlButtonView from '../atom/film-popup-control.js';
 
 
@@ -7,10 +7,10 @@ function createCardFilmControls() {
 }
 
 export default class NewPopupFilmControlsView {
-  constructor(isWatchList = false, isWatched = false, isFavorite = false) {
-    this.watchlist = new NewFilmPopupControlButtonView('watchlist', isWatchList);
-    this.watched = new NewFilmPopupControlButtonView('watched', isWatched);
-    this.favorite = new NewFilmPopupControlButtonView('favorite', isFavorite);
+  constructor({ userDetails }) {
+    this.watchlist = new NewFilmPopupControlButtonView('watchlist', userDetails.watchlist);
+    this.watched = new NewFilmPopupControlButtonView('watched', userDetails.alreadyWatched);
+    this.favorite = new NewFilmPopupControlButtonView('favorite', userDetails.favorite);
   }
 
   getTemplate() {
@@ -20,9 +20,9 @@ export default class NewPopupFilmControlsView {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.element.insertAdjacentElement('beforeend', this.watchlist.getElement());
-      this.element.insertAdjacentElement('beforeend', this.watched.getElement());
-      this.element.insertAdjacentElement('beforeend', this.favorite.getElement());
+      render(this.watchlist, this.element);
+      render(this.watched, this.element);
+      render(this.favorite, this.element);
     }
 
     return this.element;

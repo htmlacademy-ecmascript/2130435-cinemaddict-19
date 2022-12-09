@@ -6,7 +6,12 @@ const DANCE_LIFE = {
   genre: 'Musical',
   poster: './images/posters/the-dance-of-life.jpg',
   description: 'Cumsan turpis nec elit congue, sit amet aliquet felis dapibus. Mauris auctor ornare tellus. Donec maximus quis nunc in sollicitudin. Quisqu…',
-  counter: 3
+  counter: 3,
+  userDetails: {
+    watchlist: false,
+    alreadyWatched: true,
+    favorite: true
+  }
 };
 
 const POPEYE_THE_SAILOR = {
@@ -17,7 +22,12 @@ const POPEYE_THE_SAILOR = {
   genre: 'Cartoon',
   poster: './images/posters/popeye-meets-sinbad.png',
   description: 'In this short, Sindbad the Sailor (presumably Bluto playing a "role") proclaims himself, in song, to be the greatest sailor, adventurer and…',
-  counter: 0
+  counter: 0,
+  userDetails: {
+    watchlist: false,
+    alreadyWatched: true,
+    favorite: true
+  }
 };
 
 const SAGEBRUSH_TRAIL = {
@@ -28,7 +38,12 @@ const SAGEBRUSH_TRAIL = {
   genre: 'Western',
   poster: './images/posters/sagebrush-trail.jpg',
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed vehicula lorem. Quisque eu dignissim sem, vitae sodales dolor. Duis act…',
-  counter: 51
+  counter: 51,
+  userDetails: {
+    watchlist: false,
+    alreadyWatched: true,
+    favorite: true
+  }
 };
 
 const THE_MAN = {
@@ -39,7 +54,12 @@ const THE_MAN = {
   genre: 'Drama',
   poster: './images/posters/the-man-with-the-golden-arm.jpg',
   description: 'Curabitur lacinia, lacus a egestas auctor, massa enim commodo elit, neque mauris a nunc. Donec ipsum felis, ve facilisis tortor commodo etc…',
-  counter: 22
+  counter: 22,
+  userDetails: {
+    watchlist: false,
+    alreadyWatched: true,
+    favorite: true
+  }
 };
 
 const GREAT_FLAMARION = {
@@ -50,7 +70,12 @@ const GREAT_FLAMARION = {
   genre: 'Mystery',
   poster: './images/posters/the-great-flamarion.jpg',
   description: 'The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback. The Grea…',
-  counter: 12
+  counter: 12,
+  userDetails: {
+    watchlist: false,
+    alreadyWatched: true,
+    favorite: true
+  }
 };
 
 const POPUP_FILM = {
@@ -67,6 +92,11 @@ const POPUP_FILM = {
     duration: '1h 18m',
     country: 'USA',
     genres: ['Drama', 'Film-Noir', 'Mystery']
+  },
+  userDetails: {
+    watchlist: false,
+    alreadyWatched: true,
+    favorite: true
   },
   description: 'The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion\'s other assistant. Flamarion falls in love with Connie, the movie\'s femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.'
 };

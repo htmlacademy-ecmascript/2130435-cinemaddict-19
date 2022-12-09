@@ -10,7 +10,7 @@ import NewFilmPopupTopContainer from '../view/wrapper/film-popup-top-container.j
 
 export default class PopupPresenter {
   popupInfoComponent = new NewPopupFilmDetailsInfoView(POPUP_FILM);
-  popupControlsComponent = new NewPopupFilmControlsView();
+  popupControlsComponent = new NewPopupFilmControlsView(POPUP_FILM);
   topPopupComponent = new NewFilmPopupTopContainer(this.popupControlsComponent, this.popupInfoComponent);
 
   oneCommentComponent = new NewFilmPopupComment(COMMENT);
