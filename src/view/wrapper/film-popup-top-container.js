@@ -1,8 +1,13 @@
 import { createElement, render } from '../../render.js';
-import NewFilmPopupCloseButtonView from '../atom/film-popup-close-button';
 
 function createFilmPopupTopContainer() {
   return '<div class="film-details__top-container"></div>';
+}
+
+function createFilmPopupCloseButton() {
+  return `<div class="film-details__close">
+    <button class="film-details__close-btn" type="button">close</button>
+  </div>`;
 }
 
 export default class NewFilmPopupTopContainer {
@@ -18,7 +23,7 @@ export default class NewFilmPopupTopContainer {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      render(new NewFilmPopupCloseButtonView(), this.element);
+      this.element.insertAdjacentElement('beforeend', createElement(createFilmPopupCloseButton()));
       render(this.infoFilm, this.element);
       render(this.controlsButtons, this.element);
     }
