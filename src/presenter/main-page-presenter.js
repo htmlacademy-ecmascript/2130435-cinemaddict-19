@@ -6,17 +6,17 @@ import NewFilmCardView from '../view/organism/film-card.js';
 import NewFilmSection from '../view/page/film-section.js';
 import NewFilmListView from '../view/template/film-list.js';
 
-const FilmList = {
-  MAIN_LIST: [
-    DANCE_LIFE,
-    POPEYE_THE_SAILOR,
-    THE_MAN,
-    SAGEBRUSH_TRAIL,
-    GREAT_FLAMARION
-  ],
-  TOP_RATED_LIST: [THE_MAN, SAGEBRUSH_TRAIL],
-  COMMENTED_LIST: [DANCE_LIFE, POPEYE_THE_SAILOR]
-};
+// const FilmList = {
+//   MAIN_LIST: [
+//     DANCE_LIFE,
+//     POPEYE_THE_SAILOR,
+//     THE_MAN,
+//     SAGEBRUSH_TRAIL,
+//     GREAT_FLAMARION
+//   ],
+//   TOP_RATED_LIST: [THE_MAN, SAGEBRUSH_TRAIL],
+//   COMMENTED_LIST: [DANCE_LIFE, POPEYE_THE_SAILOR]
+// };
 
 export default class MainPagePresenter {
   cardDanceLifeComponent = new NewFilmCardView(DANCE_LIFE);
@@ -36,15 +36,15 @@ export default class MainPagePresenter {
   }
 
   init() {
-    const filmCardsComponents = this.mainList.map((film) => new NewFilmCardView(film));
-    const topRatedComponents = this.topRatedList.forEach((film) => {
-      const result = filmCardsComponents.find((component) => component.CardFilmModel.title.include(film.CardFilmModel.title));
-      if (result) {
-        return result;
-      }
-    });
-    console.log(topRatedComponents)
-    const mainListComponent = new NewFilmListView(...filmCardsComponents);
+    // const filmCardsComponents = this.mainList.map((film) => new NewFilmCardView(film));
+    // const topRatedComponents = this.topRatedList.forEach((film) => {
+    //   const result = filmCardsComponents.find((component) => component.CardFilmModel.title.include(film.CardFilmModel.title));
+    //   if (result) {
+    //     return result;
+    //   }
+    // });
+    // console.log(topRatedComponents)
+    // const mainListComponent = new NewFilmListView(...filmCardsComponents);
     this.topRatedComponent.setModeExtra(true);
     this.topRatedComponent.setTitle('Top Rated', true);
     this.topRatedComponent.setMoreButtonShow(true);
