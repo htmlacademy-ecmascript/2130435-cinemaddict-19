@@ -1,4 +1,4 @@
-import { createElement } from '../../render.js';
+import { createElement, render } from '../../render.js';
 import NewFilmCardControlButtonView from '../atom/film-card-control.js';
 
 const TypeButton = {
@@ -25,9 +25,9 @@ export default class NewCardFilmControlsView {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.element.insertAdjacentElement('beforeend', this.watchlistComponent.getElement());
-      this.element.insertAdjacentElement('beforeend', this.watchedComponent.getElement());
-      this.element.insertAdjacentElement('beforeend', this.favoriteComponent.getElement());
+      render(this.watchlistComponent, this.element);
+      render(this.watchedComponent, this.element);
+      render(this.favoriteComponent, this.element);
     }
 
     return this.element;

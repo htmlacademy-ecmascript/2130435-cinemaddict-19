@@ -1,10 +1,10 @@
-import { createElement } from '../../render.js';
+import { createElement, render } from '../../render.js';
 import NewSortButtonView from '../atom/sort-buttons.js';
 
 const SORT_BUTTONS = [
-  new NewSortButtonView('Sort by default', true).getElement(),
-  new NewSortButtonView('Sort by date').getElement(),
-  new NewSortButtonView('Sort by rating').getElement()
+  new NewSortButtonView('Sort by default', true),
+  new NewSortButtonView('Sort by date'),
+  new NewSortButtonView('Sort by rating')
 ];
 
 function createSortList() {
@@ -27,7 +27,7 @@ export default class NewSortListView {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.buttons.forEach((button) => this.element.insertAdjacentElement('beforeend', button));
+      this.buttons.forEach((button) => render(button, this.element));
     }
 
     return this.element;

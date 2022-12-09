@@ -1,11 +1,11 @@
-import { createElement } from '../../render.js';
+import { createElement, render } from '../../render.js';
 import NewMainNavigateItemView from '../atom/main-navigation-item.js';
 
 const NAVIGATE_ITEMS = [
-  new NewMainNavigateItemView('All movies', '', true).getElement(),
-  new NewMainNavigateItemView('Watchlist', '13').getElement(),
-  new NewMainNavigateItemView('History', '4').getElement(),
-  new NewMainNavigateItemView('Favorites', '8').getElement(),
+  new NewMainNavigateItemView('All movies', '', true),
+  new NewMainNavigateItemView('Watchlist', '13'),
+  new NewMainNavigateItemView('History', '4'),
+  new NewMainNavigateItemView('Favorites', '8'),
 ];
 
 function createMainNavigate() {
@@ -28,7 +28,7 @@ export default class NewFilterMenuView {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.buttons.forEach((button) => this.element.insertAdjacentElement('beforeend', button));
+      this.buttons.forEach((button) => render(button, this.element));
     }
 
     return this.element;

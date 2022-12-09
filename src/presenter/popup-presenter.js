@@ -1,4 +1,3 @@
-import { COMMENT, POPUP_FILM } from '../mock.js';
 import { render } from '../render.js';
 import NewFilmPopupComment from '../view/atom/film-popup-comment.js';
 import NewPopupFilmDetailsInfoView from '../view/atom/film-popup-info.js';
@@ -9,22 +8,26 @@ import NewFilmPopupBottomContainer from '../view/wrapper/film-popup-bottom-conta
 import NewFilmPopupTopContainer from '../view/wrapper/film-popup-top-container.js';
 
 export default class PopupPresenter {
-  popupInfoComponent = new NewPopupFilmDetailsInfoView(POPUP_FILM);
-  popupControlsComponent = new NewPopupFilmControlsView(POPUP_FILM);
-  topPopupComponent = new NewFilmPopupTopContainer(this.popupControlsComponent, this.popupInfoComponent);
 
-  oneCommentComponent = new NewFilmPopupComment(COMMENT);
-  twoCommentComponent = new NewFilmPopupComment(COMMENT);
-  commentListComponent = new NewFilmPopupCommentsList(this.oneCommentComponent, this.twoCommentComponent);
-  botPopupComponent = new NewFilmPopupBottomContainer(this.commentListComponent);
-  popupComponent = new NewFilmPopupView(this.topPopupComponent, this.botPopupComponent);
-
-
-  constructor({boardContainer}) {
+  constructor({boardContainer}, PopupFilmModel, CommentsFilmModel) {
     this.boardContainer = boardContainer;
+    this.PopupFilmModel = PopupFilmModel;
+    this.commentsList = CommentsFilmModel;
+  }
+
+  getCommentsListComponents() {
+    return this.commentsList.map((comment) => new NewFilmPopupComment(comment));
   }
 
   init() {
-    render(this.popupComponent, this.boardContainer);
+    const popupInfoComponent = new NewPopupFilmDetailsInfoView(this.PopupFilmModel);
+    const popupControlsComponent = new NewPopupFilmControlsView(this.PopupFilmModel);
+    const topPopupComponent = new NewFilmPopupTopContainer(popupControlsComponent, popupInfoComponent);
+
+    const commentsListComponents = new NewFilmPopupCommentsList(...this.getCommentsListComponents());
+    const botPopupComponent = new NewFilmPopupBottomContainer(commentsListComponents);
+
+    const popupComponent = new NewFilmPopupView(topPopupComponent, botPopupComponent);
+    render(popupComponent, this.boardContainer);
   }
 }
