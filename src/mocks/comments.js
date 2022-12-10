@@ -17,6 +17,15 @@ const COMMENTS_AUTHORS = ['Ilya O\'Reilly', 'Andy Smith', 'William Johns', 'Bob 
 
 const COMMENTS_LIST_LENGTH = 9;
 
+const DateValue = {
+  MIN_YEAR: 2014,
+  MAX_YEAR: 2021,
+  MIN_MONTH: 1,
+  MAX_MONTH: 12,
+  MIN_DAY: 1,
+  MAX_DAY: 27
+};
+
 
 export const getCommentUniqueId = generateId();
 
@@ -42,9 +51,9 @@ const getTextForComment = (array) => {
 };
 
 const generateRandomDate = () => {
-  const year = getRandomPositiveInteger(2014, 2021);
-  const month = String(getRandomPositiveInteger(1, 12)).padStart(2, 0);
-  const day = String(getRandomPositiveInteger(1, 27)).padStart(2, 0);
+  const year = getRandomPositiveInteger(DateValue.MIN_YEAR, DateValue.MAX_YEAR);
+  const month = String(getRandomPositiveInteger(DateValue.MIN_MONTH, DateValue.MAX_MONTH)).padStart(2, 0);
+  const day = String(getRandomPositiveInteger(DateValue.MIN_DAY, DateValue.MAX_DAY)).padStart(2, 0);
   return `${year}-${month}-${day}`;
 };
 
