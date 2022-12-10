@@ -1,7 +1,7 @@
 import { COMMENT_EMOTION } from '../const.js';
-import { generateId, getRandomElementArray, getRandomPositiveInteger } from '../utils.js';
+import { generateId, getRandomDate, getRandomElementArray, getRandomText } from '../utils.js';
 
-const TEXT_FOR_COMMENT = [
+const TEXTS_FOR_COMMENTS = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget.',
   'Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra.',
@@ -17,7 +17,7 @@ const COMMENTS_AUTHORS = ['Ilya O\'Reilly', 'Andy Smith', 'William Johns', 'Bob 
 
 const COMMENTS_LIST_LENGTH = 9;
 
-const DateValue = {
+const DateCommentsValue = {
   MIN_YEAR: 2014,
   MAX_YEAR: 2021,
   MIN_MONTH: 1,
@@ -27,41 +27,13 @@ const DateValue = {
 };
 
 
-export const getCommentUniqueId = generateId();
-
-const getTextForComment = (array) => {
-  const sentences = [];
-  const sentencesNumber = [];
-  let maxCounterValue = getRandomPositiveInteger(0, 4);
-  if (array.length - 1 < maxCounterValue) {
-    maxCounterValue = array.length - 1;
-  }
-  for (let counter = 0; counter <= maxCounterValue; counter++) {
-    let sentencesCurrentNumber = getRandomPositiveInteger(0, array.length - 1);
-    while (sentencesNumber.includes(sentencesCurrentNumber)) {
-      sentencesCurrentNumber = getRandomPositiveInteger(0, array.length - 1);
-    }
-    sentencesNumber.push(sentencesCurrentNumber);
-    sentences.push(array[sentencesCurrentNumber]);
-  }
-  return sentences.slice().join(' ');
-};
-
-const generateRandomDate = () => {
-  const year = getRandomPositiveInteger(DateValue.MIN_YEAR, DateValue.MAX_YEAR);
-  const month = String(getRandomPositiveInteger(DateValue.MIN_MONTH, DateValue.MAX_MONTH)).padStart(2, 0);
-  const day = String(getRandomPositiveInteger(DateValue.MIN_DAY, DateValue.MAX_DAY)).padStart(2, 0);
-  return `${year}-${month}-${day}`;
-};
-
-
-const getDate = () => new Date(generateRandomDate());
+const getCommentUniqueId = generateId();
 
 const createMockComment = () => ({
   'id': getCommentUniqueId(),
   'author': getRandomElementArray(COMMENTS_AUTHORS),
-  'comment': getTextForComment(TEXT_FOR_COMMENT),
-  'date': getDate(),
+  'comment': getRandomText(TEXTS_FOR_COMMENTS),
+  'date': getRandomDate(DateCommentsValue),
   'emotion': getRandomElementArray(COMMENT_EMOTION)
 });
 

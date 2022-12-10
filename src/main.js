@@ -1,4 +1,5 @@
-import { COMMENTS, FilmList, POPUP_FILM } from './mock.js';
+import { FilmsDataMocksList } from './mocks/films.js';
+import { COMMENTS, FilmList, POPUP_FILM } from './mocks/mock.js';
 import FooterPresenter from './presenter/footer-presenter.js';
 import HeaderPresenter from './presenter/header-presenter.js';
 import MainPagePresenter from './presenter/main-page-presenter.js';
