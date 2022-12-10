@@ -32,21 +32,18 @@ export const getCommentUniqueId = generateId();
 const getTextForComment = (array) => {
   const sentences = [];
   const sentencesNumber = [];
-  let counter = 0;
   let maxCounterValue = getRandomPositiveInteger(0, 4);
   if (array.length - 1 < maxCounterValue) {
     maxCounterValue = array.length - 1;
   }
-  while (counter <= maxCounterValue) {
+  for (let counter = 0; counter <= maxCounterValue; counter++) {
     let sentencesCurrentNumber = getRandomPositiveInteger(0, array.length - 1);
     while (sentencesNumber.includes(sentencesCurrentNumber)) {
       sentencesCurrentNumber = getRandomPositiveInteger(0, array.length - 1);
     }
     sentencesNumber.push(sentencesCurrentNumber);
     sentences.push(array[sentencesCurrentNumber]);
-    counter++;
   }
-
   return sentences.slice().join(' ');
 };
 
