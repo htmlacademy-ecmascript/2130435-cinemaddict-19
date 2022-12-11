@@ -3,6 +3,12 @@ import { ONE_HOUR } from './const.js';
 
 const MAX_SENTENCES = 4;
 
+const DateFormat = {
+  FILM_YEAR: 'YYYY',
+  FILM_RELEASE: 'DD MMMM YYYY',
+  COMMENT: 'YYYY/MM/DD  h:mm'
+};
+
 const getRandomPositiveInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -66,8 +72,8 @@ const getDuration = (time) => {
   return `${hour ? `${hour}h ` : ''}${minute}m`;
 };
 
-const setHumanizeDateFilmYear = (dateValue) => dateValue ? dayjs(dateValue).format('YYYY') : '';
-const setHumanizeDateFilmRelease = (dateValue) => dateValue ? dayjs(dateValue).format('DD MMMM YYYY') : '';
-const setHumanizeDateComment = (dateValue) => dateValue ? dayjs(dateValue).format('YYYY/MM/DD  h:mm') : '';
+const setHumanizeDateFilmYear = (dateValue) => dateValue ? dayjs(dateValue).format(DateFormat.FILM_YEAR) : '';
+const setHumanizeDateFilmRelease = (dateValue) => dateValue ? dayjs(dateValue).format(DateFormat.FILM_RELEASE) : '';
+const setHumanizeDateComment = (dateValue) => dateValue ? dayjs(dateValue).format(DateFormat.COMMENT) : '';
 
 export { getRandomPositiveInteger, getRandomElementArray, generateId, getRandomDate, getRandomText, getDuration, getRandomUniqueElementsArray, setHumanizeDateFilmYear, setHumanizeDateFilmRelease, setHumanizeDateComment };
