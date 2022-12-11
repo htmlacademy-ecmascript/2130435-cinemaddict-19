@@ -20,14 +20,18 @@ export default class NewFilmPopupView {
   }
 
   getInner() {
-    return createInnerContainer;
+    return createInnerContainer();
+  }
+
+  addContainer(container) {
+    return this.element.insertAdjacentElement('beforeend', container);
   }
 
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
       const innerContainer = createElement(this.getInner());
-      this.element.insertAdjacentElement('beforeend', innerContainer);
+      this.addContainer(innerContainer);
       render(this.topContainer, innerContainer);
       render(this.bottomContainer, innerContainer);
     }

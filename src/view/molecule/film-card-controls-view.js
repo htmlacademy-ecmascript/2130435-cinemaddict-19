@@ -1,11 +1,7 @@
+import { TypeButton } from '../../const.js';
 import { createElement, render } from '../../render.js';
 import NewFilmCardControlButtonView from '../atom/film-card-control-button-view.js';
 
-const TypeButton = {
-  WATCHLIST: 'add-to-watchlist',
-  WATCHED: 'mark-as-watched',
-  FAVORITE: 'favorite'
-};
 
 function createCardFilmControls() {
   return '<div class="film-card__controls"></div>';
@@ -13,8 +9,8 @@ function createCardFilmControls() {
 
 export default class NewFilmCardControlsView {
   constructor({ watchlist, already_watched: alreadyWatched, favorite }) {
-    this.watchlistComponent = new NewFilmCardControlButtonView(TypeButton.WATCHLIST, watchlist);
-    this.watchedComponent = new NewFilmCardControlButtonView(TypeButton.WATCHED, alreadyWatched);
+    this.watchlistComponent = new NewFilmCardControlButtonView(`add-to-${TypeButton.WATCHLIST}`, watchlist);
+    this.watchedComponent = new NewFilmCardControlButtonView(`mark-as-${TypeButton.WATCHED}`, alreadyWatched);
     this.favoriteComponent = new NewFilmCardControlButtonView(TypeButton.FAVORITE, favorite);
   }
 

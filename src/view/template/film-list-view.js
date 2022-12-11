@@ -38,13 +38,17 @@ export default class NewFilmListView {
     return createFilmList(this.modeExtra);
   }
 
+  addShowMoreButton() {
+    return this.element.insertAdjacentElement('beforeend', createElement(createShowMoreButton()));
+  }
+
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
       render (new NewFilmListTitleView(this.listTitle, this.listShowTitle), this.element);
       render (new NewFilmListContainerView(this.list), this.element);
       if (!this.moreButtonShow) {
-        this.element.insertAdjacentElement('beforeend', createElement(createShowMoreButton()));
+        this.addShowMoreButton();
       }
     }
 

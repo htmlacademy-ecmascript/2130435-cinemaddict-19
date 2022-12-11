@@ -20,10 +20,14 @@ export default class NewFilmPopupTopContainerView {
     return createFilmPopupTopContainer();
   }
 
+  addClosePopupButton() {
+    return this.element.insertAdjacentElement('beforeend', createElement(createFilmPopupCloseButton()));
+  }
+
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.element.insertAdjacentElement('beforeend', createElement(createFilmPopupCloseButton()));
+      this.addClosePopupButton();
       render(this.infoFilm, this.element);
       render(this.controlsButtons, this.element);
     }
