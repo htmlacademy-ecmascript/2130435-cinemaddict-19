@@ -1,8 +1,6 @@
 import { generateId, getDuration, getRandomDate, getRandomElementArray, getRandomPositiveInteger, getRandomText, getRandomUniqueElementsArray } from '../utils.js';
 import { CommentsDataMocksList } from './comments.js';
 
-const FILMS_LIST_LENGTH = 6;
-
 const MAX_VALUE_RATING = 10;
 const MAX_VALUE_AGE = 18;
 
@@ -151,6 +149,4 @@ const createMockFilm = () => ({
   'user_details': getUserDetails()
 });
 
-const FilmsDataMocksList = Array.from({ length: FILMS_LIST_LENGTH }, createMockFilm);
-
-export { FilmsDataMocksList };
+export { createMockFilm };

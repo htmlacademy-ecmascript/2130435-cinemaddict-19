@@ -15,8 +15,6 @@ const TEXTS_FOR_COMMENTS = [
 
 const COMMENTS_AUTHORS = ['Ilya O\'Reilly', 'Andy Smith', 'William Johns', 'Bob Allan', 'Mike Grey'];
 
-const COMMENTS_LIST_LENGTH = 9;
-
 const DateCommentsValue = {
   MIN_YEAR: 2014,
   MAX_YEAR: 2021,
@@ -37,6 +35,4 @@ const createMockComment = () => ({
   'emotion': getRandomElementArray(COMMENT_EMOTION)
 });
 
-const CommentsDataMocksList = Array.from({ length: COMMENTS_LIST_LENGTH }, createMockComment);
-
-export { CommentsDataMocksList };
+export { createMockComment };
