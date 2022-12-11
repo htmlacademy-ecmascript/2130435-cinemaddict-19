@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { ONE_HOUR } from './const.js';
 
 const MAX_SENTENCES = 4;
@@ -65,5 +66,8 @@ const getDuration = (time) => {
   return `${hour ? `${hour}h ` : ''}${minute}m`;
 };
 
+const setHumanizeDateFilmYear = (dateValue) => dateValue ? dayjs(dateValue).format('YYYY') : '';
+const setHumanizeDateFilmRelease = (dateValue) => dateValue ? dayjs(dateValue).format('DD MMMM YYYY') : '';
+const setHumanizeDateComment = (dateValue) => dateValue ? dayjs(dateValue).format('YYYY/MM/DD  h:mm') : '';
 
-export { getRandomPositiveInteger, getRandomElementArray, generateId, getRandomDate, getRandomText, getDuration, getRandomUniqueElementsArray };
+export { getRandomPositiveInteger, getRandomElementArray, generateId, getRandomDate, getRandomText, getDuration, getRandomUniqueElementsArray, setHumanizeDateFilmYear, setHumanizeDateFilmRelease, setHumanizeDateComment };

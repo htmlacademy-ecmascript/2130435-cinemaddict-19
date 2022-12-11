@@ -1,10 +1,7 @@
 import { createElement } from '../../render.js';
-
-const YEAR_START_POSITION = 11;
-const YEAR_END_POSITION = 15;
+import { setHumanizeDateFilmYear } from '../../utils.js';
 
 function createCardFilmDescription({ title, total_rating: rating, release, duration, genre, poster, description }, counter) {
-  const year = String(release.date).slice(YEAR_START_POSITION, YEAR_END_POSITION);
   let commentsCounter = 'comment';
   if (Number(counter) > 1) {
     commentsCounter = 'comments';
@@ -13,7 +10,7 @@ function createCardFilmDescription({ title, total_rating: rating, release, durat
             <h3 class="film-card__title">${title}</h3>
             <p class="film-card__rating">${rating}</p>
             <p class="film-card__info">
-              <span class="film-card__year">${year}</span>
+              <span class="film-card__year">${ setHumanizeDateFilmYear(release.date) }</span>
               <span class="film-card__duration">${duration}</span>
               <span class="film-card__genre">${genre.join(', ')}</span>
             </p>

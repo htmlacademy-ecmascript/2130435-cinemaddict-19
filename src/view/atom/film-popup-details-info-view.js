@@ -1,4 +1,5 @@
 import { createElement } from '../../render.js';
+import { setHumanizeDateFilmRelease } from '../../utils.js';
 
 function createPopupFilmDetailsInfo({film_info: filmInfo}) {
   const {
@@ -17,6 +18,7 @@ function createPopupFilmDetailsInfo({film_info: filmInfo}) {
   } = filmInfo;
 
   const { release_country: country, date} = release;
+  const genreSubtitleText = `${ genre.length > 1 ? 'Genres' : 'Genre'}`;
 
   return `<div class="film-details__info-wrap">
         <div class="film-details__poster">
@@ -51,7 +53,7 @@ function createPopupFilmDetailsInfo({film_info: filmInfo}) {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${String(date).slice(11,15)}</td>
+              <td class="film-details__cell">${setHumanizeDateFilmRelease(date)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Duration</td>
@@ -62,7 +64,7 @@ function createPopupFilmDetailsInfo({film_info: filmInfo}) {
               <td class="film-details__cell">${country}</td>
             </tr>
             <tr class="film-details__row">
-              <td class="film-details__term">Genres</td>genres
+              <td class="film-details__term">${genreSubtitleText}</td>genres
               <td class="film-details__cell">${genre.join(', ')}</td>
             </tr>
           </table>
