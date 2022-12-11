@@ -6,11 +6,11 @@ import NewFilmSectionView from '../view/page/film-section-view.js';
 import NewFilmListView from '../view/template/film-list-view.js';
 
 export default class MainPagePresenter {
-  constructor({boardContainer}, {MAIN_LIST, TOP_RATED_LIST, COMMENTED_LIST}) {
+  constructor(boardContainer, FilmsModel) {
     this.boardContainer = boardContainer;
-    this.mainList = MAIN_LIST;
-    this.topRatedList = TOP_RATED_LIST;
-    this.commentedList = COMMENTED_LIST;
+    this.mainList = FilmsModel.getFilms();
+    this.topRatedList = FilmsModel.getFilmsForExtraMode();
+    this.commentedList = FilmsModel.getFilmsForExtraMode();
   }
 
   getListFilmComponent() {
@@ -19,7 +19,7 @@ export default class MainPagePresenter {
 
   getFoundedFilmListComponent(searchList, searchLocation) {
     return searchList.map((film) => {
-      const foundedFilm = searchLocation.find((component) => component.CardFilmModel.title.includes(film.title));
+      const foundedFilm = searchLocation.find((component) => component.CardFilmModel.film_info.title.includes(film.film_info.title));
       if (foundedFilm) {
         return foundedFilm;
       }

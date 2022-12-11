@@ -4,7 +4,7 @@ import NewFooterStatisticsView from '../view/atom/footer-statistics-view.js';
 export default class FooterPresenter {
   footerStatisticComponent = new NewFooterStatisticsView();
 
-  constructor({boardContainer}) {
+  constructor(boardContainer) {
     this.boardContainer = boardContainer;
   }
 

@@ -15,8 +15,8 @@ export default class NewFilmListContainerView {
     return createFilmListContainer();
   }
 
-  createCardFilm(cardFilm) {
-    return render(new NewFilmCardView(cardFilm.CardFilmModel), this.element);
+  createCardFilm({CardFilmModel}) {
+    return render(new NewFilmCardView(CardFilmModel), this.element);
   }
 
   getElement() {

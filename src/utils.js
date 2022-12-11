@@ -60,9 +60,9 @@ const getRandomText = (array) => {
 };
 
 const getDuration = (time) => {
-  const hour = time % ONE_HOUR;
+  const hour = Math.floor(time / ONE_HOUR);
   const minute = time - (hour * ONE_HOUR);
-  return `${hour}h ${minute}m`;
+  return `${hour ? `${hour}h ` : ''}${minute}m`;
 };
 
 

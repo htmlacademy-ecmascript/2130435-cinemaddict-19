@@ -19,7 +19,7 @@ export default class NewFilmCardView {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
       render(new NewFilmCardDescriptionView(this.CardFilmModel), this.element);
-      render(new NewFilmCardControlsView(this.CardFilmModel.userDetails), this.element);
+      render(new NewFilmCardControlsView(this.CardFilmModel.user_details), this.element);
     }
 
     return this.element;

@@ -1,11 +1,10 @@
+import { COMMENTS_LIST_LENGTH } from '../const.js';
 import { createMockComment } from '../mocks/comments.js';
 
-const COMMENTS_LIST_LENGTH = 9;
+export default class CommentsModel {
+  comments = Array.from({ length: COMMENTS_LIST_LENGTH }, createMockComment);
 
-export default class FilmsModel {
-  films = Array.from({ length: COMMENTS_LIST_LENGTH }, createMockComment);
-
-  getFilms() {
-    return this.films;
+  getComments() {
+    return this.comments;
   }
 }

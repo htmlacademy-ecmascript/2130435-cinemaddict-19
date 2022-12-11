@@ -9,14 +9,18 @@ import NewFilmPopupTopContainerView from '../view/wrapper/film-popup-top-contain
 
 export default class PopupPresenter {
 
-  constructor({boardContainer}, PopupFilmModel, CommentsFilmModel) {
+  constructor(boardContainer, FilmModel, CommentsFilmModel) {
     this.boardContainer = boardContainer;
-    this.PopupFilmModel = PopupFilmModel;
-    this.commentsList = CommentsFilmModel;
+    this.PopupFilmModel = FilmModel.getFilmForPopup();
+    this.commentsList = CommentsFilmModel.getComments();
   }
 
   getCommentsListComponents() {
-    return this.commentsList.map((comment) => new NewFilmPopupCommentView(comment));
+    return this.findCommentsByFilm().map((comment) => new NewFilmPopupCommentView(comment));
+  }
+
+  findCommentsByFilm() {
+    return this.commentsList.filter((comment) => this.PopupFilmModel.comments.some((item) => item === comment.id));
   }
 
   init() {

@@ -12,7 +12,7 @@ function createCardFilmControls() {
 }
 
 export default class NewFilmCardControlsView {
-  constructor({ watchlist, alreadyWatched, favorite }) {
+  constructor({ watchlist, already_watched: alreadyWatched, favorite }) {
     this.watchlistComponent = new NewFilmCardControlButtonView(TypeButton.WATCHLIST, watchlist);
     this.watchedComponent = new NewFilmCardControlButtonView(TypeButton.WATCHED, alreadyWatched);
     this.favoriteComponent = new NewFilmCardControlButtonView(TypeButton.FAVORITE, favorite);

@@ -1,5 +1,5 @@
+import { COMMENTS_LIST_LENGTH } from '../const.js';
 import { generateId, getDuration, getRandomDate, getRandomElementArray, getRandomPositiveInteger, getRandomText, getRandomUniqueElementsArray } from '../utils.js';
-import { CommentsDataMocksList } from './comments.js';
 
 const MAX_VALUE_RATING = 10;
 const MAX_VALUE_AGE = 18;
@@ -85,8 +85,8 @@ const DateWatchingFilmValue = {
 
 const getFilmUniqueId = generateId();
 
-const generateCommentsIdsByFilm = (commentsListData) => {
-  const commentsListIds = Array.from({ length: commentsListData.length }, (_, k) => k + 1);
+const generateCommentsIdsByFilm = (commentsListDataLength) => {
+  const commentsListIds = Array.from({ length: commentsListDataLength }, (_, k) => k + 1);
   commentsListIds.sort(() => Math.random() - 0.5);
 
   return () => {
@@ -97,7 +97,7 @@ const generateCommentsIdsByFilm = (commentsListData) => {
   };
 };
 
-const getCommentsIdsByFilm = generateCommentsIdsByFilm(CommentsDataMocksList);
+const getCommentsIdsByFilm = generateCommentsIdsByFilm(COMMENTS_LIST_LENGTH);
 const getListCommentsIdsByFilm = () => {
   const counterMax = getRandomPositiveInteger(0, 3);
   const currentCommentsList = [];
