@@ -5,7 +5,7 @@ function createFilmListTitle(title, show) {
   return `<h2 class="films-list__title${isHidden}">${title}</h2>`;
 }
 
-export default class NewFilmListTitle {
+export default class NewFilmListTitleView {
   constructor(title = 'All movies. Upcoming', show){
     this.title = title;
     this.show = show;

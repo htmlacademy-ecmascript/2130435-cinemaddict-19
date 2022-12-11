@@ -4,7 +4,7 @@ function createFilmSection() {
   return '<section class="films"></section>';
 }
 
-export default class NewFilmSection {
+export default class NewFilmSectionView {
   constructor(...filmList) {
     this.lists = [...filmList];
   }

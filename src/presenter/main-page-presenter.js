@@ -1,9 +1,9 @@
 import { render } from '../render.js';
-import NewFilterMenuView from '../view/molecule/main-navigate.js';
-import NewSortListView from '../view/molecule/sort-list.js';
-import NewFilmCardView from '../view/organism/film-card.js';
-import NewFilmSection from '../view/page/film-section.js';
-import NewFilmListView from '../view/template/film-list.js';
+import NewFilterMenuView from '../view/molecule/filter-menu-view.js';
+import NewSortListView from '../view/molecule/sort-list-view.js';
+import NewFilmCardView from '../view/organism/film-card-view.js';
+import NewFilmSectionView from '../view/page/film-section-view.js';
+import NewFilmListView from '../view/template/film-list-view.js';
 
 export default class MainPagePresenter {
   constructor({boardContainer}, {MAIN_LIST, TOP_RATED_LIST, COMMENTED_LIST}) {
@@ -41,6 +41,6 @@ export default class MainPagePresenter {
     mostCommentedListComponent.setMoreButtonShow(true);
     render(new NewFilterMenuView(), this.boardContainer);
     render(new NewSortListView(), this.boardContainer);
-    render(new NewFilmSection(mainListComponent, topRatedListComponent, mostCommentedListComponent), this.boardContainer);
+    render(new NewFilmSectionView(mainListComponent, topRatedListComponent, mostCommentedListComponent), this.boardContainer);
   }
 }

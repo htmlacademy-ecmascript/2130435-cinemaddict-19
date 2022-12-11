@@ -18,7 +18,7 @@ function createFilmPopupComment(comment) {
           </li>`;
 }
 
-export default class NewFilmPopupComment {
+export default class NewFilmPopupCommentView {
   constructor(comment) {
     this.comment = comment;
   }

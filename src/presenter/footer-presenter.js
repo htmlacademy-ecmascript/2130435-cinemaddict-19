@@ -1,5 +1,5 @@
 import { render } from '../render.js';
-import NewFooterStatisticsView from '../view/atom/footer-statistics.js';
+import NewFooterStatisticsView from '../view/atom/footer-statistics-view.js';
 
 export default class FooterPresenter {
   footerStatisticComponent = new NewFooterStatisticsView();

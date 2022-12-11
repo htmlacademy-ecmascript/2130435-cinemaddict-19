@@ -19,7 +19,7 @@ function createCardFilmDescription({ title, rating, year, duration, genre, poste
           </a>`;
 }
 
-export default class NewCardFilmDescriptionView {
+export default class NewFilmCardDescriptionView {
   constructor (CardFilmModel) {
     this.filmInfo = CardFilmModel;
   }

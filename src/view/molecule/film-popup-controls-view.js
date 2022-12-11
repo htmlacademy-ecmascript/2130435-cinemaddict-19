@@ -1,5 +1,5 @@
 import { createElement, render } from '../../render.js';
-import NewFilmPopupControlButtonView from '../atom/film-popup-control.js';
+import NewFilmPopupControlButtonView from '../atom/film-popup-control-button-view.js';
 
 const TypeButton = {
   WATCHLIST: 'watchlist',
@@ -11,7 +11,7 @@ function createCardFilmControls() {
   return '<section class="film-details__controls"></section>';
 }
 
-export default class NewPopupFilmControlsView {
+export default class NewFilmPopupControlsView {
   constructor({ userDetails }) {
     this.watchlist = new NewFilmPopupControlButtonView(TypeButton.WATCHLIST, userDetails.watchlist);
     this.watched = new NewFilmPopupControlButtonView(TypeButton.WATCHED, userDetails.alreadyWatched);

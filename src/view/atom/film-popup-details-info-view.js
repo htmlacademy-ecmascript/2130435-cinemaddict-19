@@ -80,7 +80,7 @@ function createPopupFilmDetailsInfo(film) {
       </div>`;
 }
 
-export default class NewPopupFilmDetailsInfoView {
+export default class NewFilmPopupDetailsInfoView {
   constructor(film) {
     this.film = film;
   }

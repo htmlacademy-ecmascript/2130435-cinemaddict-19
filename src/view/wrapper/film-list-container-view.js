@@ -1,5 +1,5 @@
 import { createElement, render } from '../../render.js';
-import NewFilmCardView from '../organism/film-card.js';
+import NewFilmCardView from '../organism/film-card-view.js';
 
 
 function createFilmListContainer() {

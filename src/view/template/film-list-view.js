@@ -1,6 +1,6 @@
 import { createElement, render } from '../../render.js';
-import NewFilmListTitle from '../atom/film-list-title.js';
-import NewFilmListContainerView from '../wrapper/film-list-container.js';
+import NewFilmListTitleView from '../atom/film-list-title-view.js';
+import NewFilmListContainerView from '../wrapper/film-list-container-view.js';
 
 function createFilmList(extra) {
   const isExtra = `${extra ? ' films-list--extra' : ''}`;
@@ -41,7 +41,7 @@ export default class NewFilmListView {
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      render (new NewFilmListTitle(this.listTitle, this.listShowTitle), this.element);
+      render (new NewFilmListTitleView(this.listTitle, this.listShowTitle), this.element);
       render (new NewFilmListContainerView(this.list), this.element);
       if (!this.moreButtonShow) {
         this.element.insertAdjacentElement('beforeend', createElement(createShowMoreButton()));

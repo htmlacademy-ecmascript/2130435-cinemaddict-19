@@ -1,5 +1,5 @@
 import { render } from '../render.js';
-import NewHeaderProfileView from '../view/atom/header-profile.js';
+import NewHeaderProfileView from '../view/atom/header-profile-view.js';
 
 export default class HeaderPresenter {
   headerComponent = new NewHeaderProfileView();

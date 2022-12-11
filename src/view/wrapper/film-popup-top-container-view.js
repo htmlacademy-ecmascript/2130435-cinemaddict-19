@@ -10,7 +10,7 @@ function createFilmPopupCloseButton() {
   </div>`;
 }
 
-export default class NewFilmPopupTopContainer {
+export default class NewFilmPopupTopContainerView {
   constructor(controlsButtons, infoFilm) {
     this.controlsButtons = controlsButtons;
     this.infoFilm = infoFilm;
