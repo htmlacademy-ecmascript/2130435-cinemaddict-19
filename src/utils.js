@@ -8,7 +8,6 @@ const MAX_SENTENCES = 4;
 const DateFormat = {
   FILM_YEAR: 'YYYY',
   FILM_RELEASE: 'DD MMMM YYYY',
-  COMMENT: 'YYYY/MM/DD  h:mm'
 };
 
 const getRandomPositiveInteger = (min, max) => {

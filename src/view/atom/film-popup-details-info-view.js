@@ -1,6 +1,8 @@
 import { createElement } from '../../render.js';
 import { setHumanizeDateFilmRelease } from '../../utils.js';
 
+const createGenreItem = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
+
 function createPopupFilmDetailsInfo({film_info: filmInfo}) {
   const {
     title,
@@ -8,7 +10,7 @@ function createPopupFilmDetailsInfo({film_info: filmInfo}) {
     actors,
     release,
     poster,
-    writes,
+    writers,
     director,
     duration,
     description,
@@ -45,7 +47,7 @@ function createPopupFilmDetailsInfo({film_info: filmInfo}) {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">${writes}</td>
+              <td class="film-details__cell">${writers}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>
@@ -64,8 +66,8 @@ function createPopupFilmDetailsInfo({film_info: filmInfo}) {
               <td class="film-details__cell">${country}</td>
             </tr>
             <tr class="film-details__row">
-              <td class="film-details__term">${genreSubtitleText}</td>genres
-              <td class="film-details__cell">${genre.join(', ')}</td>
+              <td class="film-details__term">${genreSubtitleText}</td>
+              <td class="film-details__cell">${createGenreItem(genre)}</td>
             </tr>
           </table>
 
