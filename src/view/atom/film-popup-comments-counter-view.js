@@ -9,7 +9,7 @@ function createFilmPopupCommentsCounter(value) {
   return `<h3 class="film-details__comments-title">${commentsCounter} <span class="film-details__comments-count">${value}</span></h3>`;
 }
 
-export default class NewFilmPopupCommentsCounter {
+export default class NewFilmPopupCommentsCounterView {
   constructor(value) {
     this.value = value;
   }

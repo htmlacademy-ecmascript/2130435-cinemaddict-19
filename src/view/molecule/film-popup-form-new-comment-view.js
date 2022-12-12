@@ -1,7 +1,6 @@
 import { createElement } from '../../render.js';
 
-
-function createFormPopupNewComment() {
+function createFilmPopupFormNewComment() {
   return `<form class="film-details__new-comment" action="" method="get">
           <div class="film-details__add-emoji-label"></div>
 
@@ -35,9 +34,9 @@ function createFormPopupNewComment() {
     </div>`;
 }
 
-export default class NewFormPopupNewCommentView {
+export default class NewFilmPopupFormNewCommentView {
   getTemplate() {
-    return createFormPopupNewComment();
+    return createFilmPopupFormNewComment();
   }
 
   getElement() {

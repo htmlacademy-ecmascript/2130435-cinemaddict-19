@@ -1,24 +1,24 @@
 import { createElement } from '../../render.js';
+import { setHumanizeDateComment } from '../../utils.js';
 
-function createFilmPopupComment(comment) {
-  const { emoji, text, author, date } = comment;
+function createFilmPopupComment({ author, emotion, date, comment}) {
   return `
   <li class="film-details__comment">
             <span class="film-details__comment-emoji">
-              <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-sleeping">
+              <img src="./images/emoji/${emotion}.png" width="55" height="55" alt="emoji-sleeping">
             </span>
             <div>
-              <p class="film-details__comment-text">${text}</p>
+              <p class="film-details__comment-text">${comment}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${author}</span>
-                <span class="film-details__comment-day">${date}</span>
+                <span class="film-details__comment-day">${ setHumanizeDateComment(date) }</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
           </li>`;
 }
 
-export default class NewFilmPopupComment {
+export default class NewFilmPopupCommentView {
   constructor(comment) {
     this.comment = comment;
   }

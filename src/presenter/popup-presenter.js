@@ -1,31 +1,35 @@
 import { render } from '../render.js';
-import NewFilmPopupComment from '../view/atom/film-popup-comment.js';
-import NewPopupFilmDetailsInfoView from '../view/atom/film-popup-info.js';
-import NewFilmPopupCommentsList from '../view/molecule/film-popup-comments-list.js';
-import NewPopupFilmControlsView from '../view/molecule/film-popup-controls.js';
-import NewFilmPopupView from '../view/template/film-popup.js';
-import NewFilmPopupBottomContainer from '../view/wrapper/film-popup-bottom-container.js';
-import NewFilmPopupTopContainer from '../view/wrapper/film-popup-top-container.js';
+import NewFilmPopupCommentView from '../view/atom/film-popup-comment-view.js';
+import NewFilmPopupDetailsInfoView from '../view/atom/film-popup-details-info-view.js';
+import NewFilmPopupCommentsListView from '../view/molecule/film-popup-comments-list-view.js';
+import NewFilmPopupControlsView from '../view/molecule/film-popup-controls-view.js';
+import NewFilmPopupView from '../view/template/film-popup-view.js';
+import NewFilmPopupBottomContainerView from '../view/wrapper/film-popup-bottom-container-view.js';
+import NewFilmPopupTopContainerView from '../view/wrapper/film-popup-top-container-view.js';
 
 export default class PopupPresenter {
 
-  constructor({boardContainer}, PopupFilmModel, CommentsFilmModel) {
+  constructor(boardContainer, FilmModel, CommentsFilmModel) {
     this.boardContainer = boardContainer;
-    this.PopupFilmModel = PopupFilmModel;
-    this.commentsList = CommentsFilmModel;
+    this.PopupFilmModel = FilmModel.getFilmForPopup();
+    this.commentsList = CommentsFilmModel.getComments();
   }
 
   getCommentsListComponents() {
-    return this.commentsList.map((comment) => new NewFilmPopupComment(comment));
+    return this.findCommentsByFilm().map((comment) => new NewFilmPopupCommentView(comment));
+  }
+
+  findCommentsByFilm() {
+    return this.commentsList.filter((comment) => this.PopupFilmModel.comments.some((item) => item === comment.id));
   }
 
   init() {
-    const popupInfoComponent = new NewPopupFilmDetailsInfoView(this.PopupFilmModel);
-    const popupControlsComponent = new NewPopupFilmControlsView(this.PopupFilmModel);
-    const topPopupComponent = new NewFilmPopupTopContainer(popupControlsComponent, popupInfoComponent);
+    const popupInfoComponent = new NewFilmPopupDetailsInfoView(this.PopupFilmModel);
+    const popupControlsComponent = new NewFilmPopupControlsView(this.PopupFilmModel);
+    const topPopupComponent = new NewFilmPopupTopContainerView(popupControlsComponent, popupInfoComponent);
 
-    const commentsListComponents = new NewFilmPopupCommentsList(...this.getCommentsListComponents());
-    const botPopupComponent = new NewFilmPopupBottomContainer(commentsListComponents);
+    const commentsListComponents = new NewFilmPopupCommentsListView(...this.getCommentsListComponents());
+    const botPopupComponent = new NewFilmPopupBottomContainerView(commentsListComponents);
 
     const popupComponent = new NewFilmPopupView(topPopupComponent, botPopupComponent);
     render(popupComponent, this.boardContainer);

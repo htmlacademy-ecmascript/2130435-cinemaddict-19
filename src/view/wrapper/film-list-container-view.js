@@ -1,5 +1,5 @@
 import { createElement, render } from '../../render.js';
-import NewFilmCardView from '../organism/film-card.js';
+import NewFilmCardView from '../organism/film-card-view.js';
 
 
 function createFilmListContainer() {
@@ -15,8 +15,8 @@ export default class NewFilmListContainerView {
     return createFilmListContainer();
   }
 
-  createCardFilm(cardFilm) {
-    return render(new NewFilmCardView(cardFilm.CardFilmModel), this.element);
+  createCardFilm({CardFilmModel}) {
+    return render(new NewFilmCardView(CardFilmModel), this.element);
   }
 
   getElement() {

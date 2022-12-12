@@ -1,5 +1,5 @@
 import { createElement, render } from '../../render.js';
-import NewMainNavigateItemView from '../atom/main-navigation-item.js';
+import NewMainNavigateItemView from '../atom/main-navigation-item-view.js';
 
 const NAVIGATE_ITEMS = [
   new NewMainNavigateItemView('All movies', '', true),

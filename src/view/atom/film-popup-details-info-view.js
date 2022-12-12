@@ -1,43 +1,40 @@
 import { createElement } from '../../render.js';
+import { setHumanizeDateFilmRelease } from '../../utils.js';
 
-function getGenreItem(genres) {
-  return genres.forEach((genre) => `<span class="film-details__genre">${genre}</span>`);
-}
-
-function createPopupFilmDetailsInfo(film) {
+function createPopupFilmDetailsInfo({film_info: filmInfo}) {
   const {
-    poster,
-    age,
     title,
-    titleOrigin,
-    rating,
-    filmDetails,
-    description
-  } = film;
-  const {
-    director,
-    writes,
+    alternative_title: alternativeTitle,
     actors,
-    releaseDate,
+    release,
+    poster,
+    writes,
+    director,
     duration,
-    country,
-    genres,
-  } = filmDetails;
+    description,
+    genre,
+    total_rating: totalRating,
+    age_rating: ageRating,
+  } = filmInfo;
+
+  const { release_country: country, date} = release;
+  const genreSubtitleText = `${ genre.length > 1 ? 'Genres' : 'Genre'}`;
+
   return `<div class="film-details__info-wrap">
         <div class="film-details__poster">
           <img class="film-details__poster-img" src="${poster}" alt="">
 
-          <p class="film-details__age">${age}</p>
+          <p class="film-details__age">+${ageRating}</p>
         </div>
           <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
               <h3 class="film-details__title">${title}</h3>
-              <p class="film-details__title-original">${titleOrigin}</p>
+              <p class="film-details__title-original">${alternativeTitle}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${rating}</p>
+              <p class="film-details__total-rating">${totalRating}</p>
             </div>
           </div>
 
@@ -52,11 +49,11 @@ function createPopupFilmDetailsInfo(film) {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">${actors}</td>
+              <td class="film-details__cell">${actors.join(', ')}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${releaseDate}</td>
+              <td class="film-details__cell">${setHumanizeDateFilmRelease(date)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Duration</td>
@@ -67,9 +64,8 @@ function createPopupFilmDetailsInfo(film) {
               <td class="film-details__cell">${country}</td>
             </tr>
             <tr class="film-details__row">
-              <td class="film-details__term">Genres</td>genres
-              <td class="film-details__cell">
-                  ${getGenreItem(genres)}
+              <td class="film-details__term">${genreSubtitleText}</td>genres
+              <td class="film-details__cell">${genre.join(', ')}</td>
             </tr>
           </table>
 
@@ -80,9 +76,9 @@ function createPopupFilmDetailsInfo(film) {
       </div>`;
 }
 
-export default class NewPopupFilmDetailsInfoView {
-  constructor(film) {
-    this.film = film;
+export default class NewFilmPopupDetailsInfoView {
+  constructor(FilmModel) {
+    this.film = FilmModel;
   }
 
   getTemplate() {

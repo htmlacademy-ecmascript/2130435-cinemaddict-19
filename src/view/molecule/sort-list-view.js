@@ -1,5 +1,5 @@
 import { createElement, render } from '../../render.js';
-import NewSortButtonView from '../atom/sort-buttons.js';
+import NewSortButtonView from '../atom/sort-button-view.js';
 
 const SORT_BUTTONS = [
   new NewSortButtonView('Sort by default', true),

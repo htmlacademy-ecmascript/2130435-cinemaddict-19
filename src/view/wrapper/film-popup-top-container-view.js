@@ -10,7 +10,7 @@ function createFilmPopupCloseButton() {
   </div>`;
 }
 
-export default class NewFilmPopupTopContainer {
+export default class NewFilmPopupTopContainerView {
   constructor(controlsButtons, infoFilm) {
     this.controlsButtons = controlsButtons;
     this.infoFilm = infoFilm;
@@ -20,10 +20,14 @@ export default class NewFilmPopupTopContainer {
     return createFilmPopupTopContainer();
   }
 
+  addClosePopupButton() {
+    return this.element.insertAdjacentElement('beforeend', createElement(createFilmPopupCloseButton()));
+  }
+
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
-      this.element.insertAdjacentElement('beforeend', createElement(createFilmPopupCloseButton()));
+      this.addClosePopupButton();
       render(this.infoFilm, this.element);
       render(this.controlsButtons, this.element);
     }
