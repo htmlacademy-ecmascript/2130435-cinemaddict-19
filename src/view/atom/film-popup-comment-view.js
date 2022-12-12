@@ -1,5 +1,5 @@
 import { createElement } from '../../render.js';
-import { setHumanizeDateComment } from '../../utils.js';
+import { setHumanizeDateAgoComment } from '../../utils.js';
 
 function createFilmPopupComment({ author, emotion, date, comment}) {
   return `
@@ -11,7 +11,7 @@ function createFilmPopupComment({ author, emotion, date, comment}) {
               <p class="film-details__comment-text">${comment}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${author}</span>
-                <span class="film-details__comment-day">${ setHumanizeDateComment(date) }</span>
+                <span class="film-details__comment-day">${setHumanizeDateAgoComment(date)}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>

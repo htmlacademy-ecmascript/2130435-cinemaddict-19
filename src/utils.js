@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 import { ONE_HOUR } from './const.js';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 const MAX_SENTENCES = 4;
 
@@ -75,5 +77,6 @@ const getDuration = (time) => {
 const setHumanizeDateFilmYear = (dateValue) => dateValue ? dayjs(dateValue).format(DateFormat.FILM_YEAR) : '';
 const setHumanizeDateFilmRelease = (dateValue) => dateValue ? dayjs(dateValue).format(DateFormat.FILM_RELEASE) : '';
 const setHumanizeDateComment = (dateValue) => dateValue ? dayjs(dateValue).format(DateFormat.COMMENT) : '';
+const setHumanizeDateAgoComment = (dateValue) => dateValue ? dayjs(dateValue).fromNow() : '';
 
-export { getRandomPositiveInteger, getRandomElementArray, generateId, getRandomDate, getRandomText, getDuration, getRandomUniqueElementsArray, setHumanizeDateFilmYear, setHumanizeDateFilmRelease, setHumanizeDateComment };
+export { getRandomPositiveInteger, getRandomElementArray, generateId, getRandomDate, getRandomText, getDuration, getRandomUniqueElementsArray, setHumanizeDateFilmYear, setHumanizeDateFilmRelease, setHumanizeDateComment, setHumanizeDateAgoComment };
