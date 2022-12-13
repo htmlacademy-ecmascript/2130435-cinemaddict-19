@@ -12,50 +12,60 @@ function createShowMoreButton() {
 }
 
 export default class NewFilmListView {
-  listTitle = 'All movies. Upcoming';
-  listShowTitle = false;
-  moreButtonShow = false;
-  modeExtra = false;
+  #element = null;
+  #listTitle = 'All movies. Upcoming';
+  #listShowTitle = false;
+  #moreButtonShow = false;
+  #modeExtra = false;
+  #list;
 
   constructor(...filmList) {
-    this.list = filmList;
+    this.#list = filmList;
   }
 
-  setModeExtra(newState) {
-    this.modeExtra = newState;
+  get modeExtra() {
+    return this.#modeExtra;
   }
 
-  setMoreButtonShow(state) {
-    this.moreButtonShow = state;
+  set modeExtra(newState) {
+    this.#modeExtra = newState;
+  }
+
+  get buttonShow() {
+    return this.#moreButtonShow;
+  }
+
+  set buttonShow(state) {
+    this.#moreButtonShow = state;
   }
 
   setTitle(newTitle, newShowStatus) {
-    this.listTitle = newTitle;
-    this.listShowTitle = newShowStatus;
+    this.#listTitle = newTitle;
+    this.#listShowTitle = newShowStatus;
   }
 
-  getTemplate() {
-    return createFilmList(this.modeExtra);
+  #getTemplate() {
+    return createFilmList(this.#modeExtra);
   }
 
-  addShowMoreButton() {
+  #addShowMoreButton() {
     return this.element.insertAdjacentElement('beforeend', createElement(createShowMoreButton()));
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      render (new NewFilmListTitleView(this.listTitle, this.listShowTitle), this.element);
-      render (new NewFilmListContainerView(this.list), this.element);
-      if (!this.moreButtonShow) {
-        this.addShowMoreButton();
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
+      render(new NewFilmListTitleView(this.#listTitle, this.#listShowTitle), this.#element);
+      render(new NewFilmListContainerView(this.#list), this.#element);
+      if (!this.#moreButtonShow) {
+        this.#addShowMoreButton();
       }
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
