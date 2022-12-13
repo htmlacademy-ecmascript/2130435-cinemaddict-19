@@ -24,7 +24,7 @@ export default class MainPagePresenter {
 
   #getFoundedFilmListComponent(searchList, searchLocation) {
     return searchList.map((film) => {
-      const foundedFilm = searchLocation.find((component) => component.CardFilmModel.film_info.title.includes(film.film_info.title));
+      const foundedFilm = searchLocation.find((component) => component.card.film_info.title.includes(film.film_info.title));
       if (foundedFilm) {
         return foundedFilm;
       }
@@ -38,14 +38,14 @@ export default class MainPagePresenter {
     const mainListComponent = new NewFilmListView(...filmCardsComponents);
 
     const topRatedListComponent = new NewFilmListView(...topRatedComponents);
-    topRatedListComponent.setModeExtra(true);
+    topRatedListComponent.modeExtra = true;
     topRatedListComponent.setTitle('Top Rated', true);
-    topRatedListComponent.setMoreButtonShow(true);
+    topRatedListComponent.buttonShow = true;
 
     const mostCommentedListComponent = new NewFilmListView(...mostCommentedComponents);
-    mostCommentedListComponent.setModeExtra(true);
+    mostCommentedListComponent.modeExtra = true;
     mostCommentedListComponent.setTitle('Most Commented', true);
-    mostCommentedListComponent.setMoreButtonShow(true);
+    mostCommentedListComponent.buttonShow = true;
 
     render(new NewFilterMenuView(), this.#place);
     render(new NewSortListView(), this.#place);
