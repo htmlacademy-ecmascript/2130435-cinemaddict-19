@@ -7,26 +7,34 @@ function createFilmCard() {
 }
 
 export default class NewFilmCardView {
+  #element = null;
+  #cardFilmModel;
+
   constructor(CardFilmModel) {
-    this.CardFilmModel = CardFilmModel;
+    this.#cardFilmModel = CardFilmModel;
   }
 
-  getTemplate() {
+  get card() {
+    return this.#cardFilmModel;
+  }
+
+  #getTemplate() {
     return createFilmCard();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      render(new NewFilmCardDescriptionView(this.CardFilmModel), this.element);
-      render(new NewFilmCardControlsView(this.CardFilmModel.user_details), this.element);
+  get element() {
+    console.log(this.cardFilmModel)
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
+      render(new NewFilmCardDescriptionView(this.card), this.#element);
+      render(new NewFilmCardControlsView(this.card.user_details), this.#element);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
 
