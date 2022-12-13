@@ -11,31 +11,35 @@ function createFilmPopupCloseButton() {
 }
 
 export default class NewFilmPopupTopContainerView {
+  #element = null;
+  #controlsButtons;
+  #infoFilm;
+
   constructor(controlsButtons, infoFilm) {
-    this.controlsButtons = controlsButtons;
-    this.infoFilm = infoFilm;
+    this.#controlsButtons = controlsButtons;
+    this.#infoFilm = infoFilm;
   }
 
-  getTemplate() {
+  #getTemplate() {
     return createFilmPopupTopContainer();
   }
 
   addClosePopupButton() {
-    return this.element.insertAdjacentElement('beforeend', createElement(createFilmPopupCloseButton()));
+    return this.#element.insertAdjacentElement('beforeend', createElement(createFilmPopupCloseButton()));
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
       this.addClosePopupButton();
-      render(this.infoFilm, this.element);
-      render(this.controlsButtons, this.element);
+      render(this.#infoFilm, this.#element);
+      render(this.#controlsButtons, this.#element);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

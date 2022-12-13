@@ -10,27 +10,31 @@ function createFilmPopupBottomContainer () {
 }
 
 export default class NewFilmPopupBottomContainerView {
+  #element = null;
+  #commentsList;
+  #commentsCounter;
+
   constructor(commentsList) {
-    this.commentsList = commentsList;
-    this.commentsCounter = this.commentsList.getCommentsLength();
+    this.#commentsList = commentsList;
+    this.#commentsCounter = this.#commentsList.commentsLength;
   }
 
-  getTemplate() {
+  #getTemplate() {
     return createFilmPopupBottomContainer();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      render(new NewFilmPopupCommentsCounterView(this.commentsCounter), this.element);
-      render(this.commentsList, this.element);
-      render(new NewFilmPopupFormNewCommentView(), this.element);
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
+      render(new NewFilmPopupCommentsCounterView(this.#commentsCounter), this.#element);
+      render(this.#commentsList, this.#element);
+      render(new NewFilmPopupFormNewCommentView(), this.#element);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

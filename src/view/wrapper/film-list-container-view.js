@@ -7,28 +7,31 @@ function createFilmListContainer() {
 }
 
 export default class NewFilmListContainerView {
+  #element = null;
+  #list;
+
   constructor(filmList) {
-    this.list = filmList;
+    this.#list = filmList;
   }
 
-  getTemplate() {
+  #getTemplate() {
     return createFilmListContainer();
   }
 
-  createCardFilm({CardFilmModel}) {
+  #createCardFilm({CardFilmModel}) {
     return render(new NewFilmCardView(CardFilmModel), this.element);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      this.list.forEach((cardFilm) => this.createCardFilm(cardFilm));
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
+      this.#list.forEach((cardFilm) => this.#createCardFilm(cardFilm));
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
