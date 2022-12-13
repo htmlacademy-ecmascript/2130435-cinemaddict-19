@@ -2,8 +2,8 @@ import { createElement, render } from '../../render.js';
 import NewFilmCardDescriptionView from '../atom/film-card-description-view.js';
 import NewFilmCardControlsView from '../molecule/film-card-controls-view.js';
 
-function createFilmCard() {
-  return '<article class="film-card"></article>';
+function createFilmCard({id}) {
+  return `<article class="film-card" data-film-id="${id}"></article>`;
 }
 
 export default class NewFilmCardView {
@@ -19,7 +19,7 @@ export default class NewFilmCardView {
   }
 
   #getTemplate() {
-    return createFilmCard();
+    return createFilmCard(this.card);
   }
 
   get element() {

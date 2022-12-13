@@ -20,7 +20,7 @@ const mainPagePresenter = new MainPagePresenter(siteMainElement, filmsModel);
 const footerPresenter = new FooterPresenter(siteFooterElement);
 
 
-// popupPresenter.init();
 headerPresenter.init();
 mainPagePresenter.init();
 footerPresenter.init();
+popupPresenter.renderPopup();

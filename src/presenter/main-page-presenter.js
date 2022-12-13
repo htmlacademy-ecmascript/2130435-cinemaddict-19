@@ -13,8 +13,8 @@ export default class MainPagePresenter {
   constructor(place, FilmsModel) {
     this.#place = place;
     this.#mainList = FilmsModel.films;
-    this.#topRatedList = FilmsModel.films;
-    this.#commentedList = FilmsModel.films;
+    this.#topRatedList = FilmsModel.twoFilms;
+    this.#commentedList = FilmsModel.twoFilms;
   }
 
   #getFoundedFilmListComponent(searchList, searchLocation) {

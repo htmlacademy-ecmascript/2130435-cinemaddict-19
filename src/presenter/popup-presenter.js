@@ -11,11 +11,26 @@ export default class PopupPresenter {
   #place;
   #filmModel;
   #commentsList;
+  #film;
+  #popup;
+
 
   constructor(place, FilmModel, CommentsFilmModel) {
     this.#place = place;
-    this.#filmModel = FilmModel.film;
+    this.#filmModel = FilmModel;
     this.#commentsList = CommentsFilmModel.comments;
+  }
+
+  get filmModel() {
+    return this.#filmModel;
+  }
+
+  get film() {
+    return this.#film;
+  }
+
+  set film(newFilm) {
+    this.#film = newFilm;
   }
 
   #getCommentsListComponents() {
@@ -23,18 +38,59 @@ export default class PopupPresenter {
   }
 
   #findCommentsByFilm() {
-    return this.#commentsList.filter((comment) => this.#filmModel.comments.some((item) => item === comment.id));
+    return this.#commentsList.filter((comment) => this.film.comments.some((item) => item === comment.id));
   }
 
   init() {
-    const popupInfoComponent = new NewFilmPopupDetailsInfoView(this.#filmModel);
-    const popupControlsComponent = new NewFilmPopupControlsView(this.#filmModel);
+    const popupInfoComponent = new NewFilmPopupDetailsInfoView(this.film);
+    const popupControlsComponent = new NewFilmPopupControlsView(this.film);
     const topPopupComponent = new NewFilmPopupTopContainerView(popupControlsComponent, popupInfoComponent);
 
     const commentsListComponents = new NewFilmPopupCommentsListView(...this.#getCommentsListComponents());
     const botPopupComponent = new NewFilmPopupBottomContainerView(commentsListComponents);
 
-    const popupComponent = new NewFilmPopupView(topPopupComponent, botPopupComponent);
-    render(popupComponent, this.#place);
+    this.#popup = new NewFilmPopupView(topPopupComponent, botPopupComponent);
+    render(this.#popup, this.#place);
+    this.closePopupControl();
+  }
+
+  removePopup() {
+    const popup = document.querySelector('.film-details');
+    if (!popup) {
+      return;
+    }
+    popup.remove();
+    document.body.classList.remove('hide-overflow');
+  }
+
+  onCloseButtonClick() {
+    const popup = document.querySelector('.film-details');
+    const closeButton = popup.querySelector('.film-details__close-btn');
+    closeButton.addEventListener('click', this.removePopup);
+  }
+
+  closePopupControl() {
+    const onEscapeKeydown = (evt) => {
+      if (evt.key === 'Escape') {
+        this.removePopup();
+        document.removeEventListener('keydown', onEscapeKeydown);
+      }
+    };
+    document.addEventListener('keydown', onEscapeKeydown);
+    this.onCloseButtonClick();
+  }
+
+  renderPopup () {
+    const sectionFilm = document.querySelector('.films');
+    sectionFilm.addEventListener('click', (evt) => {
+      if (evt.target.closest('.film-card')) {
+        this.removePopup();
+        document.body.classList.add('hide-overflow');
+        const currentId = Number(evt.target.closest('.film-card').dataset.filmId);
+        this.film = this.filmModel.films.find((item) => item.id === currentId);
+        this.init();
+      }
+    });
   }
 }
+
