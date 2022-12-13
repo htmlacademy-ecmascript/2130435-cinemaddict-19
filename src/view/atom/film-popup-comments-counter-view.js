@@ -10,27 +10,34 @@ function createFilmPopupCommentsCounter(value) {
 }
 
 export default class NewFilmPopupCommentsCounterView {
+  #element = null;
+  #value;
+
   constructor(value) {
-    this.value = value;
+    this.#value = value;
   }
 
-  setValue(newValue) {
-    this.value = newValue;
+  get value() {
+    return this.#value;
   }
 
-  getTemplate() {
-    return createFilmPopupCommentsCounter(this.value);
+  set value(newValue) {
+    this.#value = newValue;
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  #getTemplate() {
+    return createFilmPopupCommentsCounter(this.#value);
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

@@ -3,6 +3,11 @@ import { setHumanizeDateFilmRelease } from '../../utils.js';
 
 const createGenreItem = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
 
+const createFilmRowTable = (cell, term = cell) => `<tr class="film-details__row">
+  <td class="film-details__term">${term}</td>
+  <td class="film-details__cell">${cell}</td>
+</tr>`;
+
 function createPopupFilmDetailsInfo({film_info: filmInfo}) {
   const {
     title,
@@ -41,34 +46,13 @@ function createPopupFilmDetailsInfo({film_info: filmInfo}) {
           </div>
 
           <table class="film-details__table">
-            <tr class="film-details__row">
-              <td class="film-details__term">Director</td>
-              <td class="film-details__cell">${director}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">${writers}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">${actors.join(', ')}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${setHumanizeDateFilmRelease(date)}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Duration</td>
-              <td class="film-details__cell">${duration}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Country</td>
-              <td class="film-details__cell">${country}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">${genreSubtitleText}</td>
-              <td class="film-details__cell">${createGenreItem(genre)}</td>
-            </tr>
+            ${createFilmRowTable(director)}
+            ${createFilmRowTable(writers)}
+            ${createFilmRowTable(actors.join(', '), 'actors')}
+            ${createFilmRowTable(setHumanizeDateFilmRelease(date),'Release Date')}</td>
+            ${createFilmRowTable(duration)}
+            ${createFilmRowTable(country)}
+            ${createFilmRowTable(createGenreItem(genre), genreSubtitleText)}
           </table>
 
           <p class="film-details__film-description">
@@ -79,23 +63,26 @@ function createPopupFilmDetailsInfo({film_info: filmInfo}) {
 }
 
 export default class NewFilmPopupDetailsInfoView {
+  #element = null;
+  #film;
+
   constructor(FilmModel) {
-    this.film = FilmModel;
+    this.#film = FilmModel;
   }
 
-  getTemplate() {
-    return createPopupFilmDetailsInfo(this.film);
+  #getTemplate() {
+    return createPopupFilmDetailsInfo(this.#film);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

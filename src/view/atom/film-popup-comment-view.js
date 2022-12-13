@@ -19,23 +19,26 @@ function createFilmPopupComment({ author, emotion, date, comment}) {
 }
 
 export default class NewFilmPopupCommentView {
+  #element = null;
+  #comment;
+
   constructor(comment) {
-    this.comment = comment;
+    this.#comment = comment;
   }
 
-  getTemplate() {
-    return createFilmPopupComment(this.comment);
+  #getTemplate() {
+    return createFilmPopupComment(this.#comment);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

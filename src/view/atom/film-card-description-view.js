@@ -21,24 +21,28 @@ function createCardFilmDescription({ title, total_rating: rating, release, durat
 }
 
 export default class NewFilmCardDescriptionView {
+  #element = null;
+  #filmInfo;
+  #comments;
+
   constructor ({film_info: filmInfo, comments}) {
-    this.filmInfo = filmInfo;
-    this.comments = comments;
+    this.#filmInfo = filmInfo;
+    this.#comments = comments;
   }
 
-  getTemplate() {
-    return createCardFilmDescription(this.filmInfo, this.comments.length);
+  #getTemplate() {
+    return createCardFilmDescription(this.#filmInfo, this.#comments.length);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

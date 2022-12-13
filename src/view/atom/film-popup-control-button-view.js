@@ -24,28 +24,35 @@ function createFilmPopupControlButton(type, active) {
 }
 
 export default class NewFilmPopupControlButtonView {
+  #element = null;
+  #type;
+
   constructor(type, active) {
-    this.type = type;
-    this.active = active;
+    this.#type = type;
+    this._active = active;
   }
 
-  setActiveState(newState = this.active) {
-    this.active = newState;
+  get active() {
+    return this._active;
   }
 
-  getTemplate() {
-    return createFilmPopupControlButton(this.type, this.active);
+  set active(newState = this._active) {
+    this._active = newState;
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  #getTemplate() {
+    return createFilmPopupControlButton(this.#type, this.active);
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

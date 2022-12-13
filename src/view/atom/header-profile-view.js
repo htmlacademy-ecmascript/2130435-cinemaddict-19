@@ -8,24 +8,44 @@ function createHeaderProfile(src, rank) {
 }
 
 export default class NewHeaderProfileView {
-  constructor(avatar = 'images/bitmap@2x.png', rank = 'Movie Buff') {
-    this.avatar = avatar;
-    this.rank = rank;
+  #element = null;
+  #avatar = 'images/bitmap@2x.png';
+  #rank = 'Movie Buff';
+
+  constructor(avatar , rank) {
+    this.#avatar = avatar;
+    this.#rank = rank;
   }
 
-  getTemplate() {
+  get rank() {
+    return this.#rank;
+  }
+
+  set rank(newRank) {
+    this.#rank = newRank;
+  }
+
+  get avatar() {
+    return this.#avatar;
+  }
+
+  set avatar(newAvatar) {
+    this.#avatar = newAvatar;
+  }
+
+  #getTemplate() {
     return createHeaderProfile(this.avatar, this.rank);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

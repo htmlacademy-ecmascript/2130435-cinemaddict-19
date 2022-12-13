@@ -24,28 +24,34 @@ function createFilmCardControlButton(type, active) {
 }
 
 export default class NewFilmCardControlButtonView {
+  #element = null;
+
   constructor(type, active) {
-    this.type = type;
-    this.active = active;
+    this._type = type;
+    this._active = active;
   }
 
-  setActiveState(newState = this.active) {
-    this.active = newState;
+  get active() {
+    return this._active;
   }
 
-  getTemplate() {
+  set active(newState = this._active) {
+    this._active = newState;
+  }
+
+  #getTemplate() {
     return createFilmCardControlButton(this.type, this.active);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

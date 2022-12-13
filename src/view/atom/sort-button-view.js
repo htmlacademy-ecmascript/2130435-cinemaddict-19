@@ -6,25 +6,29 @@ function createSortButton(name, active) {
 }
 
 export default class NewSortButtonView {
+  #element = null;
+  #name;
+  #active;
+
   constructor(name, active) {
-    this.name = name;
-    this.active = active;
+    this.#name = name;
+    this.#active = active;
   }
 
-  getTemplate() {
-    return createSortButton(this.name, this.active);
+  #getTemplate() {
+    return createSortButton(this.#name, this.#active);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
 
