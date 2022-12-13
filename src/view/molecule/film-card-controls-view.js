@@ -8,28 +8,33 @@ function createCardFilmControls() {
 }
 
 export default class NewFilmCardControlsView {
+  #element = null;
+  #watchlistComponent;
+  #watchedComponent;
+  #favoriteComponent;
+
   constructor({ watchlist, already_watched: alreadyWatched, favorite }) {
-    this.watchlistComponent = new NewFilmCardControlButtonView(`add-to-${TypeButton.WATCHLIST}`, watchlist);
-    this.watchedComponent = new NewFilmCardControlButtonView(`mark-as-${TypeButton.WATCHED}`, alreadyWatched);
-    this.favoriteComponent = new NewFilmCardControlButtonView(TypeButton.FAVORITE, favorite);
+    this.#watchlistComponent = new NewFilmCardControlButtonView(`add-to-${TypeButton.WATCHLIST}`, watchlist);
+    this.#watchedComponent = new NewFilmCardControlButtonView(`mark-as-${TypeButton.WATCHED}`, alreadyWatched);
+    this.#favoriteComponent = new NewFilmCardControlButtonView(TypeButton.FAVORITE, favorite);
   }
 
-  getTemplate() {
+  #getTemplate() {
     return createCardFilmControls();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      render(this.watchlistComponent, this.element);
-      render(this.watchedComponent, this.element);
-      render(this.favoriteComponent, this.element);
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
+      render(this.#watchlistComponent, this.#element);
+      render(this.#watchedComponent, this.#element);
+      render(this.#favoriteComponent, this.#element);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
