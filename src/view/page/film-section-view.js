@@ -5,24 +5,27 @@ function createFilmSection() {
 }
 
 export default class NewFilmSectionView {
+  #element = null;
+  #lists;
+
   constructor(...filmList) {
-    this.lists = [...filmList];
+    this.#lists = [...filmList];
   }
 
-  getTemplate() {
+  #getTemplate() {
     return createFilmSection();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      this.lists.forEach((list) => render(list, this.element));
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
+      this.#lists.forEach((list) => render(list, this.#element));
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
