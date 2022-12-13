@@ -14,8 +14,8 @@ export default class MainPagePresenter {
   constructor(place, FilmsModel) {
     this.#place = place;
     this.#mainList = FilmsModel.films;
-    this.#topRatedList = FilmsModel.getFilmsForExtraMode();
-    this.#commentedList = FilmsModel.getFilmsForExtraMode();
+    this.#topRatedList = FilmsModel.films;
+    this.#commentedList = FilmsModel.films;
   }
 
   #getListFilmComponent() {
@@ -23,19 +23,21 @@ export default class MainPagePresenter {
   }
 
   #getFoundedFilmListComponent(searchList, searchLocation) {
-    return searchList.map((film) => {
-      const foundedFilm = searchLocation.find((component) => component.card.film_info.title.includes(film.film_info.title));
-      if (foundedFilm) {
-        return foundedFilm;
-      }
-    });
+    return searchList.map(
+      (film) => {
+        const foundedFilm = searchLocation.find(
+          (component) => component.film_info.title.includes(film.film_info.title)
+        );
+        if (foundedFilm) {
+          return foundedFilm;
+        }
+      });
   }
 
   init() {
-    const filmCardsComponents = this.#getListFilmComponent();
-    const topRatedComponents = this.#getFoundedFilmListComponent(this.#topRatedList, filmCardsComponents);
-    const mostCommentedComponents = this.#getFoundedFilmListComponent(this.#commentedList, filmCardsComponents);
-    const mainListComponent = new NewFilmListView(...filmCardsComponents);
+    const topRatedComponents = this.#getFoundedFilmListComponent(this.#topRatedList, this.#mainList);
+    const mostCommentedComponents = this.#getFoundedFilmListComponent(this.#commentedList, this.#mainList);
+    const mainListComponent = new NewFilmListView(...this.#mainList);
 
     const topRatedListComponent = new NewFilmListView(...topRatedComponents);
     topRatedListComponent.modeExtra = true;

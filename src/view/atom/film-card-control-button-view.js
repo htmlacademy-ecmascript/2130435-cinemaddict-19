@@ -40,7 +40,7 @@ export default class NewFilmCardControlButtonView {
   }
 
   #getTemplate() {
-    return createFilmCardControlButton(this.type, this.active);
+    return createFilmCardControlButton(this._type, this.active);
   }
 
   get element() {

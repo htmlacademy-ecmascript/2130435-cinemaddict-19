@@ -10,11 +10,11 @@ export default class FilmsModel {
     return this.#films;
   }
 
-  getFilmsForExtraMode() {
+  get twoFilms() {
     return [getRandomElementArray(this.#films), getRandomElementArray(this.#films)];
   }
 
-  getFilmForPopup() {
+  get film() {
     return getRandomElementArray(this.#films);
   }
 }

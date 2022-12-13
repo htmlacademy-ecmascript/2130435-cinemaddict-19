@@ -9,10 +9,10 @@ function createHeaderProfile(src, rank) {
 
 export default class NewHeaderProfileView {
   #element = null;
-  #avatar = 'images/bitmap@2x.png';
-  #rank = 'Movie Buff';
+  #avatar;
+  #rank;
 
-  constructor(avatar , rank) {
+  constructor(avatar = 'images/bitmap@2x.png', rank = 'Movie Buff') {
     this.#avatar = avatar;
     this.#rank = rank;
   }

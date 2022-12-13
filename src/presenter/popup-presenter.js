@@ -14,7 +14,7 @@ export default class PopupPresenter {
 
   constructor(place, FilmModel, CommentsFilmModel) {
     this.#place = place;
-    this.#filmModel = FilmModel.getFilmForPopup();
+    this.#filmModel = FilmModel.film;
     this.#commentsList = CommentsFilmModel.comments;
   }
 

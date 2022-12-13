@@ -23,7 +23,6 @@ export default class NewFilmCardView {
   }
 
   get element() {
-    console.log(this.cardFilmModel)
     if (!this.#element) {
       this.#element = createElement(this.#getTemplate());
       render(new NewFilmCardDescriptionView(this.card), this.#element);
