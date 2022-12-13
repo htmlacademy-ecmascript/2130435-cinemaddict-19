@@ -1,7 +1,6 @@
 import { render } from '../render.js';
 import NewFilterMenuView from '../view/molecule/filter-menu-view.js';
 import NewSortListView from '../view/molecule/sort-list-view.js';
-import NewFilmCardView from '../view/organism/film-card-view.js';
 import NewFilmSectionView from '../view/page/film-section-view.js';
 import NewFilmListView from '../view/template/film-list-view.js';
 
@@ -16,10 +15,6 @@ export default class MainPagePresenter {
     this.#mainList = FilmsModel.films;
     this.#topRatedList = FilmsModel.films;
     this.#commentedList = FilmsModel.films;
-  }
-
-  #getListFilmComponent() {
-    return this.#mainList.map((film) => new NewFilmCardView(film));
   }
 
   #getFoundedFilmListComponent(searchList, searchLocation) {
