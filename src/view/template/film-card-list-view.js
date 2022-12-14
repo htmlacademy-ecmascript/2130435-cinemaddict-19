@@ -1,6 +1,8 @@
 import { createElement, render } from '../../render.js';
-import NewFilmListTitleView from '../atom/film-list-title-view.js';
-import NewFilmListContainerView from '../wrapper/film-list-container-view.js';
+import NewFilmCardListTitleView from '../atom/film-card-list-title-view.js';
+import NewFilmCardListContainerView from '../wrapper/film-card-list-container-view.js';
+
+const BLANK_TITLE = 'All movies. Upcoming';
 
 function createFilmList(extra) {
   const isExtra = `${extra ? ' films-list--extra' : ''}`;
@@ -11,9 +13,9 @@ function createShowMoreButton() {
   return '<button class="films-list__show-more">Show more</button>';
 }
 
-export default class NewFilmListView {
+export default class NewFilmCardListView {
   #element = null;
-  #listTitle = 'All movies. Upcoming';
+  #listTitle = BLANK_TITLE;
   #listShowTitle = false;
   #moreButtonShow = false;
   #modeExtra = false;
@@ -55,8 +57,8 @@ export default class NewFilmListView {
   get element() {
     if (!this.#element) {
       this.#element = createElement(this.#getTemplate());
-      render(new NewFilmListTitleView(this.#listTitle, this.#listShowTitle), this.#element);
-      render(new NewFilmListContainerView(this.#list), this.#element);
+      render(new NewFilmCardListTitleView(this.#listTitle, this.#listShowTitle), this.#element);
+      render(new NewFilmCardListContainerView(this.#list), this.#element);
       if (!this.#moreButtonShow) {
         this.#addShowMoreButton();
       }

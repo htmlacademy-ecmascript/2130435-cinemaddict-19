@@ -2,7 +2,7 @@ import { render } from '../render.js';
 import NewFilterMenuView from '../view/molecule/filter-menu-view.js';
 import NewSortListView from '../view/molecule/sort-list-view.js';
 import NewFilmSectionView from '../view/page/film-section-view.js';
-import NewFilmListView from '../view/template/film-list-view.js';
+import NewFilmCardListView from '../view/template/film-card-list-view.js';
 
 export default class MainPagePresenter {
   #place;
@@ -32,14 +32,14 @@ export default class MainPagePresenter {
   init() {
     const topRatedComponents = this.#getFoundedFilmListComponent(this.#topRatedList, this.#mainList);
     const mostCommentedComponents = this.#getFoundedFilmListComponent(this.#commentedList, this.#mainList);
-    const mainListComponent = new NewFilmListView(...this.#mainList);
+    const mainListComponent = new NewFilmCardListView(...this.#mainList);
 
-    const topRatedListComponent = new NewFilmListView(...topRatedComponents);
+    const topRatedListComponent = new NewFilmCardListView(...topRatedComponents);
     topRatedListComponent.modeExtra = true;
     topRatedListComponent.setTitle('Top Rated', true);
     topRatedListComponent.buttonShow = true;
 
-    const mostCommentedListComponent = new NewFilmListView(...mostCommentedComponents);
+    const mostCommentedListComponent = new NewFilmCardListView(...mostCommentedComponents);
     mostCommentedListComponent.modeExtra = true;
     mostCommentedListComponent.setTitle('Most Commented', true);
     mostCommentedListComponent.buttonShow = true;

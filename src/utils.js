@@ -77,4 +77,6 @@ const setHumanizeDateFilmYear = (dateValue) => dateValue ? dayjs(dateValue).form
 const setHumanizeDateFilmRelease = (dateValue) => dateValue ? dayjs(dateValue).format(DateFormat.FILM_RELEASE) : '';
 const setHumanizeDateAgoComment = (dateValue) => dateValue ? dayjs(dateValue).fromNow() : '';
 
-export { getRandomPositiveInteger, getRandomElementArray, generateId, getRandomDate, getRandomText, getDuration, getRandomUniqueElementsArray, setHumanizeDateFilmYear, setHumanizeDateFilmRelease, setHumanizeDateAgoComment };
+const isEscape = (evt) => evt.key === 'Escape';
+
+export { getRandomPositiveInteger, getRandomElementArray, generateId, getRandomDate, getRandomText, getDuration, getRandomUniqueElementsArray, setHumanizeDateFilmYear, setHumanizeDateFilmRelease, setHumanizeDateAgoComment, isEscape };

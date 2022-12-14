@@ -22,8 +22,9 @@ export default class NewFilmPopupCommentView {
   #element = null;
   #comment;
 
-  constructor(comment) {
-    this.#comment = comment;
+  //CommentsModel(item -> CommentModel)
+  constructor(CommentModel) {
+    this.#comment = CommentModel;
   }
 
   #getTemplate() {

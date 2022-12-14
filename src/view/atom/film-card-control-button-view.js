@@ -1,23 +1,23 @@
+import { TypeButton } from '../../const.js';
 import { createElement } from '../../render.js';
+
 
 function createFilmCardControlButton(type, active) {
   try {
     const typeButton = {
-      'add-to-watchlist': 'Add to watchlist',
-      'mark-as-watched': 'Mark as watched',
-      'favorite': 'Mark as favorite'
+      [`add-to-${TypeButton.WATCHLIST}`]: 'Add to watchlist',
+      [`mark-as-${TypeButton.WATCHED}`]: 'Mark as watched',
+      [`${TypeButton.FAVORITE}`]: 'Mark as favorite'
     };
     const button = typeButton[String(type).toLowerCase()];
-
-    if (!button) {
-      throw new Error('Incorrect type in createFilmCardControlButton(type)');
-    }
-
     const isActive = `${ active ? ' film-card__controls-item--active' : ''}`;
 
-    return `<button class="film-card__controls-item film-card__controls-item--${type}${isActive}" type="button">${button}</button>`;
-  }
+    if (button) {
+      return `<button class="film-card__controls-item film-card__controls-item--${type}${isActive}" type="button">${button}</button>`;
+    }
 
+    throw new Error('Incorrect type in createFilmCardControlButton(type)');
+  }
   catch(err) {
     return err.message;
   }
@@ -26,6 +26,8 @@ function createFilmCardControlButton(type, active) {
 export default class NewFilmCardControlButtonView {
   #element = null;
 
+  // type = FilmModel.user_details.[watchlist / watching_date / favorite]
+  // active : boolean
   constructor(type, active) {
     this._type = type;
     this._active = active;
@@ -39,8 +41,12 @@ export default class NewFilmCardControlButtonView {
     this._active = newState;
   }
 
+  get type() {
+    return this._type;
+  }
+
   #getTemplate() {
-    return createFilmCardControlButton(this._type, this.active);
+    return createFilmCardControlButton(this.type, this.active);
   }
 
   get element() {
