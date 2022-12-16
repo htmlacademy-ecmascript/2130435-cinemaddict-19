@@ -36,7 +36,7 @@ export default class NewFilmPopupControlButtonView {
     return this._active;
   }
 
-  set active(newState = this._active) {
+  set active(newState) {
     this._active = newState;
   }
 
