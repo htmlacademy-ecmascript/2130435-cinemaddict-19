@@ -37,7 +37,7 @@ export default class NewFilmCardControlButtonView {
     return this._active;
   }
 
-  set active(newState = this._active) {
+  set active(newState) {
     this._active = newState;
   }
 
