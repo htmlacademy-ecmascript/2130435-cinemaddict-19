@@ -19,7 +19,7 @@ export default class NewFilmPopupView {
     this.#bottomContainer = bottomContainer;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmPopup();
   }
 
@@ -33,7 +33,7 @@ export default class NewFilmPopupView {
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       const innerContainer = createElement(this.#getInner());
       this.#addContainer(innerContainer);
       render(this.#topContainer, innerContainer);

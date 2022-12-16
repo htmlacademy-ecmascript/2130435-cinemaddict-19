@@ -16,13 +16,13 @@ export default class NewFilmPopupCommentsList {
     return this.#comments.length;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmPopupCommentsList();
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       this.#comments.forEach((comment) => render(comment, this.#element));
     }
 

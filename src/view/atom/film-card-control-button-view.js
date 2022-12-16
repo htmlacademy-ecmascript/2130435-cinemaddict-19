@@ -45,13 +45,13 @@ export default class NewFilmCardControlButtonView {
     return this._type;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmCardControlButton(this.type, this.active);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

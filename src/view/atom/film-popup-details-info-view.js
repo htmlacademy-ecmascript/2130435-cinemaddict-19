@@ -70,13 +70,13 @@ export default class NewFilmPopupDetailsInfoView {
     this.#film = FilmModel;
   }
 
-  #getTemplate() {
+  get template() {
     return createPopupFilmDetailsInfo(this.#film);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

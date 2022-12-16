@@ -23,13 +23,13 @@ export default class NewFooterStatisticsView {
     this.#movies = newMovies;
   }
 
-  #getTemplate() {
+  get template() {
     return createFooterStatistics(this.#movies);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

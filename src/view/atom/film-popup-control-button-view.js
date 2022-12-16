@@ -40,13 +40,13 @@ export default class NewFilmPopupControlButtonView {
     this._active = newState;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmPopupControlButton(this.#type, this.active);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

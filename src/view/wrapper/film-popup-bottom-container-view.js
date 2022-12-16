@@ -19,13 +19,13 @@ export default class NewFilmPopupBottomContainerView {
     this.#commentsCounter = this.#commentsList.commentsLength;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmPopupBottomContainer();
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       render(new NewFilmPopupCommentsCounterView(this.#commentsCounter), this.#element);
       render(this.#commentsList, this.#element);
       render(new NewFilmPopupFormNewCommentView(), this.#element);

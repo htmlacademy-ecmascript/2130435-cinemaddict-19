@@ -32,13 +32,13 @@ export default class NewFilmCardControlsView {
     return this.#favoriteComponent;
   }
 
-  #getTemplate() {
+  get template() {
     return createCardFilmControls();
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       render(this.watchListComponent, this.#element);
       render(this.watchedComponent, this.#element);
       render(this.favoriteComponent, this.#element);

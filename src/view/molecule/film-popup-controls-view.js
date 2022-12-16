@@ -19,13 +19,13 @@ export default class NewFilmPopupControlsView {
     this.#favoriteComponent = new NewFilmPopupControlButtonView(TypeButton.FAVORITE, userDetails.favorite);
   }
 
-  #getTemplate() {
+  get template() {
     return createCardFilmControls();
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       render(this.#watchlistComponent, this.#element);
       render(this.#watchedComponent, this.#element);
       render(this.#favoriteComponent, this.#element);

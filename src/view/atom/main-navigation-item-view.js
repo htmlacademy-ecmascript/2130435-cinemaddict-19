@@ -22,13 +22,13 @@ export default class NewMainNavigateItemView {
     this.#active = active;
   }
 
-  #getTemplate() {
+  get template() {
     return createMainNavigateItem(this.#name, this.#counter, this.#active);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

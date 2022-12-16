@@ -33,13 +33,13 @@ export default class NewHeaderProfileView {
     this.#avatar = newAvatar;
   }
 
-  #getTemplate() {
+  get template() {
     return createHeaderProfile(this.avatar, this.rank);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

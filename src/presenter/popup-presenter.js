@@ -22,10 +22,6 @@ export default class PopupPresenter {
     this.#commentsList = CommentsFilmModel.comments;
   }
 
-  get filmModel() {
-    return this.#filmModel;
-  }
-
   get filmByPopup() {
     return this.#filmByPopup;
   }
@@ -42,12 +38,24 @@ export default class PopupPresenter {
     return this.#findCommentsByFilm().map((comment) => new NewFilmPopupCommentView(comment));
   }
 
+  #createPopup() {
+    const popupInfoComponent = new NewFilmPopupDetailsInfoView(this.filmByPopup);
+    const popupControlsComponent = new NewFilmPopupControlsView(this.filmByPopup);
+    const topPopupComponent = new NewFilmPopupTopContainerView(popupControlsComponent, popupInfoComponent);
+
+    const commentsListComponents = new NewFilmPopupCommentsListView(...this.#getCommentsListComponents());
+    const botPopupComponent = new NewFilmPopupBottomContainerView(commentsListComponents);
+
+    this.#popupComponent = new NewFilmPopupView(topPopupComponent, botPopupComponent);
+  }
+
   #removePopup() {
     const popup = document.querySelector('.film-details');
     if (!popup) {
       return;
     }
     popup.remove();
+    this.#popupComponent.removeElement();
     document.body.classList.remove('hide-overflow');
   }
 
@@ -69,32 +77,23 @@ export default class PopupPresenter {
     document.addEventListener('keydown', onEscapeKeydown);
   }
 
-  init() {
-    const popupInfoComponent = new NewFilmPopupDetailsInfoView(this.filmByPopup);
-    const popupControlsComponent = new NewFilmPopupControlsView(this.filmByPopup);
-    const topPopupComponent = new NewFilmPopupTopContainerView(popupControlsComponent, popupInfoComponent);
 
-    const commentsListComponents = new NewFilmPopupCommentsListView(...this.#getCommentsListComponents());
-    const botPopupComponent = new NewFilmPopupBottomContainerView(commentsListComponents);
-
-    this.#popupComponent = new NewFilmPopupView(topPopupComponent, botPopupComponent);
+  #init() {
+    this.#createPopup();
     render(this.#popupComponent, this.#place);
     this.#closePopupControl();
   }
 
-  renderPopup () {
+  initRenderPopup () {
     const sectionFilm = document.querySelector('.films');
-
     const onFilmCardClick = (evt) => {
       const filmCard = evt.target.closest('.film-card');
       if (filmCard) {
         this.#removePopup();
-
         const currentId = Number(filmCard.dataset.filmId);
         document.body.classList.add('hide-overflow');
-
-        this.filmByPopup = this.filmModel.films.find((item) => item.id === currentId);
-        this.init();
+        this.filmByPopup = this.#filmModel.films.find((item) => item.id === currentId);
+        this.#init();
       }
     };
 

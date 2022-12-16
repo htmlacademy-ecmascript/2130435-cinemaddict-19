@@ -24,13 +24,13 @@ export default class NewFilterMenuView {
     }
   }
 
-  #getTemplate() {
+  get template() {
     return createMainNavigate();
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       this.#buttons.forEach((button) => render(button, this.#element));
     }
 

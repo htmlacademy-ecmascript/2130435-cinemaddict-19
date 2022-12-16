@@ -46,7 +46,7 @@ export default class NewFilmCardListView {
     this.#listShowTitle = newShowStatus;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmList(this.#modeExtra);
   }
 
@@ -56,7 +56,7 @@ export default class NewFilmCardListView {
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       render(new NewFilmCardListTitleView(this.#listTitle, this.#listShowTitle), this.#element);
       render(new NewFilmCardListContainerView(this.#list), this.#element);
       if (!this.#moreButtonShow) {

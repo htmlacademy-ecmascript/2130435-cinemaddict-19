@@ -23,4 +23,4 @@ const footerPresenter = new FooterPresenter(siteFooterElement);
 headerPresenter.init();
 mainPagePresenter.init();
 footerPresenter.init();
-popupPresenter.renderPopup();
+popupPresenter.initRenderPopup();

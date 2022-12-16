@@ -31,13 +31,13 @@ export default class NewFilmCardDescriptionView {
     this.#comments = comments;
   }
 
-  #getTemplate() {
+  get template() {
     return createCardFilmDescription(this.#filmInfo, this.#comments.length);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

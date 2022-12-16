@@ -23,13 +23,13 @@ export default class NewSortListView {
     }
   }
 
-  #getTemplate() {
+  get template() {
     return createSortList();
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       this.#buttons.forEach((button) => render(button, this.#element));
     }
 

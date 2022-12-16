@@ -18,13 +18,13 @@ export default class NewFilmCardView {
     return this.#cardFilmModel;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmCard(this.card);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       render(new NewFilmCardDescriptionView(this.card), this.#element);
       render(new NewFilmCardControlsView(this.card.user_details), this.#element);
     }

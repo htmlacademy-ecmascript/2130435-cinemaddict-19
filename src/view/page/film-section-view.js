@@ -12,13 +12,13 @@ export default class NewFilmSectionView {
     this.#lists = [...filmList];
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmSection();
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       this.#lists.forEach((list) => render(list, this.#element));
     }
 

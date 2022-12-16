@@ -31,13 +31,13 @@ export default class NewFilmCardListTitleView {
     this._show = isShow;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmListTitle(this.title, this.show);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

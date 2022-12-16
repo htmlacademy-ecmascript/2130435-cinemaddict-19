@@ -20,7 +20,7 @@ export default class NewFilmPopupTopContainerView {
     this.#infoFilm = infoFilm;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmPopupTopContainer();
   }
 
@@ -30,7 +30,7 @@ export default class NewFilmPopupTopContainerView {
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       this.addClosePopupButton();
       render(this.#infoFilm, this.#element);
       render(this.#controlsButtons, this.#element);

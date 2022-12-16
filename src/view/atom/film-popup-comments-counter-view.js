@@ -13,6 +13,7 @@ export default class NewFilmPopupCommentsCounterView {
   #element = null;
   #value;
 
+  // Comments.
   constructor(value) {
     this.#value = value;
   }
@@ -25,13 +26,13 @@ export default class NewFilmPopupCommentsCounterView {
     this.#value = newValue;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmPopupCommentsCounter(this.#value);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

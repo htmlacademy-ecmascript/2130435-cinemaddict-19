@@ -15,13 +15,13 @@ export default class NewSortButtonView {
     this.#active = active;
   }
 
-  #getTemplate() {
+  get template() {
     return createSortButton(this.#name, this.#active);
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;

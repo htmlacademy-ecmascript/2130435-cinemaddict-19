@@ -14,7 +14,7 @@ export default class NewFilmListContainerView {
     this.#list = filmList;
   }
 
-  #getTemplate() {
+  get template() {
     return createFilmListContainer();
   }
 
@@ -24,7 +24,7 @@ export default class NewFilmListContainerView {
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
       this.#list.forEach((cardFilm) => this.#createCardFilm(cardFilm));
     }
 

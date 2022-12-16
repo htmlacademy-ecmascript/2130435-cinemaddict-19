@@ -37,13 +37,13 @@ function createFilmPopupFormNewComment() {
 export default class NewFilmPopupFormNewCommentView {
   #element = null;
 
-  #getTemplate() {
+  get template() {
     return createFilmPopupFormNewComment();
   }
 
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
+      this.#element = createElement(this.template);
     }
 
     return this.#element;
