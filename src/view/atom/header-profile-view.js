@@ -12,29 +12,13 @@ export default class NewHeaderProfileView {
   #avatar;
   #rank;
 
-  constructor(avatar = 'images/bitmap@2x.png', rank = 'Movie Buff') {
+  constructor({ avatar, rank }) {
     this.#avatar = avatar;
     this.#rank = rank;
   }
 
-  get rank() {
-    return this.#rank;
-  }
-
-  set rank(newRank) {
-    this.#rank = newRank;
-  }
-
-  get avatar() {
-    return this.#avatar;
-  }
-
-  set avatar(newAvatar) {
-    this.#avatar = newAvatar;
-  }
-
   get template() {
-    return createHeaderProfile(this.avatar, this.rank);
+    return createHeaderProfile(this.#avatar, this.#rank);
   }
 
   get element() {

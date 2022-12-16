@@ -4,6 +4,11 @@ import NewSortListView from '../view/molecule/sort-list-view.js';
 import NewFilmSectionView from '../view/page/film-section-view.js';
 import NewFilmCardListView from '../view/template/film-card-list-view.js';
 
+const ModsExtraTitles = {
+  RATED: 'Top Rated',
+  COMMENTED: 'Most Commented'
+};
+
 export default class MainPagePresenter {
   #place;
   #mainList;
@@ -29,20 +34,22 @@ export default class MainPagePresenter {
       });
   }
 
+  #setModeExtra(component, title) {
+    component.modeExtra = true;
+    component.setTitle(title, true);
+    component.buttonShow = true;
+  }
+
   init() {
+    const mainListComponent = new NewFilmCardListView(...this.#mainList);
     const topRatedComponents = this.#getFoundedFilmListComponent(this.#topRatedList, this.#mainList);
     const mostCommentedComponents = this.#getFoundedFilmListComponent(this.#commentedList, this.#mainList);
-    const mainListComponent = new NewFilmCardListView(...this.#mainList);
 
     const topRatedListComponent = new NewFilmCardListView(...topRatedComponents);
-    topRatedListComponent.modeExtra = true;
-    topRatedListComponent.setTitle('Top Rated', true);
-    topRatedListComponent.buttonShow = true;
+    this.#setModeExtra(topRatedListComponent, ModsExtraTitles.RATED);
 
     const mostCommentedListComponent = new NewFilmCardListView(...mostCommentedComponents);
-    mostCommentedListComponent.modeExtra = true;
-    mostCommentedListComponent.setTitle('Most Commented', true);
-    mostCommentedListComponent.buttonShow = true;
+    this.#setModeExtra(mostCommentedListComponent, ModsExtraTitles.COMMENTED);
 
     render(new NewFilterMenuView(), this.#place);
     render(new NewSortListView(), this.#place);

@@ -22,16 +22,8 @@ export default class PopupPresenter {
     this.#commentsList = CommentsFilmModel.comments;
   }
 
-  get filmByPopup() {
-    return this.#filmByPopup;
-  }
-
-  set filmByPopup(newFilm) {
-    this.#filmByPopup = newFilm;
-  }
-
   #findCommentsByFilm() {
-    return this.#commentsList.filter((comment) => this.filmByPopup.comments.some((item) => item === comment.id));
+    return this.#commentsList.filter((comment) => this.#filmByPopup.comments.some((item) => item === comment.id));
   }
 
   #getCommentsListComponents() {
@@ -39,8 +31,8 @@ export default class PopupPresenter {
   }
 
   #createPopup() {
-    const popupInfoComponent = new NewFilmPopupDetailsInfoView(this.filmByPopup);
-    const popupControlsComponent = new NewFilmPopupControlsView(this.filmByPopup);
+    const popupInfoComponent = new NewFilmPopupDetailsInfoView(this.#filmByPopup);
+    const popupControlsComponent = new NewFilmPopupControlsView(this.#filmByPopup);
     const topPopupComponent = new NewFilmPopupTopContainerView(popupControlsComponent, popupInfoComponent);
 
     const commentsListComponents = new NewFilmPopupCommentsListView(...this.#getCommentsListComponents());
@@ -92,7 +84,7 @@ export default class PopupPresenter {
         this.#removePopup();
         const currentId = Number(filmCard.dataset.filmId);
         document.body.classList.add('hide-overflow');
-        this.filmByPopup = this.#filmModel.films.find((item) => item.id === currentId);
+        this.#filmByPopup = this.#filmModel.films.find((item) => item.id === currentId);
         this.#init();
       }
     };

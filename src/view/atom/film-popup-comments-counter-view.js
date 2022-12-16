@@ -18,14 +18,6 @@ export default class NewFilmPopupCommentsCounterView {
     this.#value = value;
   }
 
-  get value() {
-    return this.#value;
-  }
-
-  set value(newValue) {
-    this.#value = newValue;
-  }
-
   get template() {
     return createFilmPopupCommentsCounter(this.#value);
   }

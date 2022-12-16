@@ -20,18 +20,6 @@ export default class NewFilmCardControlsView {
     this.#favoriteComponent = new NewFilmCardControlButtonView(TypeButton.FAVORITE, favorite);
   }
 
-  get watchListComponent() {
-    return this.#watchlistComponent;
-  }
-
-  get watchedComponent() {
-    return this.#watchedComponent;
-  }
-
-  get favoriteComponent() {
-    return this.#favoriteComponent;
-  }
-
   get template() {
     return createCardFilmControls();
   }
@@ -39,9 +27,9 @@ export default class NewFilmCardControlsView {
   get element() {
     if (!this.#element) {
       this.#element = createElement(this.template);
-      render(this.watchListComponent, this.#element);
-      render(this.watchedComponent, this.#element);
-      render(this.favoriteComponent, this.#element);
+      render(this.#watchlistComponent, this.#element);
+      render(this.#watchedComponent, this.#element);
+      render(this.#favoriteComponent, this.#element);
     }
 
     return this.#element;

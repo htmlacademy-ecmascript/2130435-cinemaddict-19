@@ -15,14 +15,6 @@ export default class NewFooterStatisticsView {
     this.#movies = movies;
   }
 
-  get movies() {
-    return this.#movies;
-  }
-
-  set movies(newMovies) {
-    this.#movies = newMovies;
-  }
-
   get template() {
     return createFooterStatistics(this.#movies);
   }

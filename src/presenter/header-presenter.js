@@ -3,13 +3,15 @@ import NewHeaderProfileView from '../view/atom/header-profile-view.js';
 
 export default class HeaderPresenter {
   #place;
-  #headerComponent = new NewHeaderProfileView();
+  #user;
 
-  constructor(place) {
+  constructor(place, UserModel) {
     this.#place = place;
+    this.#user = UserModel.user;
   }
 
   init() {
-    render(this.#headerComponent, this.#place);
+    const headerComponent = new NewHeaderProfileView(this.#user);
+    render(headerComponent, this.#place);
   }
 }

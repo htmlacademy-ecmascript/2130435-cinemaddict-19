@@ -1,5 +1,6 @@
 import CommentsModel from './model/comments-model.js';
 import FilmsModel from './model/films-model.js';
+import UserModel from './model/user-model.js';
 import FooterPresenter from './presenter/footer-presenter.js';
 import HeaderPresenter from './presenter/header-presenter.js';
 import MainPagePresenter from './presenter/main-page-presenter.js';
@@ -13,9 +14,10 @@ const siteFooterElement = document.querySelector('.footer');
 
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel();
+const userModel = new UserModel();
 
 const popupPresenter = new PopupPresenter(siteBodyElement, filmsModel, commentsModel);
-const headerPresenter = new HeaderPresenter(siteHeaderElement);
+const headerPresenter = new HeaderPresenter(siteHeaderElement, userModel);
 const mainPagePresenter = new MainPagePresenter(siteMainElement, filmsModel);
 const footerPresenter = new FooterPresenter(siteFooterElement);
 

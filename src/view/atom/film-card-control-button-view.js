@@ -25,28 +25,18 @@ function createFilmCardControlButton(type, active) {
 
 export default class NewFilmCardControlButtonView {
   #element = null;
+  #type;
+  #active;
 
   // type = FilmModel.user_details.[watchlist / watching_date / favorite]
   // active : boolean
   constructor(type, active) {
-    this._type = type;
-    this._active = active;
-  }
-
-  get active() {
-    return this._active;
-  }
-
-  set active(newState) {
-    this._active = newState;
-  }
-
-  get type() {
-    return this._type;
+    this.#type = type;
+    this.#active = active;
   }
 
   get template() {
-    return createFilmCardControlButton(this.type, this.active);
+    return createFilmCardControlButton(this.#type, this.#active);
   }
 
   get element() {

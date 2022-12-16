@@ -7,28 +7,11 @@ function createFilmListTitle(title, show) {
 
 export default class NewFilmCardListTitleView {
   #element = null;
-  _title = 'All movies. Upcoming';
 
   //title = NewFilmCardListView.#listTitle; show = NewFilmCardListView.#listShowTitle : boolean;
   constructor(title, show){
-    this._title = title;
-    this._show = show;
-  }
-
-  get title() {
-    return this._title;
-  }
-
-  set title(newTitle) {
-    this._title = newTitle;
-  }
-
-  get show() {
-    return this._show;
-  }
-
-  set show(isShow) {
-    this._show = isShow;
+    this.title = title;
+    this.show = show;
   }
 
   get template() {
