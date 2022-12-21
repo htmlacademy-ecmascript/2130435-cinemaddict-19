@@ -34,7 +34,7 @@ export default class MainPagePresenter {
       });
   }
 
-  #setModeExtra(component, title) {
+  static #setModeExtra(component, title) {
     component.modeExtra = true;
     component.setTitle(title, true);
     component.buttonShow = true;
@@ -46,10 +46,10 @@ export default class MainPagePresenter {
     const mostCommentedComponents = this.#getFoundedFilmListComponent(this.#commentedList, this.#mainList);
 
     const topRatedListComponent = new NewFilmCardListView(...topRatedComponents);
-    this.#setModeExtra(topRatedListComponent, ModsExtraTitles.RATED);
+    MainPagePresenter.#setModeExtra(topRatedListComponent, ModsExtraTitles.RATED);
 
     const mostCommentedListComponent = new NewFilmCardListView(...mostCommentedComponents);
-    this.#setModeExtra(mostCommentedListComponent, ModsExtraTitles.COMMENTED);
+    MainPagePresenter.#setModeExtra(mostCommentedListComponent, ModsExtraTitles.COMMENTED);
 
     render(new NewFilterMenuView(), this.#place);
     render(new NewSortListView(), this.#place);
