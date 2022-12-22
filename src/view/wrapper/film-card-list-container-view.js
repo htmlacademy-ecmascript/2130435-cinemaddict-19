@@ -24,7 +24,7 @@ export default class NewFilmListContainerView {
 
   getFilmInStep() {
     this.#endPoint = this.#startPoint + this.#step;
-    this.#currentFilmsRange = this.#list.slice(this.#startPoint, this.#endPoint)
+    this.#currentFilmsRange = this.#list.slice(this.#startPoint, this.#endPoint);
     this.#startPoint = this.#endPoint;
   }
 

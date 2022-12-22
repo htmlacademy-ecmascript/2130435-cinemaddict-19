@@ -58,7 +58,7 @@ export default class NewFilmCardListView {
 
   #isFilmListEmpty() {
     if (!this.#list.length && !this.#modeExtra) {
-      this.setTitle(EMPTY_FILM_LIST, true)
+      this.setTitle(EMPTY_FILM_LIST, true);
     }
   }
 
@@ -83,13 +83,13 @@ export default class NewFilmCardListView {
 
   onShowButtonClick = () => {
     const button = document.querySelector('.films-list__show-more');
-    button.addEventListener('click', (evt) => {
+    button.addEventListener('click', () => {
       this.#filmCardsDisplay.renderCurrentFilmCards();
       if (this.#filmCardsDisplay.isFilmsOver()) {
         button.style.display = 'none';
       }
-    })
-  }
+    });
+  };
 
   removeElement() {
     this.#element = null;
