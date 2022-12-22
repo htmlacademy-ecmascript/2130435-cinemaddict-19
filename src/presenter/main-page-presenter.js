@@ -1,3 +1,4 @@
+
 import { render } from '../render.js';
 import NewFilterMenuView from '../view/molecule/filter-menu-view.js';
 import NewSortListView from '../view/molecule/sort-list-view.js';
@@ -36,7 +37,7 @@ export default class MainPagePresenter {
       });
   }
 
-  static #setModeExtra(component, title) {
+  #setModeExtra(component, title) {
     component.modeExtra = true;
     component.setTitle(title, true);
     component.buttonShow = true;
@@ -55,10 +56,10 @@ export default class MainPagePresenter {
       const mostCommentedComponents = this.#getFoundedFilmListComponent(this.#commentedList, this.#mainList);
 
       const topRatedListComponent = new NewFilmCardListView(...topRatedComponents);
-      MainPagePresenter.#setModeExtra(topRatedListComponent, ModsExtraTitles.RATED);
+      this.#setModeExtra(topRatedListComponent, ModsExtraTitles.RATED);
 
       const mostCommentedListComponent = new NewFilmCardListView(...mostCommentedComponents);
-      MainPagePresenter.#setModeExtra(mostCommentedListComponent, ModsExtraTitles.COMMENTED);
+      this.#setModeExtra(mostCommentedListComponent, ModsExtraTitles.COMMENTED);
 
       render(new NewFilmSectionView(mainListComponent, topRatedListComponent, mostCommentedListComponent), this.#place);
       mainListComponent.onShowButtonClick();
