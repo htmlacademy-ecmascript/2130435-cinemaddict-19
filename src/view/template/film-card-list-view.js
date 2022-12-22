@@ -1,8 +1,9 @@
-import { createElement, render } from '../../render.js';
+import {createElement, render} from '../../render.js';
 import NewFilmCardListTitleView from '../atom/film-card-list-title-view.js';
 import NewFilmCardListContainerView from '../wrapper/film-card-list-container-view.js';
 
 const BLANK_TITLE = 'All movies. Upcoming';
+const EMPTY_FILM_LIST = 'There are no movies in our database';
 
 function createFilmList(extra) {
   const isExtra = `${extra ? ' films-list--extra' : ''}`;
@@ -20,6 +21,7 @@ export default class NewFilmCardListView {
   #moreButtonShow = false;
   #modeExtra = false;
   #list;
+  #filmCardsDisplay;
 
   constructor(...filmList) {
     this.#list = filmList;
@@ -51,20 +53,42 @@ export default class NewFilmCardListView {
   }
 
   #addShowMoreButton() {
-    return this.element.insertAdjacentElement('beforeend', createElement(createShowMoreButton()));
+    return this.#element.insertAdjacentElement('beforeend', createElement(createShowMoreButton()));
+  }
+
+  #isFilmListEmpty() {
+    if (!this.#list.length && !this.#modeExtra) {
+      this.setTitle(EMPTY_FILM_LIST, true)
+    }
   }
 
   get element() {
     if (!this.#element) {
       this.#element = createElement(this.template);
+      this.#filmCardsDisplay = new NewFilmCardListContainerView(this.#list);
+      if (!this.#list.length) {
+        this.#isFilmListEmpty();
+      }
+
       render(new NewFilmCardListTitleView(this.#listTitle, this.#listShowTitle), this.#element);
-      render(new NewFilmCardListContainerView(this.#list), this.#element);
+      render(this.#filmCardsDisplay, this.#element);
+
       if (!this.#moreButtonShow) {
         this.#addShowMoreButton();
       }
     }
 
     return this.#element;
+  }
+
+  onShowButtonClick = () => {
+    const button = document.querySelector('.films-list__show-more');
+    button.addEventListener('click', (evt) => {
+      this.#filmCardsDisplay.renderCurrentFilmCards();
+      if (this.#filmCardsDisplay.isFilmsOver()) {
+        button.style.display = 'none';
+      }
+    })
   }
 
   removeElement() {

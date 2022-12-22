@@ -14,9 +14,11 @@ export default class MainPagePresenter {
   #mainList;
   #topRatedList;
   #commentedList;
+  #FilmsModel;
 
   constructor(place, FilmsModel) {
     this.#place = place;
+    this.#FilmsModel = FilmsModel;
     this.#mainList = FilmsModel.films;
     this.#topRatedList = FilmsModel.twoFilms;
     this.#commentedList = FilmsModel.twoFilms;
@@ -41,18 +43,25 @@ export default class MainPagePresenter {
   }
 
   init() {
-    const mainListComponent = new NewFilmCardListView(...this.#mainList);
-    const topRatedComponents = this.#getFoundedFilmListComponent(this.#topRatedList, this.#mainList);
-    const mostCommentedComponents = this.#getFoundedFilmListComponent(this.#commentedList, this.#mainList);
-
-    const topRatedListComponent = new NewFilmCardListView(...topRatedComponents);
-    MainPagePresenter.#setModeExtra(topRatedListComponent, ModsExtraTitles.RATED);
-
-    const mostCommentedListComponent = new NewFilmCardListView(...mostCommentedComponents);
-    MainPagePresenter.#setModeExtra(mostCommentedListComponent, ModsExtraTitles.COMMENTED);
-
     render(new NewFilterMenuView(), this.#place);
     render(new NewSortListView(), this.#place);
-    render(new NewFilmSectionView(mainListComponent, topRatedListComponent, mostCommentedListComponent), this.#place);
+
+    if (!this.#FilmsModel.films.length) {
+      const mainListComponent = new NewFilmCardListView(...this.#mainList);
+      render(new NewFilmSectionView(mainListComponent), this.#place);
+    } else {
+      const mainListComponent = new NewFilmCardListView(...this.#mainList);
+      const topRatedComponents = this.#getFoundedFilmListComponent(this.#topRatedList, this.#mainList);
+      const mostCommentedComponents = this.#getFoundedFilmListComponent(this.#commentedList, this.#mainList);
+
+      const topRatedListComponent = new NewFilmCardListView(...topRatedComponents);
+      MainPagePresenter.#setModeExtra(topRatedListComponent, ModsExtraTitles.RATED);
+
+      const mostCommentedListComponent = new NewFilmCardListView(...mostCommentedComponents);
+      MainPagePresenter.#setModeExtra(mostCommentedListComponent, ModsExtraTitles.COMMENTED);
+
+      render(new NewFilmSectionView(mainListComponent, topRatedListComponent, mostCommentedListComponent), this.#place);
+      mainListComponent.onShowButtonClick();
+    }
   }
 }
