@@ -1,51 +1,53 @@
+import { TypeButton } from '../../const.js';
 import { createElement } from '../../render.js';
+
 
 function createFilmCardControlButton(type, active) {
   try {
     const typeButton = {
-      'add-to-watchlist': 'Add to watchlist',
-      'mark-as-watched': 'Mark as watched',
-      'favorite': 'Mark as favorite'
+      [`add-to-${TypeButton.WATCHLIST}`]: 'Add to watchlist',
+      [`mark-as-${TypeButton.WATCHED}`]: 'Mark as watched',
+      [`${TypeButton.FAVORITE}`]: 'Mark as favorite'
     };
     const button = typeButton[String(type).toLowerCase()];
-
-    if (!button) {
-      throw new Error('Incorrect type in createFilmCardControlButton(type)');
-    }
-
     const isActive = `${ active ? ' film-card__controls-item--active' : ''}`;
 
-    return `<button class="film-card__controls-item film-card__controls-item--${type}${isActive}" type="button">${button}</button>`;
-  }
+    if (button) {
+      return `<button class="film-card__controls-item film-card__controls-item--${type}${isActive}" type="button">${button}</button>`;
+    }
 
+    throw new Error('Incorrect type in createFilmCardControlButton(type)');
+  }
   catch(err) {
     return err.message;
   }
 }
 
 export default class NewFilmCardControlButtonView {
+  #element = null;
+  #type;
+  #active;
+
+  // type = FilmModel.user_details.[watchlist / watching_date / favorite]
+  // active : boolean
   constructor(type, active) {
-    this.type = type;
-    this.active = active;
+    this.#type = type;
+    this.#active = active;
   }
 
-  setActiveState(newState = this.active) {
-    this.active = newState;
+  get template() {
+    return createFilmCardControlButton(this.#type, this.#active);
   }
 
-  getTemplate() {
-    return createFilmCardControlButton(this.type, this.active);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

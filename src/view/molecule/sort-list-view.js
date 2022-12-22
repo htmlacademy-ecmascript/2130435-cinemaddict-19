@@ -12,28 +12,31 @@ function createSortList() {
 }
 
 export default class NewSortListView {
+  #element = null;
+  #buttons;
+
   constructor(...buttons) {
     if (!buttons.length) {
-      this.buttons = SORT_BUTTONS;
+      this.#buttons = SORT_BUTTONS;
     } else {
-      this.buttons = buttons;
+      this.#buttons = buttons;
     }
   }
 
-  getTemplate() {
+  get template() {
     return createSortList();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      this.buttons.forEach((button) => render(button, this.element));
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+      this.#buttons.forEach((button) => render(button, this.#element));
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

@@ -13,28 +13,31 @@ function createMainNavigate() {
 }
 
 export default class NewFilterMenuView {
+  #element = null;
+  #buttons;
+
   constructor(...buttons) {
     if (!buttons.length) {
-      this.buttons = NAVIGATE_ITEMS;
+      this.#buttons = NAVIGATE_ITEMS;
     } else {
-      this.buttons = [...buttons];
+      this.#buttons = [...buttons];
     }
   }
 
-  getTemplate() {
+  get template() {
     return createMainNavigate();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      this.buttons.forEach((button) => render(button, this.element));
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+      this.#buttons.forEach((button) => render(button, this.#element));
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

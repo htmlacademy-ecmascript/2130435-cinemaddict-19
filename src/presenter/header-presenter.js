@@ -2,13 +2,16 @@ import { render } from '../render.js';
 import NewHeaderProfileView from '../view/atom/header-profile-view.js';
 
 export default class HeaderPresenter {
-  headerComponent = new NewHeaderProfileView();
+  #place;
+  #user;
 
-  constructor(boardContainer) {
-    this.boardContainer = boardContainer;
+  constructor(place, UserModel) {
+    this.#place = place;
+    this.#user = UserModel.user;
   }
 
   init() {
-    render(this.headerComponent, this.boardContainer);
+    const headerComponent = new NewHeaderProfileView(this.#user);
+    render(headerComponent, this.#place);
   }
 }

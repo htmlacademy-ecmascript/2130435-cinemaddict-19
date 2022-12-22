@@ -11,26 +11,31 @@ function createMainNavigateItem(name, counter, active) {
 }
 
 export default class NewMainNavigateItemView {
+  #element = null;
+  #name;
+  #counter;
+  #active;
+
   constructor(name, counter, active) {
-    this.name = name;
-    this.counter = counter;
-    this.active = active;
+    this.#name = name;
+    this.#counter = counter;
+    this.#active = active;
   }
 
-  getTemplate() {
-    return createMainNavigateItem(this.name, this.counter, this.active);
+  get template() {
+    return createMainNavigateItem(this.#name, this.#counter, this.#active);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
 

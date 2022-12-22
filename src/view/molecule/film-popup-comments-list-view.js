@@ -5,28 +5,31 @@ function createFilmPopupCommentsList() {
 }
 
 export default class NewFilmPopupCommentsList {
+  #element = null;
+  #comments;
+
   constructor(...comments) {
-    this.comments = [...comments];
+    this.#comments = [...comments];
   }
 
-  getCommentsLength() {
-    return this.comments.length;
+  get commentsLength() {
+    return this.#comments.length;
   }
 
-  getTemplate() {
+  get template() {
     return createFilmPopupCommentsList();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      this.comments.forEach((comment) => render(comment, this.element));
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+      this.#comments.forEach((comment) => render(comment, this.#element));
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

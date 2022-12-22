@@ -563,6 +563,7 @@ button {
 .film-details__term {
   width: 140px;
   padding-right: 15px;
+  text-transform: capitalize;
 }
 .film-details__cell {
   width: 330px;

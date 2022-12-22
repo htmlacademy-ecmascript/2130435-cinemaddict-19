@@ -10,36 +10,40 @@ function createInnerContainer() {
 }
 
 export default class NewFilmPopupView {
+  #element = null;
+  #topContainer;
+  #bottomContainer;
+
   constructor(topContainer, bottomContainer) {
-    this.topContainer = topContainer;
-    this.bottomContainer = bottomContainer;
+    this.#topContainer = topContainer;
+    this.#bottomContainer = bottomContainer;
   }
 
-  getTemplate() {
+  get template() {
     return createFilmPopup();
   }
 
-  getInner() {
+  #getInner() {
     return createInnerContainer();
   }
 
-  addContainer(container) {
+  #addContainer(container) {
     return this.element.insertAdjacentElement('beforeend', container);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      const innerContainer = createElement(this.getInner());
-      this.addContainer(innerContainer);
-      render(this.topContainer, innerContainer);
-      render(this.bottomContainer, innerContainer);
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+      const innerContainer = createElement(this.#getInner());
+      this.#addContainer(innerContainer);
+      render(this.#topContainer, innerContainer);
+      render(this.#bottomContainer, innerContainer);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

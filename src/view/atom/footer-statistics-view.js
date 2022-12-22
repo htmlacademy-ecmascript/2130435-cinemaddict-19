@@ -8,27 +8,26 @@ function createFooterStatistics(findMovies) {
 }
 
 export default class NewFooterStatisticsView {
-  constructor(findMovies = 0) {
-    this.findMovies = findMovies;
+  #element = null;
+  #movies;
+
+  constructor(movies = 0) {
+    this.#movies = movies;
   }
 
-  setMovies(newFindMovies) {
-    this.findMovies = newFindMovies;
+  get template() {
+    return createFooterStatistics(this.#movies);
   }
 
-  getTemplate() {
-    return createFooterStatistics(this.findMovies);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

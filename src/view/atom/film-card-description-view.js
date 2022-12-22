@@ -1,9 +1,9 @@
 import { createElement } from '../../render.js';
 import { setHumanizeDateFilmYear } from '../../utils.js';
 
-function createCardFilmDescription({ title, total_rating: rating, release, duration, genre, poster, description }, counter) {
+function createCardFilmDescription({ title, total_rating: rating, release, duration, genre, poster, description }, counterComments) {
   let commentsCounter = 'comment';
-  if (Number(counter) > 1) {
+  if (Number(counterComments) > 1) {
     commentsCounter = 'comments';
   }
   return `<a class="film-card__link">
@@ -16,29 +16,34 @@ function createCardFilmDescription({ title, total_rating: rating, release, durat
             </p>
             <img src="${poster}" alt="" class="film-card__poster">
             <p class="film-card__description">${description}</p>
-            <span class="film-card__comments">${counter} ${commentsCounter}</span>
+            <span class="film-card__comments">${counterComments} ${commentsCounter}</span>
           </a>`;
 }
 
 export default class NewFilmCardDescriptionView {
+  #element = null;
+  #filmInfo;
+  #comments;
+
+  // Деструктуризация FilmModel
   constructor ({film_info: filmInfo, comments}) {
-    this.filmInfo = filmInfo;
-    this.comments = comments;
+    this.#filmInfo = filmInfo;
+    this.#comments = comments;
   }
 
-  getTemplate() {
-    return createCardFilmDescription(this.filmInfo, this.comments.length);
+  get template() {
+    return createCardFilmDescription(this.#filmInfo, this.#comments.length);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

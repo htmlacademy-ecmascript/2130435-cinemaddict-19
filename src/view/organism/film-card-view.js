@@ -2,31 +2,38 @@ import { createElement, render } from '../../render.js';
 import NewFilmCardDescriptionView from '../atom/film-card-description-view.js';
 import NewFilmCardControlsView from '../molecule/film-card-controls-view.js';
 
-function createFilmCard() {
-  return '<article class="film-card"></article>';
+function createFilmCard({id}) {
+  return `<article class="film-card" data-film-id="${id}"></article>`;
 }
 
 export default class NewFilmCardView {
+  #element = null;
+  #cardFilmModel;
+
   constructor(CardFilmModel) {
-    this.CardFilmModel = CardFilmModel;
+    this.#cardFilmModel = CardFilmModel;
   }
 
-  getTemplate() {
-    return createFilmCard();
+  get card() {
+    return this.#cardFilmModel;
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-      render(new NewFilmCardDescriptionView(this.CardFilmModel), this.element);
-      render(new NewFilmCardControlsView(this.CardFilmModel.user_details), this.element);
+  get template() {
+    return createFilmCard(this.card);
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+      render(new NewFilmCardDescriptionView(this.card), this.#element);
+      render(new NewFilmCardControlsView(this.card.user_details), this.#element);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
 

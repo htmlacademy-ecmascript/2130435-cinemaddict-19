@@ -5,25 +5,28 @@ function createFilmListTitle(title, show) {
   return `<h2 class="films-list__title${isHidden}">${title}</h2>`;
 }
 
-export default class NewFilmListTitleView {
-  constructor(title = 'All movies. Upcoming', show){
+export default class NewFilmCardListTitleView {
+  #element = null;
+
+  //title = NewFilmCardListView.#listTitle; show = NewFilmCardListView.#listShowTitle : boolean;
+  constructor(title, show){
     this.title = title;
     this.show = show;
   }
 
-  getTemplate() {
+  get template() {
     return createFilmListTitle(this.title, this.show);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

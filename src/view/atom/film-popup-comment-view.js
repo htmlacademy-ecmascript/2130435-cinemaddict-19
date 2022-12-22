@@ -1,5 +1,5 @@
 import { createElement } from '../../render.js';
-import { setHumanizeDateComment } from '../../utils.js';
+import { setHumanizeDateAgoComment } from '../../utils.js';
 
 function createFilmPopupComment({ author, emotion, date, comment}) {
   return `
@@ -11,7 +11,7 @@ function createFilmPopupComment({ author, emotion, date, comment}) {
               <p class="film-details__comment-text">${comment}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${author}</span>
-                <span class="film-details__comment-day">${ setHumanizeDateComment(date) }</span>
+                <span class="film-details__comment-day">${setHumanizeDateAgoComment(date)}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
@@ -19,23 +19,27 @@ function createFilmPopupComment({ author, emotion, date, comment}) {
 }
 
 export default class NewFilmPopupCommentView {
-  constructor(comment) {
-    this.comment = comment;
+  #element = null;
+  #comment;
+
+  //CommentsModel(item -> CommentModel)
+  constructor(CommentModel) {
+    this.#comment = CommentModel;
   }
 
-  getTemplate() {
-    return createFilmPopupComment(this.comment);
+  get template() {
+    return createFilmPopupComment(this.#comment);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
