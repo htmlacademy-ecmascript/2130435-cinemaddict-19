@@ -9,7 +9,7 @@ const ModsExtraTitles = {
   COMMENTED: 'Most Commented'
 };
 
-export default class MainPagePresenter {
+export default class NewMainPagePresenter {
   #place;
   #mainList;
   #topRatedList;
@@ -34,7 +34,7 @@ export default class MainPagePresenter {
       });
   }
 
-  static #setModeExtra(component, title) {
+  #setModeExtra(component, title) {
     component.modeExtra = true;
     component.setTitle(title, true);
     component.buttonShow = true;
@@ -46,10 +46,10 @@ export default class MainPagePresenter {
     const mostCommentedComponents = this.#getFoundedFilmListComponent(this.#commentedList, this.#mainList);
 
     const topRatedListComponent = new NewFilmCardListView(...topRatedComponents);
-    MainPagePresenter.#setModeExtra(topRatedListComponent, ModsExtraTitles.RATED);
+    this.#setModeExtra(topRatedListComponent, ModsExtraTitles.RATED);
 
     const mostCommentedListComponent = new NewFilmCardListView(...mostCommentedComponents);
-    MainPagePresenter.#setModeExtra(mostCommentedListComponent, ModsExtraTitles.COMMENTED);
+    this.#setModeExtra(mostCommentedListComponent, ModsExtraTitles.COMMENTED);
 
     render(new NewFilterMenuView(), this.#place);
     render(new NewSortListView(), this.#place);
