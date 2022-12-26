@@ -12,7 +12,21 @@ export default class NewFilmListContainerView {
   #startPoint = 0;
   #step = 5;
   #currentFilmsRange;
-  #endPoint;
+
+  #createCardFilm(CardFilmModel) {
+    return render(new NewFilmCardView(CardFilmModel), this.element);
+  }
+
+  #getFilmsInStep() {
+    this.#currentFilmsRange = this.#list.slice(this.#startPoint, this.#startPoint += this.#step);
+  }
+
+  onShowMoreFilms = (evt) => {
+    this.#renderCurrentFilmCards();
+    if (this.#isFilmsOver()) {
+      evt.target.style.display = 'none';
+    }
+  };
 
   constructor(filmList) {
     this.#list = filmList;
@@ -22,36 +36,23 @@ export default class NewFilmListContainerView {
     return createFilmListContainer();
   }
 
-  getFilmInStep() {
-    this.#endPoint = this.#startPoint + this.#step;
-    this.#currentFilmsRange = this.#list.slice(this.#startPoint, this.#endPoint);
-    this.#startPoint = this.#endPoint;
-  }
-
-  isFilmsOver() {
+  #isFilmsOver() {
     let show = true;
-    if (this.#list.length - 1 > this.#endPoint) {
+    if (this.#list.length - 1 > this.#startPoint) {
       show = false;
     }
     return show;
   }
 
-  renderCurrentFilmCards() {
-    this.getFilmInStep();
+  #renderCurrentFilmCards() {
+    this.#getFilmsInStep();
     this.#currentFilmsRange.forEach((cardFilm) => this.#createCardFilm(cardFilm));
-  }
-
-  #createCardFilm(CardFilmModel) {
-    return render(new NewFilmCardView(CardFilmModel), this.element);
   }
 
   get element() {
     if (!this.#element) {
       this.#element = createElement(this.template);
-      this.getFilmInStep();
-      if (this.#currentFilmsRange.length) {
-        this.#currentFilmsRange.forEach((cardFilm) => this.#createCardFilm(cardFilm));
-      }
+      this.#renderCurrentFilmCards();
     }
 
     return this.#element;

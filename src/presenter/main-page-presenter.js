@@ -54,4 +54,5 @@ export default class MainPagePresenter {
       mainListComponent.onShowButtonClick();
     }
   }
+  //
 }

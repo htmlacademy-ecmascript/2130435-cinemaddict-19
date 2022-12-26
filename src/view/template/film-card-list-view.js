@@ -82,13 +82,8 @@ export default class NewFilmCardListView {
   }
 
   onShowButtonClick = () => {
-    const button = document.querySelector('.films-list__show-more');
-    button.addEventListener('click', () => {
-      this.#filmCardsDisplay.renderCurrentFilmCards();
-      if (this.#filmCardsDisplay.isFilmsOver()) {
-        button.style.display = 'none';
-      }
-    });
+    const button = this.#element.querySelector('.films-list__show-more');
+    button.addEventListener('click', this.#filmCardsDisplay.onShowMoreFilms);
   };
 
   removeElement() {
