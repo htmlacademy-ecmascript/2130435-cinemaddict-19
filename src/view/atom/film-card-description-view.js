@@ -1,5 +1,5 @@
-import { createElement } from '../../render.js';
 import { setHumanizeDateFilmYear } from '../../utils.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 function createCardFilmDescription({ title, total_rating: rating, release, duration, genre, poster, description }, counterComments) {
   let commentsCounter = 'comment';
@@ -20,30 +20,18 @@ function createCardFilmDescription({ title, total_rating: rating, release, durat
           </a>`;
 }
 
-export default class NewFilmCardDescriptionView {
-  #element = null;
+export default class NewFilmCardDescriptionView extends AbstractView {
   #filmInfo;
   #comments;
 
   // Деструктуризация FilmModel
   constructor ({film_info: filmInfo, comments}) {
+    super();
     this.#filmInfo = filmInfo;
     this.#comments = comments;
   }
 
   get template() {
     return createCardFilmDescription(this.#filmInfo, this.#comments.length);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

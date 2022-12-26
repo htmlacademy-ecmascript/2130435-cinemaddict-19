@@ -1,6 +1,6 @@
 import { createElement, render } from '../../render.js';
 import NewSortButtonView from '../atom/sort-button-view.js';
-import AbstractView from '../../framework/view/abstract-view';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 const SORT_BUTTONS = [
   new NewSortButtonView('Sort by default', true),

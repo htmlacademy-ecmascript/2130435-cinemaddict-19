@@ -1,4 +1,5 @@
 import { createElement, render } from '../../render.js';
+import AbstractView from '../../framework/view/abstract-view';
 
 function createFilmPopupTopContainer() {
   return '<div class="film-details__top-container"></div>';
@@ -10,12 +11,13 @@ function createFilmPopupCloseButton() {
   </div>`;
 }
 
-export default class NewFilmPopupTopContainerView {
+export default class NewFilmPopupTopContainerView extends AbstractView {
   #element = null;
   #controlsButtons;
   #infoFilm;
 
   constructor(controlsButtons, infoFilm) {
+    super();
     this.#controlsButtons = controlsButtons;
     this.#infoFilm = infoFilm;
   }
@@ -35,11 +37,6 @@ export default class NewFilmPopupTopContainerView {
       render(this.#infoFilm, this.#element);
       render(this.#controlsButtons, this.#element);
     }
-
     return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

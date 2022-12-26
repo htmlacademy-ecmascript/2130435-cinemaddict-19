@@ -1,6 +1,7 @@
 import { createElement, render } from '../../render.js';
 import NewFilmPopupCommentsCounterView from '../atom/film-popup-comments-counter-view.js';
 import NewFilmPopupFormNewCommentView from '../molecule/film-popup-form-new-comment-view.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 function createFilmPopupBottomContainer () {
   return `<div class="film-details__bottom-container">
@@ -9,12 +10,13 @@ function createFilmPopupBottomContainer () {
     </div>`;
 }
 
-export default class NewFilmPopupBottomContainerView {
+export default class NewFilmPopupBottomContainerView extends AbstractView {
   #element = null;
   #commentsList;
   #commentsCounter;
 
   constructor(commentsList) {
+    super();
     this.#commentsList = commentsList;
     this.#commentsCounter = this.#commentsList.commentsLength;
   }
@@ -30,11 +32,6 @@ export default class NewFilmPopupBottomContainerView {
       render(this.#commentsList, this.#element);
       render(new NewFilmPopupFormNewCommentView(), this.#element);
     }
-
     return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

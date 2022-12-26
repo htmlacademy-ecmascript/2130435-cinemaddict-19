@@ -1,4 +1,4 @@
-import { createElement } from '../../render.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 function createMainNavigateItem(name, counter, active) {
   const isActive = `${ active ? ' main-navigation__item--active' : '' }`;
@@ -10,13 +10,13 @@ function createMainNavigateItem(name, counter, active) {
   return `<a href="#${name.toLowerCase()}" class="main-navigation__item${isActive}">${name} ${counterContainer}`;
 }
 
-export default class NewMainNavigateItemView {
-  #element = null;
+export default class NewMainNavigateItemView extends AbstractView {
   #name;
   #counter;
   #active;
 
   constructor(name, counter, active) {
+    super();
     this.#name = name;
     this.#counter = counter;
     this.#active = active;
@@ -24,18 +24,6 @@ export default class NewMainNavigateItemView {
 
   get template() {
     return createMainNavigateItem(this.#name, this.#counter, this.#active);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
 

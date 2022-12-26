@@ -1,5 +1,4 @@
-import { createElement } from '../../render.js';
-import AbstractView from '../../framework/view/abstract-view';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 function createSortButton(name, active) {
   const isActive = `${ active ? ' sort__button--active' : '' }`;

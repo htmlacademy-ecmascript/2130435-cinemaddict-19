@@ -1,5 +1,5 @@
-import { createElement } from '../../render.js';
 import { setHumanizeDateFilmRelease } from '../../utils.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 const createGenresItems = (genres) =>
   genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
@@ -63,27 +63,15 @@ function createPopupFilmDetailsInfo({film_info: filmInfo}) {
       </div>`;
 }
 
-export default class NewFilmPopupDetailsInfoView {
-  #element = null;
+export default class NewFilmPopupDetailsInfoView extends AbstractView {
   #film;
 
   constructor(FilmModel) {
+    super();
     this.#film = FilmModel;
   }
 
   get template() {
     return createPopupFilmDetailsInfo(this.#film);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

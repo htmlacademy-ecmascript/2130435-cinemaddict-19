@@ -1,4 +1,5 @@
 import { createElement, render } from '../../render.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 
 function createFilmPopup() {
@@ -9,12 +10,13 @@ function createInnerContainer() {
   return '<div class="film-details__inner"></div>';
 }
 
-export default class NewFilmPopupView {
+export default class NewFilmPopupView extends AbstractView {
   #element = null;
   #topContainer;
   #bottomContainer;
 
   constructor(topContainer, bottomContainer) {
+    super();
     this.#topContainer = topContainer;
     this.#bottomContainer = bottomContainer;
   }
@@ -39,11 +41,6 @@ export default class NewFilmPopupView {
       render(this.#topContainer, innerContainer);
       render(this.#bottomContainer, innerContainer);
     }
-
     return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

@@ -1,5 +1,5 @@
-import { createElement } from '../../render.js';
 import { setHumanizeDateAgoComment } from '../../utils.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 function createFilmPopupComment({ author, emotion, date, comment}) {
   return `
@@ -18,28 +18,16 @@ function createFilmPopupComment({ author, emotion, date, comment}) {
           </li>`;
 }
 
-export default class NewFilmPopupCommentView {
-  #element = null;
+export default class NewFilmPopupCommentView extends AbstractView {
   #comment;
 
   //CommentsModel(item -> CommentModel)
   constructor(CommentModel) {
+    super();
     this.#comment = CommentModel;
   }
 
   get template() {
     return createFilmPopupComment(this.#comment);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

@@ -1,12 +1,12 @@
 import { createElement, render } from '../../render.js';
 import NewFilmCardView from '../organism/film-card-view.js';
-
+import AbstractView from '../../framework/view/abstract-view.js';
 
 function createFilmListContainer() {
   return '<div class="films-list__container"></div>';
 }
 
-export default class NewFilmListContainerView {
+export default class NewFilmListContainerView extends AbstractView {
   #element = null;
   #list;
   #startPoint = 0;
@@ -29,6 +29,7 @@ export default class NewFilmListContainerView {
   };
 
   constructor(filmList) {
+    super();
     this.#list = filmList;
   }
 
@@ -54,11 +55,6 @@ export default class NewFilmListContainerView {
       this.#element = createElement(this.template);
       this.#renderCurrentFilmCards();
     }
-
     return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
