@@ -1,4 +1,4 @@
-import { render } from '../render.js';
+import { render } from '../framework/render.js';
 import NewFilmPopupView from '../view/template/film-popup-view.js';
 
 export default class PopupPresenter {

@@ -1,4 +1,4 @@
-import { createElement, render } from '../../render.js';
+import { createElement, render } from '../../framework/render.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 
 function createFilmPopupCommentsList() {

@@ -1,4 +1,4 @@
-import { createElement, render } from '../../render.js';
+import { createElement, render } from '../../framework/render.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 import NewFilmPopupTopContainerView from '../wrapper/film-popup-top-container-view.js';
 import NewFilmPopupBottomContainerView from '../wrapper/film-popup-bottom-container-view.js';

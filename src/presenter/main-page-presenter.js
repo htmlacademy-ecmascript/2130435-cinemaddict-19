@@ -1,5 +1,4 @@
-
-import { render } from '../render.js';
+import { render } from '../framework/render.js';
 import NewFilterMenuView from '../view/molecule/filter-menu-view.js';
 import NewSortListView from '../view/molecule/sort-list-view.js';
 import NewFilmSectionView from '../view/page/film-section-view.js';

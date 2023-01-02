@@ -1,7 +1,6 @@
 import { TypeButton } from '../../const.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 
-
 function createFilmCardControlButton(type, active) {
   try {
     const typeButton = {

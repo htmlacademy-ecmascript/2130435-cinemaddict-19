@@ -1,4 +1,4 @@
-import { createElement, render } from '../../render.js';
+import { createElement, render } from '../../framework/render.js';
 import AbstractView from '../../framework/view/abstract-view';
 import NewFilmPopupDetailsInfoView from '../atom/film-popup-details-info-view.js';
 import NewFilmPopupControlsView from '../molecule/film-popup-controls-view.js';

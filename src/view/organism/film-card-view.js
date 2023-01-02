@@ -1,4 +1,4 @@
-import { createElement, render } from '../../render.js';
+import { createElement, render } from '../../framework/render.js';
 import NewFilmCardDescriptionView from '../atom/film-card-description-view.js';
 import NewFilmCardControlsView from '../molecule/film-card-controls-view.js';
 import AbstractView from '../../framework/view/abstract-view.js';

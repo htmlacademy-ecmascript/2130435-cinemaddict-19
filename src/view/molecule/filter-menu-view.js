@@ -1,4 +1,4 @@
-import { createElement, render } from '../../render.js';
+import { createElement, render } from '../../framework/render.js';
 import NewMainNavigateItemView from '../atom/main-navigation-item-view.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 

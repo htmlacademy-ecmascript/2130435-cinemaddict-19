@@ -1,5 +1,5 @@
 import { TypeButton } from '../../const.js';
-import { createElement, render } from '../../render.js';
+import { createElement, render } from '../../framework/render.js';
 import NewFilmCardControlButtonView from '../atom/film-card-control-button-view.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 

@@ -1,4 +1,4 @@
-import {createElement, render} from '../../render.js';
+import {createElement, render} from '../../framework/render.js';
 import NewFilmCardListTitleView from '../atom/film-card-list-title-view.js';
 import NewFilmCardListContainerView from '../wrapper/film-card-list-container-view.js';
 import AbstractView from '../../framework/view/abstract-view.js';
