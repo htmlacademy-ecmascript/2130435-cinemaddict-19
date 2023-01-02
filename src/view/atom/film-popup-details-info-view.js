@@ -66,9 +66,9 @@ function createPopupFilmDetailsInfo({film_info: filmInfo}) {
 export default class NewFilmPopupDetailsInfoView extends AbstractView {
   #film;
 
-  constructor(FilmModel) {
+  constructor(correctFilmPopup) {
     super();
-    this.#film = FilmModel;
+    this.#film = correctFilmPopup;
   }
 
   get template() {

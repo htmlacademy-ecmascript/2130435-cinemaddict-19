@@ -3,8 +3,8 @@ import NewFilmCardDescriptionView from '../atom/film-card-description-view.js';
 import NewFilmCardControlsView from '../molecule/film-card-controls-view.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 
-function createFilmCard({id}) {
-  return `<article class="film-card" data-film-id="${id}"></article>`;
+function createFilmCard() {
+  return '<article class="film-card"></article>';
 }
 
 export default class NewFilmCardView extends AbstractView {
@@ -16,12 +16,21 @@ export default class NewFilmCardView extends AbstractView {
     this.#cardFilmModel = CardFilmModel;
   }
 
+  #createClickFilmCardEvent = () => {
+    const clickFilmCardEvent = new CustomEvent('onClickFilmCard', {
+      detail: {
+        filmId: this.#cardFilmModel.id
+      }
+    });
+    window.dispatchEvent(clickFilmCardEvent);
+  };
+
   get card() {
     return this.#cardFilmModel;
   }
 
   get template() {
-    return createFilmCard(this.card);
+    return createFilmCard();
   }
 
   get element() {
@@ -29,6 +38,7 @@ export default class NewFilmCardView extends AbstractView {
       this.#element = createElement(this.template);
       render(new NewFilmCardDescriptionView(this.card), this.#element);
       render(new NewFilmCardControlsView(this.card.user_details), this.#element);
+      this.#element.addEventListener('click', this.#createClickFilmCardEvent);
     }
     return this.#element;
   }

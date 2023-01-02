@@ -5,7 +5,7 @@ function createFilmPopupCommentsList() {
   return '<ul class="film-details__comments-list"></ul>';
 }
 
-export default class NewFilmPopupCommentsList extends AbstractView {
+export default class NewFilmPopupCommentsListView extends AbstractView {
   #element = null;
   #comments;
 

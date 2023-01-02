@@ -27,6 +27,7 @@ export default class NewSortListView extends AbstractView{
   get template() {
     return createSortList();
   }
+
   get element() {
     if (!this.#element) {
       this.#element = createElement(this.template);

@@ -1,5 +1,7 @@
 import { createElement, render } from '../../render.js';
 import AbstractView from '../../framework/view/abstract-view.js';
+import NewFilmPopupTopContainerView from '../wrapper/film-popup-top-container-view.js';
+import NewFilmPopupBottomContainerView from '../wrapper/film-popup-bottom-container-view.js';
 
 
 function createFilmPopup() {
@@ -12,34 +14,48 @@ function createInnerContainer() {
 
 export default class NewFilmPopupView extends AbstractView {
   #element = null;
-  #topContainer;
-  #bottomContainer;
+  #filmsModel;
+  #comments;
+  #correctFilmPopup;
 
-  constructor(topContainer, bottomContainer) {
+  #findCorrectFilmPopup = (evt) => {
+    const currentId = evt.detail.filmId;
+    this.#correctFilmPopup = this.#filmsModel.films.find((film) => film.id === currentId);
+  };
+
+  #addContainer(container) {
+    return this.element.insertAdjacentElement('beforeend', container);
+  }
+
+  constructor(FilmModel, CommentsFilmModel) {
     super();
-    this.#topContainer = topContainer;
-    this.#bottomContainer = bottomContainer;
+    this.#filmsModel = FilmModel;
+    this.#comments = CommentsFilmModel;
+    this.#correctFilmPopup = FilmModel.films[0];
+
+    window.addEventListener('onClickFilmCard', this.#findCorrectFilmPopup);
+  }
+
+  get inner() {
+    return createInnerContainer();
   }
 
   get template() {
     return createFilmPopup();
   }
 
-  #getInner() {
-    return createInnerContainer();
-  }
-
-  #addContainer(container) {
-    return this.element.insertAdjacentElement('beforeend', container);
-  }
-
   get element() {
     if (!this.#element) {
       this.#element = createElement(this.template);
-      const innerContainer = createElement(this.#getInner());
+      const innerContainer = createElement(this.inner);
+
       this.#addContainer(innerContainer);
-      render(this.#topContainer, innerContainer);
-      render(this.#bottomContainer, innerContainer);
+
+      const topContainerComponent = new NewFilmPopupTopContainerView(this.#correctFilmPopup);
+      const bottomContainerComponent = new NewFilmPopupBottomContainerView(this.#correctFilmPopup, this.#comments);
+
+      render(topContainerComponent, innerContainer);
+      render(bottomContainerComponent, innerContainer);
     }
     return this.#element;
   }
