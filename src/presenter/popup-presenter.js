@@ -5,6 +5,28 @@ export default class PopupPresenter {
   #place;
   #filmModel;
   #commentsList;
+  #correctFilmPopup;
+
+  #findCorrectFilmPopup = (evt) => {
+    document.body.classList.add('hide-overflow');
+
+    const currentId = evt.detail.filmId;
+    this.#correctFilmPopup = this.#filmModel.films.find((film) => film.id === currentId);
+
+    const popupComponent = new NewFilmPopupView({
+      correctFilm: this.#correctFilmPopup,
+      commentsFilm: this.#commentsList,
+      removePopup: this.#removePopup
+    });
+
+    render(popupComponent, this.#place);
+  };
+
+  #removePopup() {
+    this.element.remove();
+    this.removeElement();
+    document.body.classList.remove('hide-overflow');
+  }
 
   constructor(place, FilmModel, CommentsFilmModel) {
     this.#place = place;
@@ -13,8 +35,6 @@ export default class PopupPresenter {
   }
 
   init() {
-    const popupComponent = new NewFilmPopupView(this.#filmModel, this.#commentsList);
-    render(popupComponent, this.#place);
+    window.addEventListener('onClickFilmCard', this.#findCorrectFilmPopup);
   }
 }
-

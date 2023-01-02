@@ -16,17 +16,20 @@ function createFilmPopupCloseButton() {
 export default class NewFilmPopupTopContainerView extends AbstractView {
   #element = null;
 
+  #onCloseButtonClick;
+
   #correctFilmPopup;
   #popupTopContainerInfoComponent;
   #popupTopContainerControlsComponent;
 
-  constructor(correctFilmPopup) {
+  constructor(correctFilmPopup, removePopup) {
     super();
     this.#correctFilmPopup = correctFilmPopup;
     this.#popupTopContainerInfoComponent = new NewFilmPopupDetailsInfoView(this.#correctFilmPopup);
     this.#popupTopContainerControlsComponent = new NewFilmPopupControlsView(this.#correctFilmPopup);
+    this.#onCloseButtonClick = removePopup;
 
-    this.element.querySelector('.film-details__close-btn').addEventListener('click', );
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#onCloseButtonClick);
   }
 
   #addClosePopupButton() {
