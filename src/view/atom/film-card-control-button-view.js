@@ -1,6 +1,5 @@
 import { TypeButton } from '../../const.js';
-import { createElement } from '../../render.js';
-
+import AbstractView from '../../framework/view/abstract-view.js';
 
 function createFilmCardControlButton(type, active) {
   try {
@@ -23,31 +22,19 @@ function createFilmCardControlButton(type, active) {
   }
 }
 
-export default class NewFilmCardControlButtonView {
-  #element = null;
+export default class NewFilmCardControlButtonView extends AbstractView{
   #type;
   #active;
 
   // type = FilmModel.user_details.[watchlist / watching_date / favorite]
   // active : boolean
   constructor(type, active) {
+    super();
     this.#type = type;
     this.#active = active;
   }
 
   get template() {
     return createFilmCardControlButton(this.#type, this.#active);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

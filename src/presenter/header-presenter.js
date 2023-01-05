@@ -1,4 +1,4 @@
-import { render } from '../render.js';
+import { render } from '../framework/render.js';
 import NewHeaderProfileView from '../view/atom/header-profile-view.js';
 
 export default class HeaderPresenter {

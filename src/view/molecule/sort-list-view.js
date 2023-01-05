@@ -1,5 +1,6 @@
-import { createElement, render } from '../../render.js';
+import { createElement, render } from '../../framework/render.js';
 import NewSortButtonView from '../atom/sort-button-view.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 const SORT_BUTTONS = [
   new NewSortButtonView('Sort by default', true),
@@ -11,15 +12,15 @@ function createSortList() {
   return '<ul class="sort"></ul>';
 }
 
-export default class NewSortListView {
+export default class NewSortListView extends AbstractView{
   #element = null;
   #buttons;
 
   constructor(...buttons) {
+    super();
+    this.#buttons = buttons;
     if (!buttons.length) {
       this.#buttons = SORT_BUTTONS;
-    } else {
-      this.#buttons = buttons;
     }
   }
 
@@ -32,11 +33,6 @@ export default class NewSortListView {
       this.#element = createElement(this.template);
       this.#buttons.forEach((button) => render(button, this.#element));
     }
-
     return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

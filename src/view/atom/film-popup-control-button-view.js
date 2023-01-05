@@ -1,4 +1,4 @@
-import { createElement } from '../../render.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 function createFilmPopupControlButton(type, active) {
   try {
@@ -23,11 +23,11 @@ function createFilmPopupControlButton(type, active) {
   }
 }
 
-export default class NewFilmPopupControlButtonView {
-  #element = null;
+export default class NewFilmPopupControlButtonView extends AbstractView{
   #type;
 
   constructor(type, active) {
+    super();
     this.#type = type;
     this._active = active;
   }
@@ -42,17 +42,5 @@ export default class NewFilmPopupControlButtonView {
 
   get template() {
     return createFilmPopupControlButton(this.#type, this.active);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

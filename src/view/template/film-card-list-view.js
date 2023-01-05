@@ -1,6 +1,7 @@
-import {createElement, render} from '../../render.js';
+import {createElement, render} from '../../framework/render.js';
 import NewFilmCardListTitleView from '../atom/film-card-list-title-view.js';
 import NewFilmCardListContainerView from '../wrapper/film-card-list-container-view.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 const BLANK_TITLE = 'All movies. Upcoming';
 const EMPTY_FILM_LIST = 'There are no movies in our database';
@@ -14,7 +15,7 @@ function createShowMoreButton() {
   return '<button class="films-list__show-more">Show more</button>';
 }
 
-export default class NewFilmCardListView {
+export default class NewFilmCardListView extends AbstractView {
   #element = null;
   #listTitle = BLANK_TITLE;
   #listShowTitle = false;
@@ -24,6 +25,7 @@ export default class NewFilmCardListView {
   #filmCardsDisplay;
 
   constructor(...filmList) {
+    super();
     this.#list = filmList;
   }
 
@@ -62,6 +64,11 @@ export default class NewFilmCardListView {
     }
   }
 
+  onShowButtonClick = () => {
+    const button = this.#element.querySelector('.films-list__show-more');
+    button.addEventListener('click', this.#filmCardsDisplay.onShowMoreFilms);
+  };
+
   get element() {
     if (!this.#element) {
       this.#element = createElement(this.template);
@@ -77,16 +84,6 @@ export default class NewFilmCardListView {
         this.#addShowMoreButton();
       }
     }
-
     return this.#element;
-  }
-
-  onShowButtonClick = () => {
-    const button = this.#element.querySelector('.films-list__show-more');
-    button.addEventListener('click', this.#filmCardsDisplay.onShowMoreFilms);
-  };
-
-  removeElement() {
-    this.#element = null;
   }
 }

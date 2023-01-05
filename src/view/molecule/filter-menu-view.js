@@ -1,5 +1,6 @@
-import { createElement, render } from '../../render.js';
+import { createElement, render } from '../../framework/render.js';
 import NewMainNavigateItemView from '../atom/main-navigation-item-view.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 const NAVIGATE_ITEMS = [
   new NewMainNavigateItemView('All movies', '', true),
@@ -12,11 +13,12 @@ function createMainNavigate() {
   return '<nav class="main-navigation"></nav>';
 }
 
-export default class NewFilterMenuView {
+export default class NewFilterMenuView extends AbstractView {
   #element = null;
   #buttons;
 
   constructor(...buttons) {
+    super();
     if (!buttons.length) {
       this.#buttons = NAVIGATE_ITEMS;
     } else {
@@ -33,11 +35,6 @@ export default class NewFilterMenuView {
       this.#element = createElement(this.template);
       this.#buttons.forEach((button) => render(button, this.#element));
     }
-
     return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
