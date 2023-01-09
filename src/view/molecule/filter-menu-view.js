@@ -16,37 +16,20 @@ function createMainNavigate() {
 export default class NewFilterMenuView extends AbstractView {
   #element = null;
   #films;
-  #watchlistCounter = 0;
-  #historyCounter = 0;
-  #favoritesCounter = 0;
 
   constructor(filmsModel) {
     super();
-    this.#films = filmsModel.films;
-  }
-
-  #calculateCorrectFilmsMarks() {
-    this.#films.forEach(({user_details: userDetails }) => {
-      const { watchlist, already_watched: history, favorite } = userDetails;
-      if (watchlist) {
-        this.#watchlistCounter++;
-      }
-      if (history) {
-        this.#historyCounter++;
-      }
-      if (favorite) {
-        this.#favoritesCounter++;
-      }
-    });
+    this.#films = filmsModel;
   }
 
   #createNavigateItems() {
-    this.#calculateCorrectFilmsMarks();
+    const filterFilmMarks = this.#films.getCorrectFilmsMarks();
+    const { watchlistCounter, historyCounter, favoritesCounter } = filterFilmMarks;
     return [
       new NewMainNavigateItemView(NAVIGATE_ITEMS_NAMES.ALL, '', true),
-      new NewMainNavigateItemView(NAVIGATE_ITEMS_NAMES.WATCH, this.#watchlistCounter),
-      new NewMainNavigateItemView(NAVIGATE_ITEMS_NAMES.HISTORY,this.#historyCounter),
-      new NewMainNavigateItemView(NAVIGATE_ITEMS_NAMES.FAVORITE,this.#favoritesCounter)
+      new NewMainNavigateItemView(NAVIGATE_ITEMS_NAMES.WATCH, watchlistCounter),
+      new NewMainNavigateItemView(NAVIGATE_ITEMS_NAMES.HISTORY,historyCounter),
+      new NewMainNavigateItemView(NAVIGATE_ITEMS_NAMES.FAVORITE,favoritesCounter)
     ];
   }
 
