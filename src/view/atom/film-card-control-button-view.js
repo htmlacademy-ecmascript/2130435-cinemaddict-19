@@ -26,8 +26,10 @@ export default class NewFilmCardControlButtonView extends AbstractView{
   #type;
   #active;
 
-  // type = FilmModel.user_details.[watchlist / watching_date / favorite]
-  // active : boolean
+  /**
+   * @param {string} type Текстовое название кнопки. Должно соотвествовать одному из названий watchlist | watched | favorite
+   * @param {boolean} active Состояние кнопки
+   */
   constructor(type, active) {
     super();
     this.#type = type;

@@ -11,7 +11,9 @@ function createFilmPopupCommentsCounter(value) {
 export default class NewFilmPopupCommentsCounterView extends AbstractView {
   #value;
 
-  // Comments.
+  /**
+   * @param {number} value Длина массива данных с комментариями
+   */
   constructor(value) {
     super();
     this.#value = value;
