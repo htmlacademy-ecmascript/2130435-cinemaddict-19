@@ -2,14 +2,13 @@ import { render } from '../framework/render.js';
 import NewFilmPopupView from '../view/template/film-popup-view.js';
 
 export default class PopupPresenter {
-  #place;
+  #place = document.body;
   #filmModel;
   #commentsList;
   #correctFilmPopup;
   #popupComponent = null;
 
-  constructor({ place, FilmModel, CommentsFilmModel }) {
-    this.#place = place;
+  constructor({ FilmModel, CommentsFilmModel }) {
     this.#filmModel = FilmModel;
     this.#commentsList = CommentsFilmModel.comments;
   }

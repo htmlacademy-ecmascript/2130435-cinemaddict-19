@@ -20,7 +20,6 @@ export default class MainFilmsPresenter {
     });
 
     this.#popupPresenter = new PopupPresenter({
-      place: document.body,
       FilmModel: this.#filmsModel,
       CommentsFilmModel: this.#commentsModel
     });
