@@ -7,7 +7,10 @@ function createFilmListTitle(title, show) {
 
 export default class NewFilmCardListTitleView extends AbstractView {
 
-  //title = NewFilmCardListView.#listTitle; show = NewFilmCardListView.#listShowTitle : boolean;
+  /**
+   * @param {string} title Название раздела
+   * @param {boolean} show Включить отображение название раздела
+   */
   constructor(title, show){
     super();
     this.title = title;

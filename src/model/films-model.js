@@ -1,17 +1,30 @@
 import { createMockFilm } from '../mocks/films.js';
-import { getRandomElementArray } from '../utils.js';
 
 const FILMS_LIST_LENGTH = 12;
 
 export default class FilmsModel {
   #films = Array.from({ length: FILMS_LIST_LENGTH }, createMockFilm);
+  #watchlistCounter = 0;
+  #historyCounter = 0;
+  #favoritesCounter = 0;
 
   get films() {
     return this.#films;
   }
 
-  get twoFilms() {
-    return [getRandomElementArray(this.#films), getRandomElementArray(this.#films)];
+  #calculateCorrectFilmsMarks() {
+    this.#films.forEach(({user_details: userDetails }) => {
+      const { watchlist, already_watched: history, favorite } = userDetails;
+      if (watchlist) {
+        this.#watchlistCounter++;
+      }
+      if (history) {
+        this.#historyCounter++;
+      }
+      if (favorite) {
+        this.#favoritesCounter++;
+      }
+    });
   }
 
   sortTopRated(firstFilm, secondFilm) {
@@ -24,6 +37,15 @@ export default class FilmsModel {
     const {comments: secondFilmCommented} = secondFilm;
     const {comments: firstFilmCommented} = firstFilm;
     return secondFilmCommented.length - firstFilmCommented.length;
+  }
+
+  getCorrectFilmsMarks() {
+    this.#calculateCorrectFilmsMarks();
+    return {
+      watchlistCounter: this.#watchlistCounter,
+      historyCounter: this.#historyCounter,
+      favoritesCounter: this.#historyCounter
+    };
   }
 
   get topRated() {

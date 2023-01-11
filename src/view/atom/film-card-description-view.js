@@ -24,7 +24,11 @@ export default class NewFilmCardDescriptionView extends AbstractView {
   #filmInfo;
   #comments;
 
-  // Деструктуризация FilmModel
+  /**
+   * Деструктуризация FilmModel
+   * @param {object} FilmModel.film_info Объект с подробной информацией о фильме
+   * @param {array} FilmModel.comments Массив комментариев к фильму
+   */
   constructor ({film_info: filmInfo, comments}) {
     super();
     this.#filmInfo = filmInfo;

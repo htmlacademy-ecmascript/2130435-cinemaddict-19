@@ -21,7 +21,10 @@ function createFilmPopupComment({ author, emotion, date, comment}) {
 export default class NewFilmPopupCommentView extends AbstractView {
   #comment;
 
-  //CommentsModel(item -> CommentModel)
+  /**
+   * Класс компонент-атом для отрисовки коомментария в попапе
+   * @param {object} CommentModel Принимает структуру одного комментария
+   */
   constructor(CommentModel) {
     super();
     this.#comment = CommentModel;

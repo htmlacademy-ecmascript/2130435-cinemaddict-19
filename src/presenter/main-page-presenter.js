@@ -34,7 +34,7 @@ export default class MainPagePresenter {
   }
 
   init() {
-    render(new NewFilterMenuView(), this.#place);
+    render(new NewFilterMenuView(this.#FilmsModel), this.#place);
     render(new NewSortListView(), this.#place);
 
     if (!this.#FilmsModel.films.length) {
