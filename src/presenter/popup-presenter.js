@@ -15,14 +15,14 @@ export default class PopupPresenter {
   }
 
   #findCorrectFilmPopup = (evt) => {
+    if (this.#popupComponent) {
+      this.#popupComponent.removePopup();
+    }
+
     document.body.classList.add('hide-overflow');
 
     const currentId = evt.detail.filmId;
     this.#correctFilmPopup = this.#filmModel.films.find((film) => film.id === currentId);
-
-    if (this.#popupComponent) {
-      this.#popupComponent.removePopup();
-    }
 
     this.#popupComponent = new NewFilmPopupView({
       correctFilm: this.#correctFilmPopup,
