@@ -17,7 +17,6 @@ export default class NewFilmPopupView extends AbstractView {
   #element = null;
   #comments;
   #correctFilmPopup;
-  #handleFilmCardClick;
 
   #addContainer(container) {
     return this.element.insertAdjacentElement('beforeend', container);
@@ -27,14 +26,14 @@ export default class NewFilmPopupView extends AbstractView {
     super();
     this.#comments = commentsFilm;
     this.#correctFilmPopup = correctFilm;
-    this.#handleFilmCardClick = removePopup.bind(this);
+    this.removePopup = removePopup.bind(this);
 
     document.addEventListener('keydown', this.#onEscapeKeydown);
   }
 
   #onEscapeKeydown = (evt) => {
     if (isEscape(evt)) {
-      this.#handleFilmCardClick();
+      this.removePopup();
       document.removeEventListener('keydown', this.#onEscapeKeydown);
     }
   };
@@ -54,7 +53,7 @@ export default class NewFilmPopupView extends AbstractView {
 
       this.#addContainer(innerContainer);
 
-      const topContainerComponent = new NewFilmPopupTopContainerView(this.#correctFilmPopup,this.#handleFilmCardClick);
+      const topContainerComponent = new NewFilmPopupTopContainerView(this.#correctFilmPopup,this.removePopup);
       const bottomContainerComponent = new NewFilmPopupBottomContainerView(this.#correctFilmPopup, this.#comments);
 
       render(topContainerComponent, innerContainer);

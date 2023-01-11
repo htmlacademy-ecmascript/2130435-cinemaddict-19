@@ -6,6 +6,13 @@ export default class PopupPresenter {
   #filmModel;
   #commentsList;
   #correctFilmPopup;
+  #popupComponent = null;
+
+  constructor({ place, FilmModel, CommentsFilmModel }) {
+    this.#place = place;
+    this.#filmModel = FilmModel;
+    this.#commentsList = CommentsFilmModel.comments;
+  }
 
   #findCorrectFilmPopup = (evt) => {
     document.body.classList.add('hide-overflow');
@@ -13,25 +20,23 @@ export default class PopupPresenter {
     const currentId = evt.detail.filmId;
     this.#correctFilmPopup = this.#filmModel.films.find((film) => film.id === currentId);
 
-    const popupComponent = new NewFilmPopupView({
+    if (this.#popupComponent) {
+      this.#popupComponent.removePopup();
+    }
+
+    this.#popupComponent = new NewFilmPopupView({
       correctFilm: this.#correctFilmPopup,
       commentsFilm: this.#commentsList,
       removePopup: this.#removePopup
     });
 
-    render(popupComponent, this.#place);
+    render(this.#popupComponent, this.#place);
   };
 
   #removePopup() {
     this.element.remove();
     this.removeElement();
     document.body.classList.remove('hide-overflow');
-  }
-
-  constructor(place, FilmModel, CommentsFilmModel) {
-    this.#place = place;
-    this.#filmModel = FilmModel;
-    this.#commentsList = CommentsFilmModel.comments;
   }
 
   init() {
