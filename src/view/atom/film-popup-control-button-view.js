@@ -1,3 +1,4 @@
+import { createElement } from '../../framework/render.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 
 function createFilmPopupControlButton(type, active) {
@@ -25,11 +26,13 @@ function createFilmPopupControlButton(type, active) {
 
 export default class NewFilmPopupControlButtonView extends AbstractView{
   #type;
+  #element = null;
 
-  constructor(type, active) {
+  constructor(type, active, cb) {
     super();
     this.#type = type;
     this._active = active;
+    this.toggleState = cb;
   }
 
   get active() {
@@ -42,5 +45,23 @@ export default class NewFilmPopupControlButtonView extends AbstractView{
 
   get template() {
     return createFilmPopupControlButton(this.#type, this.active);
+  }
+
+  toggleButtonState = () => {
+    this.#element.classList.toggle('film-details__control-button--active');
+    if (this.#type === 'watched') {
+      this.toggleState('already_watched');
+    } else {
+      this.toggleState(this.#type);
+    }
+  };
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+      this.#element.addEventListener('click', this.toggleButtonState);
+    }
+
+    return this.#element;
   }
 }

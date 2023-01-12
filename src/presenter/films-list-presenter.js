@@ -12,14 +12,14 @@ const ModsExtraTitles = {
   COMMENTED: 'Most Commented'
 };
 
-export default class MainPagePresenter {
+export default class FilmsListPresenter {
   #place;
   #mainList;
   #topRatedList;
   #commentedList;
   #FilmsModel;
 
-  constructor(place, FilmsModel) {
+  constructor({ place, FilmsModel }) {
     this.#place = place;
     this.#FilmsModel = FilmsModel;
     this.#mainList = FilmsModel.films;

@@ -14,11 +14,11 @@ export default class NewFilmPopupControlsView extends AbstractView {
   #watchedComponent;
   #favoriteComponent;
 
-  constructor({ user_details: userDetails }) {
+  constructor({ user_details: userDetails }, toggleState) {
     super();
-    this.#watchlistComponent = new NewFilmPopupControlButtonView(TypeButton.WATCHLIST, userDetails.watchlist);
-    this.#watchedComponent = new NewFilmPopupControlButtonView(TypeButton.WATCHED, userDetails.already_watched);
-    this.#favoriteComponent = new NewFilmPopupControlButtonView(TypeButton.FAVORITE, userDetails.favorite);
+    this.#watchlistComponent = new NewFilmPopupControlButtonView(TypeButton.WATCHLIST, userDetails.watchlist, toggleState);
+    this.#watchedComponent = new NewFilmPopupControlButtonView(TypeButton.WATCHED, userDetails.already_watched, toggleState);
+    this.#favoriteComponent = new NewFilmPopupControlButtonView(TypeButton.FAVORITE, userDetails.favorite, toggleState);
   }
 
   get template() {
