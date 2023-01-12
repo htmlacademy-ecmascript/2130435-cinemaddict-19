@@ -22,11 +22,11 @@ export default class NewFilmPopupTopContainerView extends AbstractView {
   #popupTopContainerInfoComponent;
   #popupTopContainerControlsComponent;
 
-  constructor(correctFilmPopup, removePopup) {
+  constructor(correctFilmPopup, removePopup, toggleState) {
     super();
     this.#correctFilmPopup = correctFilmPopup;
     this.#popupTopContainerInfoComponent = new NewFilmPopupDetailsInfoView(this.#correctFilmPopup);
-    this.#popupTopContainerControlsComponent = new NewFilmPopupControlsView(this.#correctFilmPopup);
+    this.#popupTopContainerControlsComponent = new NewFilmPopupControlsView(this.#correctFilmPopup, toggleState);
     this.#onCloseButtonClick = removePopup;
 
     this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#onCloseButtonClick);

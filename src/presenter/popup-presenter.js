@@ -26,10 +26,15 @@ export default class PopupPresenter {
     this.#popupComponent = new NewFilmPopupView({
       correctFilm: this.#correctFilmPopup,
       commentsFilm: this.#commentsList,
-      removePopup: this.#removePopup
+      removePopup: this.#removePopup,
+      changeButtonState: this.toggleButtonState
     });
 
     render(this.#popupComponent, this.#place);
+  };
+
+  toggleButtonState = (button) => {
+    this.#correctFilmPopup.user_details[button] = !this.#correctFilmPopup.user_details[button];
   };
 
   #removePopup() {

@@ -22,11 +22,13 @@ export default class NewFilmPopupView extends AbstractView {
     return this.element.insertAdjacentElement('beforeend', container);
   }
 
-  constructor({ correctFilm, commentsFilm, removePopup }) {
+  constructor({ correctFilm, commentsFilm, removePopup, changeButtonState }) {
     super();
     this.#comments = commentsFilm;
     this.#correctFilmPopup = correctFilm;
     this.removePopup = removePopup.bind(this);
+
+    this.toggleState = changeButtonState;
 
     document.addEventListener('keydown', this.#onEscapeKeydown);
   }
@@ -53,7 +55,7 @@ export default class NewFilmPopupView extends AbstractView {
 
       this.#addContainer(innerContainer);
 
-      const topContainerComponent = new NewFilmPopupTopContainerView(this.#correctFilmPopup,this.removePopup);
+      const topContainerComponent = new NewFilmPopupTopContainerView(this.#correctFilmPopup,this.removePopup, this.toggleState);
       const bottomContainerComponent = new NewFilmPopupBottomContainerView(this.#correctFilmPopup, this.#comments);
 
       render(topContainerComponent, innerContainer);

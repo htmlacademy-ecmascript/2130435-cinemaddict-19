@@ -5,6 +5,7 @@ import AbstractView from '../../framework/view/abstract-view.js';
 
 const BLANK_TITLE = 'All movies. Upcoming';
 const EMPTY_FILM_LIST = 'There are no movies in our database';
+const MIN_FILMS_IN_LINE = 5;
 
 function createFilmList(extra) {
   const isExtra = `${extra ? ' films-list--extra' : ''}`;
@@ -80,7 +81,7 @@ export default class NewFilmCardListView extends AbstractView {
       render(new NewFilmCardListTitleView(this.#listTitle, this.#listShowTitle), this.#element);
       render(this.#filmCardsDisplay, this.#element);
 
-      if (!this.#moreButtonShow) {
+      if (!this.#moreButtonShow && this.#list.length > MIN_FILMS_IN_LINE) {
         this.#addShowMoreButton();
       }
     }
