@@ -11,9 +11,9 @@ export default class NewFilmCardView extends AbstractView {
   #element = null;
   #cardFilmModel;
 
-  constructor(CardFilmModel) {
+  constructor(correctFilmFromFilmsModel) {
     super();
-    this.#cardFilmModel = CardFilmModel;
+    this.#cardFilmModel = correctFilmFromFilmsModel;
   }
 
   #createClickFilmCardEvent = () => {
