@@ -1,14 +1,7 @@
 import dayjs from 'dayjs';
-import { ONE_HOUR } from './const.js';
+import { DateFormat, MAX_SENTENCES, ONE_HOUR } from './const.js';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
-
-const MAX_SENTENCES = 4;
-
-const DateFormat = {
-  FILM_YEAR: 'YYYY',
-  FILM_RELEASE: 'DD MMMM YYYY',
-};
 
 const getRandomPositiveInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
