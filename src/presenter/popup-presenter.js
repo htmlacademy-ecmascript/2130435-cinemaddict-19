@@ -9,8 +9,14 @@ export default class PopupPresenter {
   #sectionFilmDetailsComponent = new SectionFilmDetailsView();
   #filmDetailsInnerPopupComponent = new FilmDetailsInnerPopupView();
 
-  #filmsDetailsTopContainerComponent = new FilmsDetailsTopContainerView();
-  #filmsDetailsBottomContainerComponent = new FilmDetailsBottomContainerView();
+  #filmsDetailsTopContainerComponent;
+  #filmsDetailsBottomContainerComponent;
+
+  constructor({currentFilmModel, currentFilmCommentsModel}) {
+    this.#filmsDetailsTopContainerComponent = new FilmsDetailsTopContainerView({currentFilmModel: currentFilmModel});
+    this.#filmsDetailsBottomContainerComponent = new FilmDetailsBottomContainerView({currentFilmCommentsModel: currentFilmCommentsModel});
+
+  }
 
   init() {
     render(this.#sectionFilmDetailsComponent, this.#place);
