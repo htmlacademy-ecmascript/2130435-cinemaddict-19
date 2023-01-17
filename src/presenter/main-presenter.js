@@ -1,6 +1,7 @@
 import { render } from '../framework/render.js';
 import FooterView from '../view/footer/footer-view.js';
 import HeaderView from '../view/header/header-view.js';
+import FilmCardView from '../view/main-films-list/film-card-view.js';
 import FiltersFilmsView from '../view/main-films-list/filters-view.js';
 import SectionFilmsView from '../view/main-films-list/sections/section-films-view.js';
 import SortFilmsView from '../view/main-films-list/sort-view.js';
@@ -13,6 +14,10 @@ const ListsTitles = {
 };
 
 export default class MainPresenter {
+  #cardFilmsPresenters = new Map();
+
+  #filmsModel;
+
   #header;
   #main;
   #footer;
@@ -40,10 +45,18 @@ export default class MainPresenter {
     listTitle: ListsTitles.COMMENTED,
   });
 
-  constructor({header, main, footer}) {
+  constructor({header, main, footer, filmsModel}) {
     this.#header = header;
     this.#main = main;
     this.#footer = footer;
+    this.#filmsModel = filmsModel;
+  }
+
+  #setFilmsCardsPresenters() {
+    this.#filmsModel.forEach((film) => {
+      const filmCardComponent = new FilmCardView(film);
+      this.#cardFilmsPresenters.set(film.id, filmCardComponent);
+    });
   }
 
   init() {
@@ -60,6 +73,6 @@ export default class MainPresenter {
     render(this.#footerComponent, this.#footer);
 
     const popupPresenter = new PopupPresenter();
-    popupPresenter.init();
+    // popupPresenter.init();
   }
 }

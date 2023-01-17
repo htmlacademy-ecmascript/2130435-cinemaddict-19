@@ -1,5 +1,5 @@
-import { COMMENTS_LIST_LENGTH } from '../const.js';
-import { generateId, getDuration, getRandomDate, getRandomElementArray, getRandomPositiveInteger, getRandomText, getRandomUniqueElementsArray } from '../utils.js';
+import { COMMENTS_LIST_LENGTH } from '../utils/const.js';
+import { generateId, getDuration, getRandomDate, getRandomElementArray, getRandomPositiveInteger, getRandomText, getRandomUniqueElementsArray } from '../utils/utils.js';
 
 const MAX_VALUE_RATING = 10;
 const MAX_VALUE_AGE = 18;
