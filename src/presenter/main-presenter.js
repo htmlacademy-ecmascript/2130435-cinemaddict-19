@@ -6,7 +6,6 @@ import SectionFilmsView from '../view/main-films-list/sections/section-films-vie
 import SortFilmsView from '../view/main-films-list/sort-view.js';
 import FilmCardPresenter from './film-card-presenter.js';
 import FilmsListPresenter from './films-list-presenter.js';
-import PopupPresenter from './popup-presenter.js';
 
 const ListsTitles = {
   COMMENTED: 'Most commented',
@@ -18,9 +17,6 @@ export default class MainPresenter {
 
   #filmsModel;
   #commentsModel;
-
-  #currentFilm = null;
-  #currentFilmComments = null;
 
   #header;
   #main;
@@ -60,9 +56,13 @@ export default class MainPresenter {
     this.#commentsModel = commentsModel.comments;
   }
 
+  #findCommentsByFilm(film) {
+    return this.#commentsModel.slice().filter((comment) => film.comments.some((filmId) => filmId === comment.id));
+  }
+
   #setFilmsCardsPresenters() {
     this.#filmsModel.forEach((film) => {
-      const filmCardPresenter = new FilmCardPresenter({currentFilmModel: film});
+      const filmCardPresenter = new FilmCardPresenter({currentFilmModel: film, currentComments: this.#findCommentsByFilm(film)});
       this.#cardFilmsPresenters.set(film.id, filmCardPresenter);
     });
   }
@@ -81,14 +81,5 @@ export default class MainPresenter {
     this.#mostCommentedFilmsListPresenter.init();
 
     render(this.#footerComponent, this.#footer);
-    this.#findFilm();
-    const popupPresenter = new PopupPresenter({currentFilmModel: this.#currentFilm, currentFilmCommentsModel: this.#currentFilmComments });
-    popupPresenter.init();
   }
-
-  #findFilm() {
-    this.#currentFilm = this.#filmsModel[0];
-    this.#currentFilmComments = [this.#commentsModel[0], this.#commentsModel[1], this.#commentsModel[3]];
-  }
-
 }
