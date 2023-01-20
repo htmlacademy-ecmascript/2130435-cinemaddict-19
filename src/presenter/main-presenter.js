@@ -29,24 +29,9 @@ export default class MainPresenter {
   #sortFilmsComponent = new SortFilmsView();
   #sectionFilmsComponent = new SectionFilmsView();
 
-  #mainFilmsListPresenter = new FilmsListPresenter({
-    place: this.#sectionFilmsComponent.element,
-    filmsCardsPresenter: this.#cardFilmsPresenters
-  });
-
-  #topRatedFilmsListPresenter = new FilmsListPresenter({
-    place: this.#sectionFilmsComponent.element,
-    isExtra: true,
-    listTitle: ListsTitles.RATED,
-    filmsCardsPresenter:  this.#cardFilmsPresenters
-  });
-
-  #mostCommentedFilmsListPresenter = new FilmsListPresenter({
-    place: this.#sectionFilmsComponent.element,
-    isExtra: true,
-    listTitle: ListsTitles.COMMENTED,
-    filmsCardsPresenter:  this.#cardFilmsPresenters
-  });
+  #mainFilmsListPresenter = null;
+  #topRatedFilmsListPresenter = null;
+  #mostCommentedFilmsListPresenter = null;
 
   constructor({header, main, footer, filmsModel, commentsModel}) {
     this.#header = header;
@@ -67,13 +52,44 @@ export default class MainPresenter {
     });
   }
 
+  #createMainFilmsListPresenter() {
+    this.#mainFilmsListPresenter = new FilmsListPresenter({
+      place: this.#sectionFilmsComponent.element,
+      filmsCardsPresenter: this.#cardFilmsPresenters
+    });
+  }
+
+  #createTopRatedFilmsListPresenter() {
+    this.#topRatedFilmsListPresenter = new FilmsListPresenter({
+      place: this.#sectionFilmsComponent.element,
+      isExtra: true,
+      listTitle: ListsTitles.RATED,
+      filmsCardsPresenter:  this.#cardFilmsPresenters
+    });
+  }
+
+  #createMostCommentedFilmsListPresenter() {
+    this.#mostCommentedFilmsListPresenter = new FilmsListPresenter({
+      place: this.#sectionFilmsComponent.element,
+      isExtra: true,
+      listTitle: ListsTitles.COMMENTED,
+      filmsCardsPresenter:  this.#cardFilmsPresenters
+    });
+  }
+
   init() {
 
     this.#setFilmsCardsPresenters();
+    this.#createMainFilmsListPresenter();
+    this.#createTopRatedFilmsListPresenter();
+    this.#createMostCommentedFilmsListPresenter();
+
     render(this.#headerComponent, this.#header);
 
     render(this.#filtersFilmsComponent, this.#main);
-    render(this.#sortFilmsComponent, this.#main);
+    if (this.#cardFilmsPresenters.size) {
+      render(this.#sortFilmsComponent, this.#main);
+    }
     render(this.#sectionFilmsComponent, this.#main);
 
     this.#mainFilmsListPresenter.init();

@@ -1,5 +1,6 @@
-import { render } from '../framework/render.js';
+import { render, remove } from '../framework/render.js';
 import FilmsListContainerView from '../view/main-films-list/containers/films-list-container-view.js';
+import SectionFilmsListEmptyView from '../view/main-films-list/sections/section-films-list-empty-view.js';
 import SectionFilmsListView from '../view/main-films-list/sections/section-films-list-view.js';
 import ShowMoreButtonView from '../view/main-films-list/show-more-button-view.js';
 
@@ -10,9 +11,17 @@ export default class FilmsListPresenter {
   #isExtra;
   #films;
   #listTitle;
+  #listFilmsArray;
+
+  #start = 0;
+  #step = 5;
 
   #sectionFilmsListComponent;
   #filmsListContainerComponent = new FilmsListContainerView();
+  #showMoreButtonComponent = new ShowMoreButtonView();
+
+  #emptyListComponent = new SectionFilmsListEmptyView();
+
 
   /**
    * @param {HTMLElement} place Место добавления объекта управления презентером
@@ -26,13 +35,29 @@ export default class FilmsListPresenter {
     this.#films = filmsCardsPresenter;
     this.#listTitle = listTitle;
 
+    this.#listFilmsArray = [...this.#films.values()];
+
     this.#sectionFilmsListComponent = new SectionFilmsListView({
       isExtra: this.#isExtra,
       listTitle: this.#listTitle
     });
   }
 
+  #renderCardsInCurrentRange() {
+    this.#listFilmsArray.slice(this.#start, this.#start += this.#step).forEach((film) => {
+      film.init(this.#filmsListContainerComponent.element);
+    });
+  }
+
+
   init() {
+    if (this.#isExtra && !this.#films.size) {
+      return;
+    } else if (!this.#films.size) {
+      render(this.#emptyListComponent, this.#place);
+      return;
+    }
+
     render(this.#sectionFilmsListComponent, this.#place);
     render(this.#filmsListContainerComponent, this.#sectionFilmsListComponent.element);
 
@@ -40,14 +65,17 @@ export default class FilmsListPresenter {
       this.#films.get(1).init(this.#filmsListContainerComponent.element);
       this.#films.get(2).init(this.#filmsListContainerComponent.element);
     } else {
-      this.#films.forEach((film) => {
-        film.init(this.#filmsListContainerComponent.element);
-      });
+      this.#renderCardsInCurrentRange();
     }
 
     if (!this.#isExtra) {
-      const showMoreButton = new ShowMoreButtonView();
-      render(showMoreButton, this.#sectionFilmsListComponent.element);
+      render(this.#showMoreButtonComponent, this.#sectionFilmsListComponent.element);
+      this.#showMoreButtonComponent.element.addEventListener('click', () => {
+        this.#renderCardsInCurrentRange();
+        if (this.#start >= this.#listFilmsArray.length) {
+          remove(this.#showMoreButtonComponent);
+        }
+      });
     }
   }
 }

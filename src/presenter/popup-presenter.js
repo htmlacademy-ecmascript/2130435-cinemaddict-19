@@ -12,19 +12,27 @@ export default class PopupPresenter {
   #filmsDetailsTopContainerComponent;
   #filmsDetailsBottomContainerComponent;
 
-  removePopup() {
-    document.addEventListener('keydown', (evt) => {
-      evt.preventDefault();
-      if (evt.key === 'Escape') {
-        document.body.classList.remove('hide-overflow');
-        remove(this.#sectionFilmDetailsComponent);
-      }
-    });
+  #removePopup() {
+    document.body.classList.remove('hide-overflow');
+    remove(this.#sectionFilmDetailsComponent);
+  }
+
+  onButtonCloseClick = () => {
+    this.#removePopup();
+  };
+
+  onEscapeKeydown = (evt) => {
+    evt.preventDefault();
+    if (evt.key === 'Escape') {
+      this.#removePopup();
+      document.removeEventListener('keydown', this.onEscapeKeydown);
+    }
+  };
+
+  #initHandlerPopup() {
+    document.addEventListener('keydown', this.onEscapeKeydown);
     this.#filmsDetailsTopContainerComponent.element.querySelector('.film-details__close-btn').
-      addEventListener('click', () => {
-        document.body.classList.remove('hide-overflow');
-        remove(this.#sectionFilmDetailsComponent);
-      });
+      addEventListener('click', this.onButtonCloseClick);
   }
 
   constructor({currentFilmModel, currentFilmCommentsModel}) {
@@ -37,6 +45,6 @@ export default class PopupPresenter {
     render(this.#filmDetailsInnerPopupComponent, this.#sectionFilmDetailsComponent.element);
     render(this.#filmsDetailsTopContainerComponent, this.#filmDetailsInnerPopupComponent.element);
     render(this.#filmsDetailsBottomContainerComponent, this.#filmDetailsInnerPopupComponent.element);
-    this.removePopup();
+    this.#initHandlerPopup();
   }
 }

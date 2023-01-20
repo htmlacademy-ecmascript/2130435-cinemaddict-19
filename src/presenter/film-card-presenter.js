@@ -13,14 +13,20 @@ export default class FilmCardPresenter {
     this.#currentComments = currentComments;
   }
 
+  #renderPopup() {
+    document.body.classList.add('hide-overflow');
+    const popupPresenter = new PopupPresenter({currentFilmModel: this.#film, currentFilmCommentsModel: this.#currentComments});
+    popupPresenter.init();
+  }
+
+  onFilmCardClick = () => {
+    this.#renderPopup();
+  };
+
   init(place) {
     this.#filmCardComponent = new FilmCardView({currentFilmModel: this.#film});
     render(this.#filmCardComponent, place);
     this.#filmCardComponent.element.querySelector('.film-card__link').
-      addEventListener('click', () => {
-        document.body.classList.add('hide-overflow');
-        const popupPresenter = new PopupPresenter({currentFilmModel: this.#film, currentFilmCommentsModel: this.#currentComments});
-        popupPresenter.init();
-      });
+      addEventListener('click', this.onFilmCardClick);
   }
 }
