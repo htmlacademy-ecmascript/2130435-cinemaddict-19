@@ -19,14 +19,12 @@ export default class FilmCardPresenter {
     popupPresenter.init();
   }
 
-  onFilmCardClick = () => {
+  #handleFilmCardClick = () => {
     this.#renderPopup();
   };
 
   init(place) {
-    this.#filmCardComponent = new FilmCardView({currentFilmModel: this.#film});
+    this.#filmCardComponent = new FilmCardView({currentFilmModel: this.#film, onFilmCardClick: this.#handleFilmCardClick});
     render(this.#filmCardComponent, place);
-    this.#filmCardComponent.element.querySelector('.film-card__link').
-      addEventListener('click', this.onFilmCardClick);
   }
 }
