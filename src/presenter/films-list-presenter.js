@@ -11,14 +11,14 @@ export default class FilmsListPresenter {
   #isExtra;
   #films;
   #listTitle;
-  #listFilmsArray;
+  #filmsMainList;
 
   #start = 0;
   #step = 5;
 
   #sectionFilmsListComponent;
   #filmsListContainerComponent = new FilmsListContainerView();
-  #showMoreButtonComponent = new ShowMoreButtonView();
+  #showMoreButtonComponent = null;
 
   #emptyListComponent = new SectionFilmsListEmptyView();
 
@@ -35,19 +35,30 @@ export default class FilmsListPresenter {
     this.#films = filmsCardsPresenter;
     this.#listTitle = listTitle;
 
-    this.#listFilmsArray = [...this.#films.values()];
+    this.#filmsMainList = [...this.#films.values()];
 
     this.#sectionFilmsListComponent = new SectionFilmsListView({
       isExtra: this.#isExtra,
       listTitle: this.#listTitle
     });
+
+    this.#showMoreButtonComponent = new ShowMoreButtonView({
+      onClick: this.#handleLoadMoreButtonClick
+    });
   }
 
   #renderCardsInCurrentRange() {
-    this.#listFilmsArray.slice(this.#start, this.#start += this.#step).forEach((film) => {
+    this.#filmsMainList.slice(this.#start, this.#start += this.#step).forEach((film) => {
       film.init(this.#filmsListContainerComponent.element);
     });
   }
+
+  #handleLoadMoreButtonClick = () => {
+    this.#renderCardsInCurrentRange();
+    if (this.#start >= this.#films.size) {
+      remove(this.#showMoreButtonComponent);
+    }
+  };
 
 
   init() {
@@ -66,16 +77,7 @@ export default class FilmsListPresenter {
       this.#films.get(2).init(this.#filmsListContainerComponent.element);
     } else {
       this.#renderCardsInCurrentRange();
-    }
-
-    if (!this.#isExtra) {
       render(this.#showMoreButtonComponent, this.#sectionFilmsListComponent.element);
-      this.#showMoreButtonComponent.element.addEventListener('click', () => {
-        this.#renderCardsInCurrentRange();
-        if (this.#start >= this.#listFilmsArray.length) {
-          remove(this.#showMoreButtonComponent);
-        }
-      });
     }
   }
 }
