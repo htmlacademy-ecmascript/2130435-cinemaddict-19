@@ -12,16 +12,23 @@ export default class PopupPresenter {
   #filmsDetailsTopContainerComponent;
   #filmsDetailsBottomContainerComponent;
 
+  constructor({currentFilmModel, currentFilmCommentsModel}) {
+    this.#filmsDetailsTopContainerComponent = new FilmsDetailsTopContainerView({
+      currentFilmModel: currentFilmModel,
+      onButtonCloseClick: this.#handleButtonCloseClick });
+    this.#filmsDetailsBottomContainerComponent = new FilmDetailsBottomContainerView({currentFilmCommentsModel: currentFilmCommentsModel});
+  }
+
   #removePopup() {
     document.body.classList.remove('hide-overflow');
     remove(this.#sectionFilmDetailsComponent);
   }
 
-  onButtonCloseClick = () => {
+  #handleButtonCloseClick = () => {
     this.#removePopup();
   };
 
-  onEscapeKeydown = (evt) => {
+  #onEscapeKeydown = (evt) => {
     evt.preventDefault();
     if (evt.key === 'Escape') {
       this.#removePopup();
@@ -29,22 +36,11 @@ export default class PopupPresenter {
     }
   };
 
-  #initHandlerPopup() {
-    document.addEventListener('keydown', this.onEscapeKeydown);
-    this.#filmsDetailsTopContainerComponent.element.querySelector('.film-details__close-btn').
-      addEventListener('click', this.onButtonCloseClick);
-  }
-
-  constructor({currentFilmModel, currentFilmCommentsModel}) {
-    this.#filmsDetailsTopContainerComponent = new FilmsDetailsTopContainerView({currentFilmModel: currentFilmModel});
-    this.#filmsDetailsBottomContainerComponent = new FilmDetailsBottomContainerView({currentFilmCommentsModel: currentFilmCommentsModel});
-  }
-
   init() {
+    document.addEventListener('keydown', this.#onEscapeKeydown);
     render(this.#sectionFilmDetailsComponent, this.#place);
     render(this.#filmDetailsInnerPopupComponent, this.#sectionFilmDetailsComponent.element);
     render(this.#filmsDetailsTopContainerComponent, this.#filmDetailsInnerPopupComponent.element);
     render(this.#filmsDetailsBottomContainerComponent, this.#filmDetailsInnerPopupComponent.element);
-    this.#initHandlerPopup();
   }
 }

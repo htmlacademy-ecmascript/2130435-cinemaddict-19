@@ -78,11 +78,20 @@ function createFilmDetailsTopContainer(film) {
 
 export default class FilmsDetailsTopContainerView extends AbstractView {
   #film;
+  #handleButtonCloseClick = null;
 
-  constructor({currentFilmModel}) {
+  constructor({currentFilmModel, onButtonCloseClick}) {
     super();
     this.#film = currentFilmModel;
+    this.#handleButtonCloseClick = onButtonCloseClick;
+
+    this.element.querySelector('.film-details__close-btn').
+      addEventListener('click', this.#buttonCloseClickHandler);
   }
+
+  #buttonCloseClickHandler = () => {
+    this.#handleButtonCloseClick();
+  };
 
   get template() {
     return createFilmDetailsTopContainer(this.#film);
