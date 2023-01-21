@@ -55,7 +55,7 @@ export default class MainPresenter {
   #createMainFilmsListPresenter() {
     this.#mainFilmsListPresenter = new FilmsListPresenter({
       place: this.#sectionFilmsComponent.element,
-      filmsCardsPresenter: this.#cardFilmsPresenters
+      filmsCardsPresenters: this.#cardFilmsPresenters
     });
   }
 
@@ -64,7 +64,7 @@ export default class MainPresenter {
       place: this.#sectionFilmsComponent.element,
       isExtra: true,
       listTitle: ListsTitles.RATED,
-      filmsCardsPresenter:  this.#cardFilmsPresenters
+      filmsCardsPresenters:  this.#cardFilmsPresenters
     });
   }
 
@@ -73,7 +73,7 @@ export default class MainPresenter {
       place: this.#sectionFilmsComponent.element,
       isExtra: true,
       listTitle: ListsTitles.COMMENTED,
-      filmsCardsPresenter:  this.#cardFilmsPresenters
+      filmsCardsPresenters:  this.#cardFilmsPresenters
     });
   }
 

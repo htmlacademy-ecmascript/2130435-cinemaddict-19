@@ -1,20 +1,22 @@
 import { render, remove } from '../framework/render.js';
+import { updateItem } from '../utils/common.js';
 import FilmsListContainerView from '../view/main-films-list/containers/films-list-container-view.js';
 import SectionFilmsListEmptyView from '../view/main-films-list/sections/section-films-list-empty-view.js';
 import SectionFilmsListView from '../view/main-films-list/sections/section-films-list-view.js';
 import ShowMoreButtonView from '../view/main-films-list/show-more-button-view.js';
 
 const STANDARD_LIST_TITLE = 'All movies. Upcoming';
+const START_ELEMENT = 0;
+const STEP_LOAD_MORE_FILMS = 5;
 
 export default class FilmsListPresenter {
   #place;
   #isExtra;
-  #films;
+  #cardsFilmsPresenters;
   #listTitle;
-  #filmsMainList;
 
-  #start = 0;
-  #step = 5;
+  #start = START_ELEMENT;
+  #step = STEP_LOAD_MORE_FILMS;
 
   #sectionFilmsListComponent;
   #filmsListContainerComponent = new FilmsListContainerView();
@@ -29,13 +31,11 @@ export default class FilmsListPresenter {
    * @param {string} listTitle Название раздела
    * @param {collection} filmsCardsPresenter Презентер карточек фильма? Пока не нужен
    */
-  constructor({place, isExtra = false, listTitle = STANDARD_LIST_TITLE, filmsCardsPresenter}) {
+  constructor({place, isExtra = false, listTitle = STANDARD_LIST_TITLE, filmsCardsPresenters}) {
     this.#place = place; //this.#sectionFilmsComponent.element
     this.#isExtra = isExtra;
-    this.#films = filmsCardsPresenter;
+    this.#cardsFilmsPresenters = [...filmsCardsPresenters.values()];
     this.#listTitle = listTitle;
-
-    this.#filmsMainList = [...this.#films.values()];
 
     this.#sectionFilmsListComponent = new SectionFilmsListView({
       isExtra: this.#isExtra,
@@ -48,23 +48,36 @@ export default class FilmsListPresenter {
   }
 
   #renderCardsInCurrentRange() {
-    this.#filmsMainList.slice(this.#start, this.#start += this.#step).forEach((film) => {
+    this.#cardsFilmsPresenters.slice(this.#start, this.#start += this.#step).forEach((film) => {
       film.init(this.#filmsListContainerComponent.element);
     });
   }
 
   #handleLoadMoreButtonClick = () => {
     this.#renderCardsInCurrentRange();
-    if (this.#start >= this.#films.size) {
+    if (this.#start >= this.#cardsFilmsPresenters.length) {
       remove(this.#showMoreButtonComponent);
     }
   };
 
+  #handleFilmCardChange = (updatedTask) => {
+    this.#cardsFilmsPresenters = updateItem(this.#cardsFilmsPresenters, updatedTask);
+    this.#cardsFilmsPresenters.get(updatedTask.id).init(updatedTask);
+  };
+
+  #clearCardsFilms() {
+    this.#cardsFilmsPresenters.forEach((card) => {
+      card.destroy();
+    });
+    this.#cardsFilmsPresenters.clear();
+    this.#start = START_ELEMENT;
+    remove(this.#showMoreButtonComponent);
+  }
 
   init() {
-    if (this.#isExtra && !this.#films.size) {
+    if (this.#isExtra && !this.#cardsFilmsPresenters.length) {
       return;
-    } else if (!this.#films.size) {
+    } else if (!this.#cardsFilmsPresenters.length) {
       render(this.#emptyListComponent, this.#place);
       return;
     }
@@ -73,8 +86,8 @@ export default class FilmsListPresenter {
     render(this.#filmsListContainerComponent, this.#sectionFilmsListComponent.element);
 
     if (this.#isExtra) {
-      this.#films.get(1).init(this.#filmsListContainerComponent.element);
-      this.#films.get(2).init(this.#filmsListContainerComponent.element);
+      this.#cardsFilmsPresenters[0].init(this.#filmsListContainerComponent.element);
+      this.#cardsFilmsPresenters[1].init(this.#filmsListContainerComponent.element);
     } else {
       this.#renderCardsInCurrentRange();
       render(this.#showMoreButtonComponent, this.#sectionFilmsListComponent.element);
