@@ -6,6 +6,7 @@ import SectionFilmsView from '../view/main-films-list/sections/section-films-vie
 import SortFilmsView from '../view/main-films-list/sort-view.js';
 import FilmCardPresenter from './film-card-presenter.js';
 import FilmsListPresenter from './films-list-presenter.js';
+import PopupPresenter from './popup-presenter.js';
 
 const ListsTitles = {
   COMMENTED: 'Most commented',
@@ -13,7 +14,9 @@ const ListsTitles = {
 };
 
 export default class MainPresenter {
-  #cardFilmsPresenters = new Map();
+  #popupPresenter = null;
+
+  #cardFilmPresenters = new Map();
 
   #filmsModel;
   #commentsModel;
@@ -47,15 +50,15 @@ export default class MainPresenter {
 
   #setFilmsCardsPresenters() {
     this.#filmsModel.forEach((film) => {
-      const filmCardPresenter = new FilmCardPresenter({currentFilmModel: film, currentComments: this.#findCommentsByFilm(film)});
-      this.#cardFilmsPresenters.set(film.id, filmCardPresenter);
+      const filmCardPresenter = new FilmCardPresenter({currentFilmModel: film, currentComments: this.#findCommentsByFilm(film), openPopup: this.initPopup});
+      this.#cardFilmPresenters.set(film.id, filmCardPresenter);
     });
   }
 
   #createMainFilmsListPresenter() {
     this.#mainFilmsListPresenter = new FilmsListPresenter({
       place: this.#sectionFilmsComponent.element,
-      filmsCardsPresenters: this.#cardFilmsPresenters
+      filmsCardsPresenters: this.#cardFilmPresenters
     });
   }
 
@@ -64,7 +67,7 @@ export default class MainPresenter {
       place: this.#sectionFilmsComponent.element,
       isExtra: true,
       listTitle: ListsTitles.RATED,
-      filmsCardsPresenters:  this.#cardFilmsPresenters
+      filmsCardsPresenters:  this.#cardFilmPresenters
     });
   }
 
@@ -73,7 +76,7 @@ export default class MainPresenter {
       place: this.#sectionFilmsComponent.element,
       isExtra: true,
       listTitle: ListsTitles.COMMENTED,
-      filmsCardsPresenters:  this.#cardFilmsPresenters
+      filmsCardsPresenters:  this.#cardFilmPresenters
     });
   }
 
@@ -81,21 +84,31 @@ export default class MainPresenter {
 
     this.#setFilmsCardsPresenters();
     this.#createMainFilmsListPresenter();
-    this.#createTopRatedFilmsListPresenter();
-    this.#createMostCommentedFilmsListPresenter();
+    // this.#createTopRatedFilmsListPresenter();
+    // this.#createMostCommentedFilmsListPresenter();
 
     render(this.#headerComponent, this.#header);
 
     render(this.#filtersFilmsComponent, this.#main);
-    if (this.#cardFilmsPresenters.size) {
+    if (this.#cardFilmPresenters.size) {
       render(this.#sortFilmsComponent, this.#main);
     }
     render(this.#sectionFilmsComponent, this.#main);
 
     this.#mainFilmsListPresenter.init();
-    this.#topRatedFilmsListPresenter.init();
-    this.#mostCommentedFilmsListPresenter.init();
+    // this.#topRatedFilmsListPresenter.init();
+    // this.#mostCommentedFilmsListPresenter.init();
 
     render(this.#footerComponent, this.#footer);
   }
+
+  initPopup = (cardFilmData) => {
+    if (this.#popupPresenter) {
+      this.#popupPresenter.removePopup();
+    }
+    document.body.classList.add('hide-overflow');
+
+    this.#popupPresenter = new PopupPresenter(cardFilmData);
+    this.#popupPresenter.init();
+  };
 }
