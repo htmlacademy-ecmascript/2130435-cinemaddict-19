@@ -5,7 +5,6 @@ export default class FilmCardPresenter {
   #film;
   #currentComments;
   #filmCardComponent = null;
-  #popupPresenter = null;
 
   #openPopup;
 
@@ -17,13 +16,21 @@ export default class FilmCardPresenter {
 
   #changeUserDetails = (category) => {
     this.#film.user_details[category] = !this.#film.user_details[category];
-    const filmCardUpdatedComponent = new FilmCardView({currentFilmModel: this.#film, onFilmCardClick: this.#handleFilmCardClick, onUserDetailButtonClick: this.#changeUserDetails});
+    const filmCardUpdatedComponent = new FilmCardView({
+      currentFilmModel: this.#film,
+      onFilmCardClick: this.#handleFilmCardClick,
+      onUserDetailButtonClick: this.#changeUserDetails
+    });
     replace(filmCardUpdatedComponent, this.#filmCardComponent);
     this.#filmCardComponent = filmCardUpdatedComponent;
   };
 
   #renderPopup = () => {
-    this.#openPopup({currentFilmModel: this.#film, currentFilmCommentsModel: this.#currentComments, onControlsButtonsClick: this.#changeUserDetails});
+    this.#openPopup({
+      currentFilmModel: this.#film,
+      currentFilmCommentsModel: this.#currentComments,
+      onControlsButtonsClick: this.#changeUserDetails
+    }, this.#film);
   };
 
   #handleFilmCardClick = () => {
@@ -31,7 +38,11 @@ export default class FilmCardPresenter {
   };
 
   init(place) {
-    this.#filmCardComponent = new FilmCardView({currentFilmModel: this.#film, onFilmCardClick: this.#handleFilmCardClick, onUserDetailButtonClick: this.#changeUserDetails});
+    this.#filmCardComponent = new FilmCardView({
+      currentFilmModel: this.#film,
+      onFilmCardClick: this.#handleFilmCardClick,
+      onUserDetailButtonClick: this.#changeUserDetails
+    });
     render(this.#filmCardComponent, place);
   }
 }

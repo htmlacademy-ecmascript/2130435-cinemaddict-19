@@ -1,4 +1,5 @@
 import { render } from '../framework/render.js';
+import { updateItem } from '../utils/common.js';
 import FooterView from '../view/footer/footer-view.js';
 import HeaderView from '../view/header/header-view.js';
 import FiltersFilmsView from '../view/main-films-list/filters-view.js';
@@ -50,7 +51,11 @@ export default class MainPresenter {
 
   #setFilmsCardsPresenters() {
     this.#filmsModel.forEach((film) => {
-      const filmCardPresenter = new FilmCardPresenter({currentFilmModel: film, currentComments: this.#findCommentsByFilm(film), openPopup: this.initPopup});
+      const filmCardPresenter = new FilmCardPresenter({
+        currentFilmModel: film,
+        currentComments: this.#findCommentsByFilm(film),
+        initPopup: this.#initPopup
+      });
       this.#cardFilmPresenters.set(film.id, filmCardPresenter);
     });
   }
@@ -102,7 +107,8 @@ export default class MainPresenter {
     render(this.#footerComponent, this.#footer);
   }
 
-  initPopup = (cardFilmData) => {
+  #initPopup = (cardFilmData, film) => {
+    this.#filmsModel = updateItem(this.#filmsModel, film);
     if (this.#popupPresenter) {
       this.#popupPresenter.removePopup();
     }
