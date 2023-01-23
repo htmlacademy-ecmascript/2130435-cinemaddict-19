@@ -7,15 +7,18 @@ export default class FilmCardPresenter {
   #filmCardComponent = null;
 
   #initPopup;
+  #updateFilter;
 
-  constructor({currentFilmModel, currentComments, initPopup}) {
+  constructor({currentFilmModel, currentComments, initPopup, updateFilter}) {
     this.#film = currentFilmModel;
     this.#currentComments = currentComments;
     this.#initPopup = initPopup;
+    this.#updateFilter = updateFilter;
   }
 
   #changeUserDetails = (category) => {
     this.#film.user_details[category] = !this.#film.user_details[category];
+    this.#updateFilter();
     const filmCardUpdatedComponent = new FilmCardView({
       currentFilmModel: this.#film,
       onFilmCardClick: this.#handleFilmCardClick,

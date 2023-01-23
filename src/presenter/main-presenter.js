@@ -1,4 +1,4 @@
-import { render } from '../framework/render.js';
+import { render, replace } from '../framework/render.js';
 import { updateItem } from '../utils/common.js';
 import FooterView from '../view/footer/footer-view.js';
 import HeaderView from '../view/header/header-view.js';
@@ -19,6 +19,7 @@ export default class MainPresenter {
 
   #cardFilmPresenters = new Map();
 
+  #films;
   #filmsModel;
   #commentsModel;
 
@@ -29,7 +30,7 @@ export default class MainPresenter {
   #headerComponent = new HeaderView();
   #footerComponent = new FooterView();
 
-  #filtersFilmsComponent = new FiltersFilmsView();
+  #filtersFilmsComponent;
   #sortFilmsComponent = new SortFilmsView();
   #sectionFilmsComponent = new SectionFilmsView();
 
@@ -41,7 +42,8 @@ export default class MainPresenter {
     this.#header = header;
     this.#main = main;
     this.#footer = footer;
-    this.#filmsModel = filmsModel.films;
+    this.#filmsModel = filmsModel;
+    this.#films = filmsModel.films;
     this.#commentsModel = commentsModel.comments;
   }
 
@@ -50,11 +52,12 @@ export default class MainPresenter {
   }
 
   #setFilmsCardsPresenters() {
-    this.#filmsModel.forEach((film) => {
+    this.#films.forEach((film) => {
       const filmCardPresenter = new FilmCardPresenter({
         currentFilmModel: film,
         currentComments: this.#findCommentsByFilm(film),
-        initPopup: this.#initPopup
+        initPopup: this.#initPopup,
+        updateFilter: this.#updateFilters
       });
       this.#cardFilmPresenters.set(film.id, filmCardPresenter);
     });
@@ -85,8 +88,14 @@ export default class MainPresenter {
     });
   }
 
-  init() {
+  #updateFilters = () => {
+    this.#filmsModel.updateCounter();
+    const updateFiltersComponent = new FiltersFilmsView(this.#filmsModel);
+    replace(updateFiltersComponent, this.#filtersFilmsComponent);
+    this.#filtersFilmsComponent = updateFiltersComponent;
+  };
 
+  init() {
     this.#setFilmsCardsPresenters();
     this.#createMainFilmsListPresenter();
     // this.#createTopRatedFilmsListPresenter();
@@ -94,6 +103,7 @@ export default class MainPresenter {
 
     render(this.#headerComponent, this.#header);
 
+    this.#filtersFilmsComponent = new FiltersFilmsView(this.#filmsModel);
     render(this.#filtersFilmsComponent, this.#main);
     if (this.#cardFilmPresenters.size) {
       render(this.#sortFilmsComponent, this.#main);
@@ -108,7 +118,7 @@ export default class MainPresenter {
   }
 
   #initPopup = (cardFilmData, film) => {
-    this.#filmsModel = updateItem(this.#filmsModel, film);
+    this.#films = updateItem(this.#films, film);
     if (this.#popupPresenter) {
       this.#popupPresenter.removePopup();
     }
