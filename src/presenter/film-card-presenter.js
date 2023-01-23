@@ -6,12 +6,12 @@ export default class FilmCardPresenter {
   #currentComments;
   #filmCardComponent = null;
 
-  #openPopup;
+  #initPopup;
 
-  constructor({currentFilmModel, currentComments, openPopup}) {
+  constructor({currentFilmModel, currentComments, initPopup}) {
     this.#film = currentFilmModel;
     this.#currentComments = currentComments;
-    this.#openPopup = openPopup;
+    this.#initPopup = initPopup;
   }
 
   #changeUserDetails = (category) => {
@@ -26,7 +26,7 @@ export default class FilmCardPresenter {
   };
 
   #renderPopup = () => {
-    this.#openPopup({
+    this.#initPopup({
       currentFilmModel: this.#film,
       currentFilmCommentsModel: this.#currentComments,
       onControlsButtonsClick: this.#changeUserDetails

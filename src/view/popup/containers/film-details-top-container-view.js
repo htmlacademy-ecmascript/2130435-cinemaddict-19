@@ -24,7 +24,7 @@ function createFilmDetailsRow(term, cell) {
 }
 
 function createGenresItems (genres) {
-  genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
+  return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
 }
 
 function createFilmDetailsTable(film) {

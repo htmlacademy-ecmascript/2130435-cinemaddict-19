@@ -1,6 +1,16 @@
 import AbstractView from '../../framework/view/abstract-view.js';
 import { setHumanizeDateFilmYear } from '../../utils/utils.js';
 
+const MIN_TEXT_LENGTH = 0;
+const MAX_TEXT_LENGTH = 139;
+
+function createDescriptionText(description) {
+  if (description.length > MAX_TEXT_LENGTH) {
+    return `${description.substring(MIN_TEXT_LENGTH, MAX_TEXT_LENGTH)}...`;
+  }
+  return `${description}`;
+}
+
 function createFilmCardLink(
   {title, total_rating: rating, release, duration, genre, poster, description},
   {comments}) {
@@ -14,7 +24,7 @@ function createFilmCardLink(
       <span class="film-card__genre">${genre.join(', ')}</span>
     </p>
     <img src="${poster}" alt="" class="film-card__poster">
-    <p class="film-card__description">${description}</p>
+    <p class="film-card__description">${createDescriptionText(description)}</p>
     <span class="film-card__comments">${comments.length} comments</span>
   </a>`;
 }
