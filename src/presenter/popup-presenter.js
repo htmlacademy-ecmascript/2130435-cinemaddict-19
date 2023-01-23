@@ -49,8 +49,8 @@ export default class PopupPresenter {
   };
 
   #onEscapeKeydown = (evt) => {
-    evt.preventDefault();
     if (evt.key === 'Escape') {
+      evt.preventDefault();
       this.removePopup();
       document.removeEventListener('keydown', this.onEscapeKeydown);
     }
