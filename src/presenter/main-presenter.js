@@ -98,8 +98,8 @@ export default class MainPresenter {
   init() {
     this.#setFilmsCardsPresenters();
     this.#createMainFilmsListPresenter();
-    // this.#createTopRatedFilmsListPresenter();
-    // this.#createMostCommentedFilmsListPresenter();
+    this.#createTopRatedFilmsListPresenter();
+    this.#createMostCommentedFilmsListPresenter();
 
     render(this.#headerComponent, this.#header);
 
@@ -111,8 +111,8 @@ export default class MainPresenter {
     render(this.#sectionFilmsComponent, this.#main);
 
     this.#mainFilmsListPresenter.init();
-    // this.#topRatedFilmsListPresenter.init();
-    // this.#mostCommentedFilmsListPresenter.init();
+    this.#topRatedFilmsListPresenter.init();
+    this.#mostCommentedFilmsListPresenter.init();
 
     render(this.#footerComponent, this.#footer);
   }
