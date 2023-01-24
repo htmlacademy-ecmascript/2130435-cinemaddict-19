@@ -62,14 +62,16 @@ function createFilmDetailsBottomContainer(comments, {emojiValue, userText}) {
 
 export default class FilmDetailsBottomContainerView extends AbstractStatefulView {
   #comments;
+  #updateCommentsCounter = null;
 
-  constructor({currentFilmCommentsModel}) {
+  constructor({currentFilmCommentsModel, updateCommentsCounter}) {
     super();
     this._setState({
       emojiValue: null,
       userText: null
     });
     this.#comments = currentFilmCommentsModel;
+    this.#updateCommentsCounter = updateCommentsCounter;
 
     this._restoreHandlers();
   }
@@ -86,6 +88,13 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
       userText: evt.target.value
     });
   };
+
+  #resetInputComment() {
+    this.updateElement({
+      emojiValue: null,
+      userText: null
+    });
+  }
 
   #enterKeyDownHandler = (evt) => {
     if(evt.key === 'Enter') {
@@ -106,7 +115,9 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
         emotion: state.emojiValue,
         id: generateId()
       };
+      this.#updateCommentsCounter(comment.id);
       this.#comments.push(comment);
+      this.#resetInputComment();
     } catch (err) {
       return err.message;
     }

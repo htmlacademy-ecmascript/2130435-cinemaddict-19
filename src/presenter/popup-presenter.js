@@ -15,7 +15,7 @@ export default class PopupPresenter {
 
   #handleControlsButtonsClick = null;
 
-  constructor({currentFilmModel, currentFilmCommentsModel, onControlsButtonsClick}) {
+  constructor({currentFilmModel, currentFilmCommentsModel, onControlsButtonsClick, updateCommentsCounter}) {
     this.#film = currentFilmModel;
     this.#handleControlsButtonsClick = onControlsButtonsClick;
 
@@ -25,7 +25,10 @@ export default class PopupPresenter {
       updateControlButton: this.#updateControlButton,
       onControlButtonClick: this.#handleControlsButtonsClick});
 
-    this.#filmsDetailsBottomContainerComponent = new FilmDetailsBottomContainerView({currentFilmCommentsModel: currentFilmCommentsModel});
+    this.#filmsDetailsBottomContainerComponent = new FilmDetailsBottomContainerView({
+      currentFilmCommentsModel: currentFilmCommentsModel,
+      updateCommentsCounter: updateCommentsCounter
+    });
   }
 
   #updateControlButton = () => {

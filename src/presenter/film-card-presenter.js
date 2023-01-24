@@ -19,6 +19,11 @@ export default class FilmCardPresenter {
   #changeUserDetails = (category) => {
     this.#film.user_details[category] = !this.#film.user_details[category];
     this.#updateFilter();
+    this.#updateFilmCardComponent();
+  };
+
+  #updateFilmCardComponent = (commentId) => {
+    this.#film.comments.push(commentId);
     const filmCardUpdatedComponent = new FilmCardView({
       currentFilmModel: this.#film,
       onFilmCardClick: this.#handleFilmCardClick,
@@ -32,7 +37,8 @@ export default class FilmCardPresenter {
     this.#initPopup({
       currentFilmModel: this.#film,
       currentFilmCommentsModel: this.#currentComments,
-      onControlsButtonsClick: this.#changeUserDetails
+      onControlsButtonsClick: this.#changeUserDetails,
+      updateCommentsCounter: this.#updateFilmCardComponent
     }, this.#film);
   };
 
