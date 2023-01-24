@@ -1,4 +1,4 @@
-import { COMMENTS_LIST_LENGTH } from '../const.js';
+import { COMMENTS_LIST_LENGTH } from '../utils/const.js';
 import { createMockComment } from '../mocks/comments.js';
 
 export default class CommentsModel {
@@ -7,4 +7,5 @@ export default class CommentsModel {
   get comments() {
     return this.#comments;
   }
+
 }

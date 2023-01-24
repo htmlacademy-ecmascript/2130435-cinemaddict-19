@@ -3,56 +3,50 @@ import { createMockFilm } from '../mocks/films.js';
 const FILMS_LIST_LENGTH = 12;
 
 export default class FilmsModel {
-  #films = Array.from({ length: FILMS_LIST_LENGTH }, createMockFilm);
-  #watchlistCounter = 0;
-  #historyCounter = 0;
-  #favoritesCounter = 0;
+  #wathclistCounter = 0;
+  #watchedCounter = 0;
+  #favoriteCounter = 0;
+  #filmsModel = Array.from({ length: FILMS_LIST_LENGTH }, createMockFilm);
 
   get films() {
-    return this.#films;
+    return this.#filmsModel;
   }
 
-  #calculateCorrectFilmsMarks() {
-    this.#films.forEach(({user_details: userDetails }) => {
-      const { watchlist, already_watched: history, favorite } = userDetails;
-      if (watchlist) {
-        this.#watchlistCounter++;
+  #resetCounter() {
+    this.#wathclistCounter = 0;
+    this.#watchedCounter = 0;
+    this.#favoriteCounter = 0;
+  }
+
+  updateCounter() {
+    this.#resetCounter();
+    this.#filmsModel.forEach((film) => {
+      if (film.user_details.watchlist) {
+        this.#wathclistCounter++;
       }
-      if (history) {
-        this.#historyCounter++;
+      if (film.user_details.already_watched) {
+        this.#watchedCounter++;
       }
-      if (favorite) {
-        this.#favoritesCounter++;
+      if (film.user_details.favorite) {
+        this.#favoriteCounter++;
       }
     });
+
   }
 
-  sortTopRated(firstFilm, secondFilm) {
-    const {total_rating: secondFilmRating} = secondFilm.film_info;
-    const {total_rating: firstFilmRating} = firstFilm.film_info;
-    return Number(secondFilmRating) - Number(firstFilmRating);
+  get watchlist() {
+    this.updateCounter();
+    return this.#wathclistCounter;
   }
 
-  sortMostCommented(firstFilm, secondFilm) {
-    const {comments: secondFilmCommented} = secondFilm;
-    const {comments: firstFilmCommented} = firstFilm;
-    return secondFilmCommented.length - firstFilmCommented.length;
+  get watched() {
+    this.updateCounter();
+    return this.#watchedCounter;
   }
 
-  getCorrectFilmsMarks() {
-    this.#calculateCorrectFilmsMarks();
-    return {
-      watchlistCounter: this.#watchlistCounter,
-      historyCounter: this.#historyCounter,
-      favoritesCounter: this.#historyCounter
-    };
+  get favorite() {
+    this.updateCounter();
+    return this.#favoriteCounter;
   }
 
-  get topRated() {
-    return this.#films.slice().sort(this.sortTopRated);
-  }
-
-  get mostCommented() {
-    return this.#films.slice().sort(this.sortMostCommented);
-  }
 }

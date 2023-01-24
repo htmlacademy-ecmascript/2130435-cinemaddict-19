@@ -1,40 +1,69 @@
-import { render } from '../framework/render.js';
-import NewFilmPopupView from '../view/template/film-popup-view.js';
+import { remove, render, replace } from '../framework/render.js';
+import FilmDetailsBottomContainerView from '../view/popup/containers/film-details-bottom-container-view.js';
+import FilmDetailsInnerPopupView from '../view/popup/containers/film-details-inner-view.js';
+import FilmsDetailsTopContainerView from '../view/popup/containers/film-details-top-container-view.js';
+import SectionFilmDetailsView from '../view/popup/sections/section-film-details-view.js';
 
 export default class PopupPresenter {
-  #place;
-  #filmModel;
-  #commentsList;
-  #correctFilmPopup;
+  #place = document.body;
+  #film;
+  #sectionFilmDetailsComponent = new SectionFilmDetailsView();
+  #filmDetailsInnerPopupComponent = new FilmDetailsInnerPopupView();
 
-  #findCorrectFilmPopup = (evt) => {
-    document.body.classList.add('hide-overflow');
+  #filmsDetailsTopContainerComponent;
+  #filmsDetailsBottomContainerComponent;
 
-    const currentId = evt.detail.filmId;
-    this.#correctFilmPopup = this.#filmModel.films.find((film) => film.id === currentId);
+  #handleControlsButtonsClick = null;
 
-    const popupComponent = new NewFilmPopupView({
-      correctFilm: this.#correctFilmPopup,
-      commentsFilm: this.#commentsList,
-      removePopup: this.#removePopup
+  constructor({currentFilmModel, currentFilmCommentsModel, onControlsButtonsClick, updateCommentsCounter}) {
+    this.#film = currentFilmModel;
+    this.#handleControlsButtonsClick = onControlsButtonsClick;
+
+    this.#filmsDetailsTopContainerComponent = new FilmsDetailsTopContainerView({
+      currentFilmModel: this.#film,
+      onButtonCloseClick: this.#handleButtonCloseClick,
+      updateControlButton: this.#updateControlButton,
+      onControlButtonClick: this.#handleControlsButtonsClick});
+
+    this.#filmsDetailsBottomContainerComponent = new FilmDetailsBottomContainerView({
+      currentFilmCommentsModel: currentFilmCommentsModel,
+      updateCommentsCounter: updateCommentsCounter
     });
+  }
 
-    render(popupComponent, this.#place);
+  #updateControlButton = () => {
+    const topContainerUpdate = new FilmsDetailsTopContainerView({
+      currentFilmModel: this.#film,
+      onButtonCloseClick: this.#handleButtonCloseClick,
+      updateControlButton: this.#updateControlButton,
+      onControlButtonClick: this.#handleControlsButtonsClick });
+
+    replace(topContainerUpdate, this.#filmsDetailsTopContainerComponent);
+    this.#filmsDetailsTopContainerComponent = topContainerUpdate;
   };
 
-  #removePopup() {
-    this.element.remove();
-    this.removeElement();
+  removePopup() {
     document.body.classList.remove('hide-overflow');
+    remove(this.#sectionFilmDetailsComponent);
   }
 
-  constructor(place, FilmModel, CommentsFilmModel) {
-    this.#place = place;
-    this.#filmModel = FilmModel;
-    this.#commentsList = CommentsFilmModel.comments;
-  }
+  #handleButtonCloseClick = () => {
+    this.removePopup();
+  };
+
+  #onEscapeKeydown = (evt) => {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      this.removePopup();
+      document.removeEventListener('keydown', this.onEscapeKeydown);
+    }
+  };
 
   init() {
-    window.addEventListener('onClickFilmCard', this.#findCorrectFilmPopup);
+    document.addEventListener('keydown', this.#onEscapeKeydown);
+    render(this.#sectionFilmDetailsComponent, this.#place);
+    render(this.#filmDetailsInnerPopupComponent, this.#sectionFilmDetailsComponent.element);
+    render(this.#filmsDetailsTopContainerComponent, this.#filmDetailsInnerPopupComponent.element);
+    render(this.#filmsDetailsBottomContainerComponent, this.#filmDetailsInnerPopupComponent.element);
   }
 }

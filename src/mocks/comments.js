@@ -1,5 +1,5 @@
-import { COMMENT_EMOTION } from '../const.js';
-import { generateId, getRandomDate, getRandomElementArray, getRandomText } from '../utils.js';
+import { COMMENT_EMOTION } from '../utils/const.js';
+import { generateId, getRandomDate, getRandomElementArray, getRandomText } from '../utils/utils.js';
 
 const TEXTS_FOR_COMMENTS = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
