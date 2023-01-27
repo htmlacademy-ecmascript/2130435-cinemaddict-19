@@ -13,7 +13,7 @@ function createDescriptionText(description) {
 
 function createFilmCardLink(
   {title, total_rating: rating, release, duration, genre, poster, description},
-  {comments}) {
+  comments) {
   return `
   <a class="film-card__link">
     <h3 class="film-card__title">${title}</h3>
@@ -38,38 +38,41 @@ function createFilmCardControls({ already_watched: watched, favorite, watchlist 
   </div>`;
 }
 
-function createFilmCard(film) {
+function createFilmCard(film, comments) {
   return `
   <article class="film-card">
-    ${createFilmCardLink(film.film_info, film)}
+    ${createFilmCardLink(film.film_info, comments)}
     ${createFilmCardControls(film.user_details)}
   </article>`;
 }
 
 export default class FilmCardView extends AbstractView {
   #film;
-  #handleFilmCardClick = null;
+  #commentsFilm;
+
+  #handleFilmClick = null;
 
   #watchlistClickHandler = null;
   #alreadyWatchedClickHandler = null;
   #favoriteClickHandler = null;
 
-  constructor({currentFilmModel, onFilmCardClick, onUserDetailButtonClick}) {
+  constructor({ film, currentComments, onFilmControlButtonFilterClick, onFilmClick }) {
     super();
-    this.#film = currentFilmModel;
-    this.#handleFilmCardClick = onFilmCardClick;
+    this.#film = film;
+    this.#commentsFilm = currentComments;
+    this.#handleFilmClick = onFilmClick;
 
-    this.#watchlistClickHandler = () => onUserDetailButtonClick('watchlist');
-    this.#alreadyWatchedClickHandler = () => onUserDetailButtonClick('already_watched');
-    this.#favoriteClickHandler = () => onUserDetailButtonClick('favorite');
+    this.#watchlistClickHandler = () => onFilmControlButtonFilterClick('watchlist');
+    this.#alreadyWatchedClickHandler = () => onFilmControlButtonFilterClick('already_watched');
+    this.#favoriteClickHandler = () => onFilmControlButtonFilterClick('favorite');
 
-    this.element.querySelector('.film-card__link').
-      addEventListener('click', this.#filmCardClickHandler);
-
-    this.#addHandlerForControlButton();
+    this.#initHandlers();
   }
 
-  #addHandlerForControlButton() {
+  #initHandlers() {
+    this.element.querySelector('.film-card__link').
+      addEventListener('click', this.#filmClickHandler);
+
     this.element.querySelector('.film-card__controls-item--add-to-watchlist').
       addEventListener('click', this.#watchlistClickHandler);
     this.element.querySelector('.film-card__controls-item--mark-as-watched').
@@ -78,12 +81,12 @@ export default class FilmCardView extends AbstractView {
       addEventListener('click', this.#favoriteClickHandler);
   }
 
-  #filmCardClickHandler = (evt) => {
+  #filmClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFilmCardClick();
+    this.#handleFilmClick();
   };
 
   get template() {
-    return createFilmCard(this.#film);
+    return createFilmCard(this.#film, this.#commentsFilm);
   }
 }

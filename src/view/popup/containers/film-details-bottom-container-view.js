@@ -1,5 +1,6 @@
 import AbstractStatefulView from '../../../framework/view/abstract-stateful-view.js';
-import { generateId, setHumanizeDateAgoComment } from '../../../utils/utils.js';
+import { getCommentUniqueId } from '../../../mocks/comments.js';
+import { setHumanizeDateAgoComment } from '../../../utils/utils.js';
 
 const emojiNameList = [
   'smile',
@@ -62,19 +63,29 @@ function createFilmDetailsBottomContainer(comments, {emojiValue, userText}) {
 
 export default class FilmDetailsBottomContainerView extends AbstractStatefulView {
   #comments;
-  #updateCommentsCounter = null;
+  #addCommentHandler = null;
+  #deleteCommentHandler = null;
+  #currentIndex;
 
-  constructor({currentFilmCommentsModel, updateCommentsCounter}) {
+  constructor({ comments, handleAddComment, handleCommentsDelete }) {
     super();
     this._setState({
       emojiValue: null,
       userText: null
     });
-    this.#comments = currentFilmCommentsModel;
-    this.#updateCommentsCounter = updateCommentsCounter;
+    this.#comments = comments;
+    this.#addCommentHandler = handleAddComment;
+    this.#deleteCommentHandler = handleCommentsDelete;
 
     this._restoreHandlers();
   }
+
+  #getCurrentIndex = (evt) => {
+    this.#currentIndex = [...evt.currentTarget.parentElement.children].indexOf(evt.currentTarget);
+    if (evt.target.closest('.film-details__comment-delete')) {
+      this.#deleteCommentHandler(this.#comments[this.#currentIndex]);
+    }
+  };
 
   #inputChangeHandler = (evt) => {
     this.updateElement({
@@ -98,32 +109,34 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
 
   #enterKeyDownHandler = (evt) => {
     if(evt.key === 'Enter') {
-      this.parseStateToComment(this._state);
-      this.updateElement(this._state);
+      this.#parseStateToComment(this._state);
+      this.updateElement(this.element);
     }
   };
 
-  parseStateToComment = (state) => {
+  #parseStateToComment = (state) => {
     try {
       if (!state.emojiValue) {
         throw new Error('Not selected emoji smile');
       }
-      const comment = {
+      this.#addCommentHandler({
         author: 'Unknown',
         comment: state.userText,
         date: Date.now(),
         emotion: state.emojiValue,
-        id: generateId()
-      };
-      this.#updateCommentsCounter(comment.id);
-      this.#comments.push(comment);
+        id: getCommentUniqueId()
+      });
       this.#resetInputComment();
     } catch (err) {
-      return err.message;
+      return console.log(err.message);
     }
   };
 
   _restoreHandlers() {
+    this.element.querySelectorAll('.film-details__comment').forEach((deleteButton) => {
+      deleteButton.addEventListener('click', this.#getCurrentIndex);
+    });
+
     this.element.querySelector('.film-details__comment-input').
       addEventListener('input', this.#textareaInputHandler);
     this.element.querySelector('.film-details__comment-input').
@@ -137,3 +150,4 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
     return createFilmDetailsBottomContainer(this.#comments, this._state);
   }
 }
+

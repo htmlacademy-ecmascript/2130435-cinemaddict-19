@@ -1,5 +1,4 @@
 import { render, remove } from '../framework/render.js';
-import { updateItem } from '../utils/common.js';
 import FilmsListContainerView from '../view/main-films-list/containers/films-list-container-view.js';
 import SectionFilmsListEmptyView from '../view/main-films-list/sections/section-films-list-empty-view.js';
 import SectionFilmsListView from '../view/main-films-list/sections/section-films-list-view.js';
@@ -31,10 +30,10 @@ export default class FilmsListPresenter {
    * @param {string} listTitle Название раздела
    * @param {collection} filmsCardsPresenter Презентер карточек фильма? Пока не нужен
    */
-  constructor({place, isExtra = false, listTitle = STANDARD_LIST_TITLE, filmsCardsPresenters}) {
+  constructor({ place, isExtra = false, listTitle = STANDARD_LIST_TITLE, filmsPresenters }) {
     this.#place = place; //this.#sectionFilmsComponent.element
     this.#isExtra = isExtra;
-    this.#cardsFilmsPresenters = [...filmsCardsPresenters.values()];
+    this.#cardsFilmsPresenters = [...filmsPresenters.values()];
     this.#listTitle = listTitle;
 
     this.#sectionFilmsListComponent = new SectionFilmsListView({
@@ -58,11 +57,6 @@ export default class FilmsListPresenter {
     if (this.#start >= this.#cardsFilmsPresenters.length) {
       remove(this.#showMoreButtonComponent);
     }
-  };
-
-  #handleFilmCardChange = (updatedTask) => {
-    this.#cardsFilmsPresenters = updateItem(this.#cardsFilmsPresenters, updatedTask);
-    this.#cardsFilmsPresenters.get(updatedTask.id).init(updatedTask);
   };
 
   #clearCardsFilms() {
