@@ -1,6 +1,6 @@
 import { remove, render } from '../framework/render.js';
 import { sortFilmDate, sortFilmRating } from '../utils/common.js';
-import { SortType, UpdateType, UserAction } from '../utils/const.js';
+import { FilterType, SortType, UpdateType, UserAction } from '../utils/const.js';
 import SectionFilmsView from '../view/main-films-list/sections/section-films-view.js';
 import SortFilmsView from '../view/main-films-list/sort-view.js';
 import FilmPresenter from './film-presenter.js';
@@ -15,6 +15,7 @@ export default class AppPresenter {
   #filmsModel;
   #commentsModel;
   #currentSortType = SortType.DEFAULT;
+  #currentFilterType = FilterType.ALL;
 
   #popupPresenter = null;
   #filmPresenters = new Map();
@@ -52,6 +53,18 @@ export default class AppPresenter {
     this.#filmsModel.films = filmList;
   }
 
+  get filmsFilter() {
+    switch (this.#currentFilterType) {
+      case (FilterType.WATCHLIST):
+        return this.films.filter((film) => film.user_details.watchlist);
+      case (FilterType.HISTORY):
+        return this.films.filter((film) => film.user_details.already_watched);
+      case (FilterType.FAVORITE):
+        return this.films.filter((film) => film.user_detail.favorite);
+    }
+    return this.films;
+  }
+
   #clearBoard({ resetSortType = false } = {}) {
     this.#filmPresenters.forEach((presenter) => presenter.destroy());
     this.#filmPresenters.clear();
@@ -74,8 +87,17 @@ export default class AppPresenter {
     render(this.#sortFilmsComponent, this.#place);
   }
 
+  #renderFilter() {
+    this.#sortFilmsComponent = new SortFilmsView({
+      currentSortType: this.#currentSortType,
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+
+    render(this.#sortFilmsComponent, this.#place);
+  }
+
   #createFilmsPresenters() {
-    this.films.forEach((film) => {
+    this.filmsFilter.forEach((film) => {
       const filmPresenter = new FilmPresenter({
         film,
         commentsModel: this.comments,
@@ -143,6 +165,13 @@ export default class AppPresenter {
     this.#renderBoard();
   };
 
+  #handleFilterTypeChange = (filterTypeValue) => {
+    this.#currentFilterType = filterTypeValue;
+
+    this.#clearBoard({ resetSortType: true });
+    this.#renderBoard();
+  };
+
   #renderBoard() {
     this.#sectionFilmsComponent = new SectionFilmsView();
     this.#createFilmsPresenters();
@@ -150,7 +179,8 @@ export default class AppPresenter {
 
     this.#filtersFilmsPresenter = new filmsFilterPresenter({
       films: this.films,
-      onDataChange: this.#handleViewAction
+      currentFilter: this.#currentFilterType,
+      onFilterChange: this.#handleFilterTypeChange
     });
 
     this.#filtersFilmsPresenter.init(this.#place);

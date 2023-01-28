@@ -19,8 +19,14 @@ const SortType = {
   DEFAULT: 'default',
   DATE: 'date',
   RATING: 'rating',
-  DATASET: 'sortType',
-  DATA_ATTRIBUTE: ''
+  DATA_ATTRIBUTE: 'data-sort-type'
+};
+
+const FilterType = {
+  ALL: 'all',
+  WATCHLIST: 'watchlist',
+  HISTORY: 'watched',
+  FAVORITE: 'favorite'
 };
 
 const UserAction = {
@@ -35,4 +41,4 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, SortType };
+export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType };

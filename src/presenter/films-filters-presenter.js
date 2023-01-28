@@ -9,13 +9,15 @@ export default class filmsFilterPresenter {
   #watchedCounter;
   #favoriteCounter;
 
-  #handleDataChange;
+  #currentFilter;
+  #handleFilterChange;
 
   #filmsFilterComponent = null;
 
-  constructor({ films, onDataChange }) {
+  constructor({ films, currentFilter, onFilterChange }) {
     this.#films = films;
-    this.#handleDataChange = onDataChange;
+    this.#handleFilterChange = onFilterChange;
+    this.#currentFilter = currentFilter;
   }
 
   #calculateFilterValueCounter() {
@@ -46,7 +48,8 @@ export default class filmsFilterPresenter {
       watchListCounter: this.#watchListCounter,
       watchedCounter: this.#watchedCounter,
       favoriteCounter: this.#favoriteCounter,
-      onButtonFilterClick: null
+      currentFilter: this.#currentFilter,
+      onFilterChange: this.#handleFilterChange
     });
   }
 
