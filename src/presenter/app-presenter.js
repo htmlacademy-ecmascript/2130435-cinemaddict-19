@@ -1,11 +1,12 @@
-import { render } from '../framework/render.js';
-import { UpdateType, UserAction } from '../utils/const.js';
+import { remove, render } from '../framework/render.js';
+import { sortFilmDate, sortFilmRating } from '../utils/common.js';
+import { SortType, UpdateType, UserAction } from '../utils/const.js';
 import SectionFilmsView from '../view/main-films-list/sections/section-films-view.js';
 import SortFilmsView from '../view/main-films-list/sort-view.js';
 import FilmPresenter from './film-presenter.js';
 import filmsFilterPresenter from './films-filters-presenter.js';
 import FilmsListPresenter from './films-list-presenter.js';
-import PopupPresenter from './new-popup-film.js';
+import PopupPresenter from './popup-presenter.js';
 
 const main = document.querySelector('.main');
 
@@ -13,15 +14,18 @@ export default class AppPresenter {
   #place = main;
   #filmsModel;
   #commentsModel;
+  #currentSortType = SortType.DEFAULT;
 
   #popupPresenter = null;
   #filmPresenters = new Map();
   #filtersFilmsPresenter;
 
-  #sortFilmsComponent = new SortFilmsView();
-  #sectionFilmsComponent = new SectionFilmsView();
-
   #mainFilmsListPresenter = null;
+
+  #sortFilmsComponent = null;
+
+  #sectionFilmsComponent = null;
+
 
   constructor({ filmsModel, commentsModel }) {
     this.#filmsModel = filmsModel;
@@ -35,10 +39,12 @@ export default class AppPresenter {
   }
 
   get films() {
-    /*
-    1. Add sort with help [ switch(currentSortType) | case(SortType.TYPE) ]
-    => case : return [...this.#filmsModel.films].sort(sortFunctionForSortType)
-    */
+    switch (this.#currentSortType) {
+      case (SortType.DATE):
+        return [...this.#filmsModel.films].sort(sortFilmDate);
+      case (SortType.RATING):
+        return [...this.#filmsModel.films].sort(sortFilmRating);
+    }
     return this.#filmsModel.films;
   }
 
@@ -46,40 +52,27 @@ export default class AppPresenter {
     this.#filmsModel.films = filmList;
   }
 
-  #handleFilmChange = (updateFilm) => {
-    this.#filmPresenters.get(updateFilm.id).init();
-  };
+  #clearBoard({ resetSortType = false } = {}) {
+    this.#filmPresenters.forEach((presenter) => presenter.destroy());
+    this.#filmPresenters.clear();
+    this.#mainFilmsListPresenter.destroy();
+    this.#filtersFilmsPresenter.destroy();
+    remove(this.#sortFilmsComponent);
+    remove(this.#sectionFilmsComponent);
 
-  #handleViewAction = (actionType, updateType, update) => {
-    switch (actionType) {
-      case UserAction.UPDATE_FILM:
-        this.#filmsModel.updateFilm(updateType, update);
-        break;
-      case UserAction.ADD_COMMENT:
-        this.#commentsModel.addComment(updateType, update.comment);
-        this.#filmsModel.addFilmComment(updateType, update.film);
-        break;
-      case UserAction.DELETE_COMMENT:
-        this.#commentsModel.deleteComment(updateType, update.comment);
-        this.#filmsModel.deleteFilmComment(updateType, update.film);
-        break;
+    if (resetSortType) {
+      this.#currentSortType = SortType.DEFAULT;
     }
-  };
+  }
 
-  #handleModelEvent = (updateType, update) => {
-    switch (updateType) {
-      case UpdateType.PATCH:
-        this.#filmPresenters.get(update.id).init(this.#sectionFilmsComponent.element);
-        this.#filtersFilmsPresenter.rerenderFilters();
-        this.#popupPresenter?.rerenderFilters();
-        this.#popupPresenter?.rerenderComments();
-        break;
-      case UpdateType.MINOR:
-        break;
-      case UpdateType.MAJOR:
-        break;
-    }
-  };
+  #renderSort() {
+    this.#sortFilmsComponent = new SortFilmsView({
+      currentSortType: this.#currentSortType,
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+
+    render(this.#sortFilmsComponent, this.#place);
+  }
 
   #createFilmsPresenters() {
     this.films.forEach((film) => {
@@ -100,23 +93,38 @@ export default class AppPresenter {
     });
   }
 
-  init() {
-    this.#createFilmsPresenters();
-    this.#createMainFilmsListPresenter();
-
-    this.#filtersFilmsPresenter = new filmsFilterPresenter({
-      films: this.films,
-      onDataChange: this.#handleViewAction
-    });
-    this.#filtersFilmsPresenter.init(this.#place);
-
-    if (this.#filmPresenters.size) {
-      render(this.#sortFilmsComponent, this.#place);
+  #handleViewAction = (actionType, updateType, update) => {
+    switch (actionType) {
+      case UserAction.UPDATE_FILM:
+        this.#filmsModel.updateFilm(updateType, update);
+        break;
+      case UserAction.ADD_COMMENT:
+        this.#commentsModel.addComment(update.comment);
+        this.#filmsModel.addFilmComment(updateType, update.film);
+        break;
+      case UserAction.DELETE_COMMENT:
+        this.#commentsModel.deleteComment(update.comment);
+        this.#filmsModel.deleteFilmComment(updateType, update.film);
+        break;
     }
-    render(this.#sectionFilmsComponent, this.#place);
+  };
 
-    this.#mainFilmsListPresenter.init();
-  }
+  #handleModelEvent = (updateType, update) => {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#filmPresenters.get(update.id).init(this.#sectionFilmsComponent.element);
+        this.#filtersFilmsPresenter.rerenderFilters();
+        this.#popupPresenter?.rerenderFilters();
+        this.#popupPresenter?.rerenderComments();
+        break;
+      case UpdateType.MINOR:
+        this.#clearBoard();
+        this.#renderBoard();
+        break;
+      case UpdateType.MAJOR:
+        break;
+    }
+  };
 
   #handleOpenPopup = (dataCardFilm) => {
     if (this.#popupPresenter) {
@@ -127,4 +135,36 @@ export default class AppPresenter {
     this.#popupPresenter = new PopupPresenter(dataCardFilm);
     this.#popupPresenter.init();
   };
+
+  #handleSortTypeChange = (sortTypeValue) => {
+    this.#currentSortType = sortTypeValue;
+
+    this.#clearBoard();
+    this.#renderBoard();
+  };
+
+  #renderBoard() {
+    this.#sectionFilmsComponent = new SectionFilmsView();
+    this.#createFilmsPresenters();
+    this.#createMainFilmsListPresenter();
+
+    this.#filtersFilmsPresenter = new filmsFilterPresenter({
+      films: this.films,
+      onDataChange: this.#handleViewAction
+    });
+
+    this.#filtersFilmsPresenter.init(this.#place);
+
+    if (this.#filmPresenters.size) {
+      this.#renderSort();
+    }
+    render(this.#sectionFilmsComponent, this.#place);
+
+    this.#mainFilmsListPresenter.init();
+  }
+
+  init() {
+    this.#renderBoard();
+  }
+
 }

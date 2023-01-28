@@ -1,19 +1,13 @@
-export default function deleteCurrentElementArray(array, currentElement) {
-  const index = array.findIndex((element) => {
-    if(element?.id) {
-      return element.id === currentElement.id;
-    }
-
-    return element === currentElement.id;
-  });
-
-  if (index === -1) {
-    throw new Error('Can\'t delete unexisting task');
-  }
-
-  array = [
-    ...array.slice(0, index),
-    ...array.slice(index + 1),
-  ];
-
+function sortFilmDate(filmA, filmB) {
+  const {date: firstFilmRating} = filmA.film_info.release;
+  const {date: secondFilmRating} = filmB.film_info.release;
+  return Number(secondFilmRating) - Number(firstFilmRating);
 }
+
+function sortFilmRating(filmA, filmB) {
+  const {total_rating: firstFilmRating} = filmA.film_info;
+  const {total_rating: secondFilmRating} = filmB.film_info;
+  return Number(secondFilmRating) - Number(firstFilmRating);
+}
+
+export { sortFilmDate, sortFilmRating };

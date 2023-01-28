@@ -1,52 +1,37 @@
+import Observable from '../framework/observable.js';
 import { createMockFilm } from '../mocks/films.js';
 
 const FILMS_LIST_LENGTH = 12;
 
-export default class FilmsModel {
-  #wathclistCounter = 0;
-  #watchedCounter = 0;
-  #favoriteCounter = 0;
-  #filmsModel = Array.from({ length: FILMS_LIST_LENGTH }, createMockFilm);
+export default class FilmsModel extends Observable {
+  #films = Array.from({ length: FILMS_LIST_LENGTH }, createMockFilm);
 
   get films() {
-    return this.#filmsModel;
+    return this.#films;
   }
 
-  #resetCounter() {
-    this.#wathclistCounter = 0;
-    this.#watchedCounter = 0;
-    this.#favoriteCounter = 0;
+  addFilmComment(updateType, update) {
+    const filmIndex = this.#films.findIndex((film) => film.id === update.id);
+
+    this.#films[filmIndex].comments = [...update.comments];
+    this._notify(updateType, update);
   }
 
-  updateCounter() {
-    this.#resetCounter();
-    this.#filmsModel.forEach((film) => {
-      if (film.user_details.watchlist) {
-        this.#wathclistCounter++;
-      }
-      if (film.user_details.already_watched) {
-        this.#watchedCounter++;
-      }
-      if (film.user_details.favorite) {
-        this.#favoriteCounter++;
-      }
-    });
+  deleteFilmComment(updateType, update) {
+    const filmIndex = this.#films.findIndex((film) => film.id === update.id);
+    const commentsList = [
+      ...update.comments
+    ];
 
+    this.#films[filmIndex].comments = commentsList;
+    this._notify(updateType, update);
   }
 
-  get watchlist() {
-    this.updateCounter();
-    return this.#wathclistCounter;
-  }
+  updateFilm(updateType, update) {
+    const filmIndex = this.#films.findIndex((film) => film.id === update.id);
 
-  get watched() {
-    this.updateCounter();
-    return this.#watchedCounter;
-  }
-
-  get favorite() {
-    this.updateCounter();
-    return this.#favoriteCounter;
+    this.#films[filmIndex] = update;
+    this._notify(updateType, update);
   }
 
 }

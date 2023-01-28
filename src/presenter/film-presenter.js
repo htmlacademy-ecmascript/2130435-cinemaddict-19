@@ -1,10 +1,9 @@
-import { render, replace } from '../framework/render.js';
+import { remove, render, replace } from '../framework/render.js';
 import { UpdateType, UserAction } from '../utils/const.js';
 import FilmCardView from '../view/main-films-list/film-card-view.js';
 
 export default class FilmPresenter {
   #film;
-  #place;
   #commentsModel;
   #currentCommentsFilm;
 
@@ -13,8 +12,7 @@ export default class FilmPresenter {
 
   #filmCardComponent = null;
 
-  constructor({ place, film, commentsModel, onDataChange, onFilmClick }) {
-    this.#place = place;
+  constructor({ film, commentsModel, onDataChange, onFilmClick }) {
     this.#film = film;
     this.#commentsModel = commentsModel;
     this.#handleDataChange = onDataChange;
@@ -56,6 +54,10 @@ export default class FilmPresenter {
     const updateFilmCard = this.#createFilmCard();
     replace(updateFilmCard, this.#filmCardComponent);
     this.#filmCardComponent = updateFilmCard;
+  }
+
+  destroy() {
+    remove(this.#filmCardComponent);
   }
 
   init(place) {

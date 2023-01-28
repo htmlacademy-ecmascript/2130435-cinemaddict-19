@@ -59,13 +59,19 @@ export default class FilmsListPresenter {
     }
   };
 
+  destroy() {
+    this.#start = START_ELEMENT;
+    remove(this.#sectionFilmsListComponent);
+    remove(this.#filmsListContainerComponent);
+    remove(this.#showMoreButtonComponent);
+  }
+
   #clearCardsFilms() {
     this.#cardsFilmsPresenters.forEach((card) => {
       card.destroy();
     });
     this.#cardsFilmsPresenters.clear();
     this.#start = START_ELEMENT;
-    remove(this.#showMoreButtonComponent);
   }
 
   init() {

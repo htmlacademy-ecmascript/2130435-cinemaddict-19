@@ -4,8 +4,6 @@ const ONE_HOUR = 60;
 const COMMENTS_LIST_LENGTH = 9;
 const MAX_SENTENCES = 4;
 
-const ID = 'id';
-
 const TypeButton = {
   WATCHLIST: 'watchlist',
   WATCHED: 'watched',
@@ -15,6 +13,14 @@ const TypeButton = {
 const DateFormat = {
   FILM_YEAR: 'YYYY',
   FILM_RELEASE: 'DD MMMM YYYY',
+};
+
+const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
+  DATASET: 'sortType',
+  DATA_ATTRIBUTE: ''
 };
 
 const UserAction = {
@@ -29,4 +35,4 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, ID };
+export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, SortType };

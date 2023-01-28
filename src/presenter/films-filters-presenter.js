@@ -1,4 +1,4 @@
-import { render, replace } from '../framework/render.js';
+import { remove, render, replace } from '../framework/render.js';
 import FiltersFilmsView from '../view/main-films-list/filters-view.js';
 
 const START = 0;
@@ -48,6 +48,10 @@ export default class filmsFilterPresenter {
       favoriteCounter: this.#favoriteCounter,
       onButtonFilterClick: null
     });
+  }
+
+  destroy() {
+    remove(this.#filmsFilterComponent);
   }
 
   rerenderFilters() {

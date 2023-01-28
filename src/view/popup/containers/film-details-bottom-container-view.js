@@ -110,7 +110,7 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
   #enterKeyDownHandler = (evt) => {
     if(evt.key === 'Enter') {
       this.#parseStateToComment(this._state);
-      this.updateElement(this.element);
+      this.updateElement(this._state);
     }
   };
 
@@ -128,7 +128,7 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
       });
       this.#resetInputComment();
     } catch (err) {
-      return console.log(err.message);
+      return err.message;
     }
   };
 

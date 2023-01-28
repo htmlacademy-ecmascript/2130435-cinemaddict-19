@@ -1,4 +1,5 @@
 import { remove, render, replace } from '../framework/render.js';
+import { UpdateType, UserAction } from '../utils/const.js';
 import FilmDetailsBottomContainerView from '../view/popup/containers/film-details-bottom-container-view.js';
 import FilmDetailsInnerPopupView from '../view/popup/containers/film-details-inner-view.js';
 import FilmsDetailsTopContainerView from '../view/popup/containers/film-details-top-container-view.js';
@@ -7,44 +8,108 @@ import SectionFilmDetailsView from '../view/popup/sections/section-film-details-
 export default class PopupPresenter {
   #place = document.body;
   #film;
+  #commentsModel;
+
+  #currentComments;
+
   #sectionFilmDetailsComponent = new SectionFilmDetailsView();
   #filmDetailsInnerPopupComponent = new FilmDetailsInnerPopupView();
 
   #filmsDetailsTopContainerComponent;
   #filmsDetailsBottomContainerComponent;
 
-  #handleControlsButtonsClick = null;
+  #handleButtonFilterClick;
+  #handleDataChange;
 
-  constructor({currentFilmModel, currentFilmCommentsModel, onControlsButtonsClick, updateCommentsCounter}) {
-    this.#film = currentFilmModel;
-    this.#handleControlsButtonsClick = onControlsButtonsClick;
+  constructor({ film, commentsModel, handleDataChange, onButtonFilterClick }) {
+    this.#film = film;
+    this.#commentsModel = commentsModel;
+    this.#handleDataChange = handleDataChange;
+    this.#handleButtonFilterClick = onButtonFilterClick;
 
-    this.#filmsDetailsTopContainerComponent = new FilmsDetailsTopContainerView({
+    this.#currentComments = this.#findCommentsFilm(this.#film);
+
+    this.#filmsDetailsTopContainerComponent = this.#createFilmsTopContainerView();
+    this.#filmsDetailsBottomContainerComponent = this.#createFilmsBottomContainerView();
+  }
+
+  #findCommentsFilm(film) {
+    return this.#commentsModel.slice().
+      filter((comment) => film.comments.some((filmId) => filmId === comment.id));
+  }
+
+  #handleCommentsDelete = (comment) => {
+    const index = this.#film.comments.findIndex((id) => id === comment.id);
+    const update = {
+      film:  {...this.#film,
+        comments: [
+          ...this.#film.comments.slice(0, index),
+          ...this.#film.comments.slice(index + 1),
+        ]
+      },
+      comment: comment
+    };
+
+    this.#handleDataChange(
+      UserAction.DELETE_COMMENT,
+      UpdateType.PATCH,
+      update
+    );
+
+  };
+
+  #handleCommentsAdd = (comment) => {
+    const update = {
+      film:  {
+        ...this.#film,
+        comments : [
+          ...this.#film.comments,
+          comment.id
+        ]
+      },
+      comment: comment
+    };
+    this.#handleDataChange(
+      UserAction.ADD_COMMENT,
+      UpdateType.PATCH,
+      update
+    );
+  };
+
+  #createFilmsTopContainerView() {
+    return new FilmsDetailsTopContainerView({
       currentFilmModel: this.#film,
       onButtonCloseClick: this.#handleButtonCloseClick,
-      updateControlButton: this.#updateControlButton,
-      onControlButtonClick: this.#handleControlsButtonsClick});
-
-    this.#filmsDetailsBottomContainerComponent = new FilmDetailsBottomContainerView({
-      currentFilmCommentsModel: currentFilmCommentsModel,
-      updateCommentsCounter: updateCommentsCounter
+      onFilmControlButtonFilterClick: this.#handleButtonFilterClick
     });
   }
 
-  #updateControlButton = () => {
-    const topContainerUpdate = new FilmsDetailsTopContainerView({
-      currentFilmModel: this.#film,
-      onButtonCloseClick: this.#handleButtonCloseClick,
-      updateControlButton: this.#updateControlButton,
-      onControlButtonClick: this.#handleControlsButtonsClick });
-
-    replace(topContainerUpdate, this.#filmsDetailsTopContainerComponent);
-    this.#filmsDetailsTopContainerComponent = topContainerUpdate;
-  };
+  #createFilmsBottomContainerView() {
+    return new FilmDetailsBottomContainerView({
+      comments: this.#currentComments,
+      handleAddComment: this.#handleCommentsAdd,
+      handleCommentsDelete: this.#handleCommentsDelete
+    });
+  }
 
   removePopup() {
     document.body.classList.remove('hide-overflow');
     remove(this.#sectionFilmDetailsComponent);
+  }
+
+  rerenderFilters() {
+
+    const updateFilmsTopContainerView = this.#createFilmsTopContainerView();
+    replace(updateFilmsTopContainerView, this.#filmsDetailsTopContainerComponent);
+    this.#filmsDetailsTopContainerComponent = updateFilmsTopContainerView;
+  }
+
+  rerenderComments() {
+    this.#currentComments = this.#findCommentsFilm(this.#film);
+
+    const updateFilmsBottomContainerView = this.#createFilmsBottomContainerView();
+    replace(updateFilmsBottomContainerView, this.#filmsDetailsBottomContainerComponent);
+    this.#filmsDetailsBottomContainerComponent = updateFilmsBottomContainerView;
   }
 
   #handleButtonCloseClick = () => {
