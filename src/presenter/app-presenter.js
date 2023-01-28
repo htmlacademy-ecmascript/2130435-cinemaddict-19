@@ -60,7 +60,7 @@ export default class AppPresenter {
       case (FilterType.HISTORY):
         return this.films.filter((film) => film.user_details.already_watched);
       case (FilterType.FAVORITE):
-        return this.films.filter((film) => film.user_detail.favorite);
+        return this.films.filter((film) => film.user_details.favorite);
     }
     return this.films;
   }
