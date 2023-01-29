@@ -35,7 +35,7 @@ export default class FilmPresenter {
     this.#film.user_details[filterType] = !this.#film.user_details[filterType];
     this.#handleDataChange(
       UserAction.UPDATE_FILM,
-      UpdateType.PATCH,
+      UpdateType.MINOR,
       this.#film
     );
   };

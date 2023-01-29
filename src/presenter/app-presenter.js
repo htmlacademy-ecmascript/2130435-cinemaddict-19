@@ -24,7 +24,6 @@ export default class AppPresenter {
   #mainFilmsListPresenter = null;
 
   #sortFilmsComponent = null;
-
   #sectionFilmsComponent = null;
 
 
@@ -87,15 +86,6 @@ export default class AppPresenter {
     render(this.#sortFilmsComponent, this.#place);
   }
 
-  #renderFilter() {
-    this.#sortFilmsComponent = new SortFilmsView({
-      currentSortType: this.#currentSortType,
-      onSortTypeChange: this.#handleSortTypeChange
-    });
-
-    render(this.#sortFilmsComponent, this.#place);
-  }
-
   #createFilmsPresenters() {
     this.filmsFilter.forEach((film) => {
       const filmPresenter = new FilmPresenter({
@@ -144,6 +134,8 @@ export default class AppPresenter {
         this.#renderBoard();
         break;
       case UpdateType.MAJOR:
+        this.#clearBoard({ resetSortType: true });
+        this.#renderBoard();
         break;
     }
   };
@@ -159,6 +151,10 @@ export default class AppPresenter {
   };
 
   #handleSortTypeChange = (sortTypeValue) => {
+    if (this.#currentSortType === sortTypeValue) {
+      return;
+    }
+
     this.#currentSortType = sortTypeValue;
 
     this.#clearBoard();
