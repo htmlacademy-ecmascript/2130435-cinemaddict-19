@@ -22,6 +22,14 @@ const SortType = {
   DATA_ATTRIBUTE: 'data-sort-type'
 };
 
+const TitleEmptyList = {
+  ALL: 'There are no movies in our database',
+  WATCHLIST: 'There are no movies to watch now',
+  WATCHED: 'There are no watched movies now',
+  FAVORITE: 'There are no favorite movies now',
+};
+
+
 const FilterType = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
@@ -41,4 +49,4 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType };
+export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList };

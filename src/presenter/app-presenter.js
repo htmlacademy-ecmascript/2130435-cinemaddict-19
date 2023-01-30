@@ -77,6 +77,7 @@ export default class AppPresenter {
     }
   }
 
+
   #renderSort() {
     this.#sortFilmsComponent = new SortFilmsView({
       currentSortType: this.#currentSortType,
@@ -86,14 +87,18 @@ export default class AppPresenter {
     render(this.#sortFilmsComponent, this.#place);
   }
 
+  #createFilmPresenter(film) {
+    return new FilmPresenter({
+      film,
+      commentsModel: this.comments,
+      onFilmClick: this.#handleOpenPopup,
+      onDataChange: this.#handleViewAction
+    });
+  }
+
   #createFilmsPresenters() {
     this.filmsFilter.forEach((film) => {
-      const filmPresenter = new FilmPresenter({
-        film,
-        commentsModel: this.comments,
-        onFilmClick: this.#handleOpenPopup,
-        onDataChange: this.#handleViewAction
-      });
+      const filmPresenter = this.#createFilmPresenter(film);
       this.#filmPresenters.set(film.id, filmPresenter);
     });
   }
@@ -101,7 +106,8 @@ export default class AppPresenter {
   #createMainFilmsListPresenter() {
     this.#mainFilmsListPresenter = new FilmsListPresenter({
       place: this.#sectionFilmsComponent.element,
-      filmsPresenters: this.#filmPresenters
+      filmsPresenters: this.#filmPresenters,
+      currentFilterType: this.#currentFilterType
     });
   }
 
@@ -162,6 +168,9 @@ export default class AppPresenter {
   };
 
   #handleFilterTypeChange = (filterTypeValue) => {
+    if (this.#currentFilterType === filterTypeValue) {
+      return;
+    }
     this.#currentFilterType = filterTypeValue;
 
     this.#clearBoard({ resetSortType: true });
