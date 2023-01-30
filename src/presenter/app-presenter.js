@@ -26,7 +26,6 @@ export default class AppPresenter {
   #sortFilmsComponent = null;
   #sectionFilmsComponent = null;
 
-
   constructor({ filmsModel, commentsModel }) {
     this.#filmsModel = filmsModel;
     this.#commentsModel = commentsModel;
@@ -75,16 +74,6 @@ export default class AppPresenter {
     if (resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
     }
-  }
-
-
-  #renderSort() {
-    this.#sortFilmsComponent = new SortFilmsView({
-      currentSortType: this.#currentSortType,
-      onSortTypeChange: this.#handleSortTypeChange
-    });
-
-    render(this.#sortFilmsComponent, this.#place);
   }
 
   #createFilmPresenter(film) {
@@ -136,14 +125,16 @@ export default class AppPresenter {
         this.#popupPresenter?.rerenderComments();
         break;
       case UpdateType.MINOR:
-        this.#popupPresenter?.rerenderFilters();
         this.#clearBoard();
         this.#renderBoard();
+        this.#popupPresenter?.rerenderFilters();
+        this.#popupPresenter?.rerenderComments();
         break;
       case UpdateType.MAJOR:
-        this.#popupPresenter?.rerenderFilters();
         this.#clearBoard({ resetSortType: true });
         this.#renderBoard();
+        this.#popupPresenter?.rerenderFilters();
+        this.#popupPresenter?.rerenderComments();
         break;
     }
   };
@@ -173,17 +164,14 @@ export default class AppPresenter {
     if (this.#currentFilterType === filterTypeValue) {
       return;
     }
+
     this.#currentFilterType = filterTypeValue;
 
     this.#clearBoard({ resetSortType: true });
     this.#renderBoard();
   };
 
-  #renderBoard() {
-    this.#sectionFilmsComponent = new SectionFilmsView();
-    this.#createFilmsPresenters();
-    this.#createMainFilmsListPresenter();
-
+  #renderFilter() {
     this.#filtersFilmsPresenter = new filmsFilterPresenter({
       films: this.films,
       currentFilter: this.#currentFilterType,
@@ -191,12 +179,28 @@ export default class AppPresenter {
     });
 
     this.#filtersFilmsPresenter.init(this.#place);
+  }
+
+  #renderSort() {
+    this.#sortFilmsComponent = new SortFilmsView({
+      currentSortType: this.#currentSortType,
+      onSortTypeChange: this.#handleSortTypeChange
+    });
 
     if (this.#filmPresenters.size) {
-      this.#renderSort();
+      render(this.#sortFilmsComponent, this.#place);
     }
-    render(this.#sectionFilmsComponent, this.#place);
+  }
 
+  #renderBoard() {
+    this.#sectionFilmsComponent = new SectionFilmsView();
+    this.#createFilmsPresenters();
+    this.#createMainFilmsListPresenter();
+
+    this.#renderFilter();
+    this.#renderSort();
+
+    render(this.#sectionFilmsComponent, this.#place);
     this.#mainFilmsListPresenter.init();
   }
 

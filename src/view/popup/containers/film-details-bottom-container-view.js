@@ -1,3 +1,4 @@
+import he from 'he';
 import AbstractStatefulView from '../../../framework/view/abstract-stateful-view.js';
 import { getCommentUniqueId } from '../../../mocks/comments.js';
 import { setHumanizeDateAgoComment } from '../../../utils/utils.js';
@@ -35,6 +36,7 @@ function createEmojiItem(emoji) {
 }
 
 function createFilmDetailsBottomContainer(comments, {emojiValue, userText}) {
+  const commentText = `${userText ? `${userText.trim()}` : ''}`;
   return `
   <div class="film-details__bottom-container">
     <section class="film-details__comments-wrap">
@@ -50,7 +52,7 @@ function createFilmDetailsBottomContainer(comments, {emojiValue, userText}) {
         </div>
 
         <label class="film-details__comment-label">
-          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${userText ? `${userText.trim()}` : ''}</textarea>
+          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(commentText)}</textarea>
         </label>
 
         <div class="film-details__emoji-list">

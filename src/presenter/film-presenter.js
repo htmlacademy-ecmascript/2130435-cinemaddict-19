@@ -19,13 +19,17 @@ export default class FilmPresenter {
     this.#handleDataChange = onDataChange;
     this.#currentCommentsFilm = this.#findCommentsFilm(this.#film);
 
-    this.#handleOpenPopup = () => onFilmClick({
+    this.#handleOpenPopup = onFilmClick;
+  }
+
+  #openPopupHandler = () => {
+    this.#handleOpenPopup({
       film: this.#film,
       commentsModel: this.#commentsModel,
       handleDataChange: this.#handleDataChange,
       onButtonFilterClick: this.#handleFilmControlButtonFilterClick
     });
-  }
+  };
 
   #findCommentsFilm(film) {
     return this.#commentsModel.slice().
@@ -47,7 +51,7 @@ export default class FilmPresenter {
       film: this.#film,
       currentComments: this.#currentCommentsFilm,
       onFilmControlButtonFilterClick: this.#handleFilmControlButtonFilterClick,
-      onFilmClick: this.#handleOpenPopup
+      onFilmClick: this.#openPopupHandler
     });
   }
 
