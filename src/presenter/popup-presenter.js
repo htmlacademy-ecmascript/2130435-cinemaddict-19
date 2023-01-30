@@ -102,7 +102,6 @@ export default class PopupPresenter {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       this.removePopup();
-      document.removeEventListener('keydown', this.onEscapeKeydown);
     }
   };
 
@@ -130,6 +129,7 @@ export default class PopupPresenter {
 
   removePopup() {
     document.body.classList.remove('hide-overflow');
+    document.removeEventListener('keydown', this.onEscapeKeydown);
     remove(this.#sectionFilmDetailsComponent);
   }
 

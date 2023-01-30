@@ -83,7 +83,7 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
   }
 
   #enterKeyDownHandler = (evt) => {
-    if(evt.key === 'Enter') {
+    if(evt.key === 'Enter' && evt.ctrlKey) {
       this.#parseStateToComment(this._state);
       this.updateElement(this._state);
     }
