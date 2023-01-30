@@ -7,19 +7,19 @@ import SectionFilmDetailsView from '../view/popup/sections/section-film-details-
 
 export default class PopupPresenter {
   #place = document.body;
+
   #film;
   #commentsModel;
+
+  #handleDataChange;
+  #handleButtonFilterClick;
 
   #currentComments;
 
   #sectionFilmDetailsComponent = new SectionFilmDetailsView();
   #filmDetailsInnerPopupComponent = new FilmDetailsInnerPopupView();
-
   #filmsDetailsTopContainerComponent;
   #filmsDetailsBottomContainerComponent;
-
-  #handleButtonFilterClick;
-  #handleDataChange;
 
   constructor({ film, commentsModel, handleDataChange, onButtonFilterClick }) {
     this.#film = film;
@@ -31,6 +31,24 @@ export default class PopupPresenter {
 
     this.#filmsDetailsTopContainerComponent = this.#createFilmsTopContainerView();
     this.#filmsDetailsBottomContainerComponent = this.#createFilmsBottomContainerView();
+
+    document.addEventListener('keydown', this.#onEscapeKeydown);
+  }
+
+  #createFilmsTopContainerView() {
+    return new FilmsDetailsTopContainerView({
+      currentFilmModel: this.#film,
+      onButtonCloseClick: this.#handleButtonCloseClick,
+      onFilmControlButtonFilterClick: this.#handleButtonFilterClick
+    });
+  }
+
+  #createFilmsBottomContainerView() {
+    return new FilmDetailsBottomContainerView({
+      comments: this.#currentComments,
+      handleAddComment: this.#handleCommentsAdd,
+      handleCommentsDelete: this.#handleCommentsDelete
+    });
   }
 
   #findCommentsFilm(film) {
@@ -76,42 +94,6 @@ export default class PopupPresenter {
     );
   };
 
-  #createFilmsTopContainerView() {
-    return new FilmsDetailsTopContainerView({
-      currentFilmModel: this.#film,
-      onButtonCloseClick: this.#handleButtonCloseClick,
-      onFilmControlButtonFilterClick: this.#handleButtonFilterClick
-    });
-  }
-
-  #createFilmsBottomContainerView() {
-    return new FilmDetailsBottomContainerView({
-      comments: this.#currentComments,
-      handleAddComment: this.#handleCommentsAdd,
-      handleCommentsDelete: this.#handleCommentsDelete
-    });
-  }
-
-  removePopup() {
-    document.body.classList.remove('hide-overflow');
-    remove(this.#sectionFilmDetailsComponent);
-  }
-
-  rerenderFilters() {
-
-    const updateFilmsTopContainerView = this.#createFilmsTopContainerView();
-    replace(updateFilmsTopContainerView, this.#filmsDetailsTopContainerComponent);
-    this.#filmsDetailsTopContainerComponent = updateFilmsTopContainerView;
-  }
-
-  rerenderComments() {
-    this.#currentComments = this.#findCommentsFilm(this.#film);
-
-    const updateFilmsBottomContainerView = this.#createFilmsBottomContainerView();
-    replace(updateFilmsBottomContainerView, this.#filmsDetailsBottomContainerComponent);
-    this.#filmsDetailsBottomContainerComponent = updateFilmsBottomContainerView;
-  }
-
   #handleButtonCloseClick = () => {
     this.removePopup();
   };
@@ -124,11 +106,34 @@ export default class PopupPresenter {
     }
   };
 
-  init() {
-    document.addEventListener('keydown', this.#onEscapeKeydown);
+  #renderPopup() {
     render(this.#sectionFilmDetailsComponent, this.#place);
     render(this.#filmDetailsInnerPopupComponent, this.#sectionFilmDetailsComponent.element);
     render(this.#filmsDetailsTopContainerComponent, this.#filmDetailsInnerPopupComponent.element);
     render(this.#filmsDetailsBottomContainerComponent, this.#filmDetailsInnerPopupComponent.element);
+  }
+
+  rerenderComments() {
+    const updateFilmsBottomContainerView = this.#createFilmsBottomContainerView();
+
+    this.#currentComments = this.#findCommentsFilm(this.#film);
+    replace(updateFilmsBottomContainerView, this.#filmsDetailsBottomContainerComponent);
+    this.#filmsDetailsBottomContainerComponent = updateFilmsBottomContainerView;
+  }
+
+  rerenderFilters() {
+    const updateFilmsTopContainerView = this.#createFilmsTopContainerView();
+
+    replace(updateFilmsTopContainerView, this.#filmsDetailsTopContainerComponent);
+    this.#filmsDetailsTopContainerComponent = updateFilmsTopContainerView;
+  }
+
+  removePopup() {
+    document.body.classList.remove('hide-overflow');
+    remove(this.#sectionFilmDetailsComponent);
+  }
+
+  init() {
+    this.#renderPopup();
   }
 }

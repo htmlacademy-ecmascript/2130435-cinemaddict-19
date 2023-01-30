@@ -12,15 +12,15 @@ const main = document.querySelector('.main');
 
 export default class AppPresenter {
   #place = main;
-  #filmsModel;
-  #commentsModel;
   #currentSortType = SortType.DEFAULT;
   #currentFilterType = FilterType.ALL;
+
+  #filmsModel;
+  #commentsModel;
 
   #popupPresenter = null;
   #filmPresenters = new Map();
   #filtersFilmsPresenter;
-
   #mainFilmsListPresenter = null;
 
   #sortFilmsComponent = null;
@@ -136,10 +136,12 @@ export default class AppPresenter {
         this.#popupPresenter?.rerenderComments();
         break;
       case UpdateType.MINOR:
+        this.#popupPresenter?.rerenderFilters();
         this.#clearBoard();
         this.#renderBoard();
         break;
       case UpdateType.MAJOR:
+        this.#popupPresenter?.rerenderFilters();
         this.#clearBoard({ resetSortType: true });
         this.#renderBoard();
         break;

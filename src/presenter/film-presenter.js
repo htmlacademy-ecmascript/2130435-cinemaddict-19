@@ -5,10 +5,11 @@ import FilmCardView from '../view/main-films-list/film-card-view.js';
 export default class FilmPresenter {
   #film;
   #commentsModel;
-  #currentCommentsFilm;
 
   #handleDataChange;
   #handleOpenPopup;
+
+  #currentCommentsFilm;
 
   #filmCardComponent = null;
 

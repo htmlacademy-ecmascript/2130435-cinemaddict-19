@@ -78,12 +78,12 @@ function createFilmDetailsTopContainer(film) {
 
 export default class FilmsDetailsTopContainerView extends AbstractView {
   #film;
+
   #handleButtonCloseClick = null;
 
   #watchlistClickHandler = null;
   #alreadyWatchedClickHandler = null;
   #favoriteClickHandler = null;
-  #update;
 
   constructor({ currentFilmModel, onButtonCloseClick, onFilmControlButtonFilterClick }) {
     super();
@@ -94,14 +94,18 @@ export default class FilmsDetailsTopContainerView extends AbstractView {
     this.#alreadyWatchedClickHandler = () => onFilmControlButtonFilterClick('already_watched');
     this.#favoriteClickHandler = () => onFilmControlButtonFilterClick('favorite');
 
-    this.element.querySelector('.film-details__close-btn').
-      addEventListener('click', this.#buttonCloseClickHandler);
-
     this.#initHandlers();
 
   }
 
+  #buttonCloseClickHandler = () => {
+    this.#handleButtonCloseClick();
+  };
+
   #initHandlers() {
+    this.element.querySelector('.film-details__close-btn').
+      addEventListener('click', this.#buttonCloseClickHandler);
+
     this.element.querySelector('.film-details__control-button--watchlist').
       addEventListener('click', this.#watchlistClickHandler);
     this.element.querySelector('.film-details__control-button--watched').
@@ -109,10 +113,6 @@ export default class FilmsDetailsTopContainerView extends AbstractView {
     this.element.querySelector('.film-details__control-button--favorite').
       addEventListener('click', this.#favoriteClickHandler);
   }
-
-  #buttonCloseClickHandler = () => {
-    this.#handleButtonCloseClick();
-  };
 
   get template() {
     return createFilmDetailsTopContainer(this.#film);

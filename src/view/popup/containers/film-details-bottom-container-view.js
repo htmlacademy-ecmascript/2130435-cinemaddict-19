@@ -80,10 +80,10 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
     this._restoreHandlers();
   }
 
-  #getCurrentIndex = (evt) => {
-    this.#currentIndex = [...evt.currentTarget.parentElement.children].indexOf(evt.currentTarget);
-    if (evt.target.closest('.film-details__comment-delete')) {
-      this.#deleteCommentHandler(this.#comments[this.#currentIndex]);
+  #enterKeyDownHandler = (evt) => {
+    if(evt.key === 'Enter') {
+      this.#parseStateToComment(this._state);
+      this.updateElement(this._state);
     }
   };
 
@@ -100,17 +100,11 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
     });
   };
 
-  #resetInputComment() {
-    this.updateElement({
-      emojiValue: null,
-      userText: null
-    });
-  }
 
-  #enterKeyDownHandler = (evt) => {
-    if(evt.key === 'Enter') {
-      this.#parseStateToComment(this._state);
-      this.updateElement(this._state);
+  #getCurrentIndex = (evt) => {
+    this.#currentIndex = [...evt.currentTarget.parentElement.children].indexOf(evt.currentTarget);
+    if (evt.target.closest('.film-details__comment-delete')) {
+      this.#deleteCommentHandler(this.#comments[this.#currentIndex]);
     }
   };
 
@@ -131,6 +125,13 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
       return err.message;
     }
   };
+
+  #resetInputComment() {
+    this.updateElement({
+      emojiValue: null,
+      userText: null
+    });
+  }
 
   _restoreHandlers() {
     this.element.querySelectorAll('.film-details__comment').forEach((deleteButton) => {

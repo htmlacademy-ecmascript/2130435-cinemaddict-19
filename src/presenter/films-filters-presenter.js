@@ -5,12 +5,12 @@ const START = 0;
 
 export default class filmsFilterPresenter {
   #films;
+  #currentFilter;
+  #handleFilterChange;
+
   #watchListCounter;
   #watchedCounter;
   #favoriteCounter;
-
-  #currentFilter;
-  #handleFilterChange;
 
   #filmsFilterComponent = null;
 
@@ -25,10 +25,14 @@ export default class filmsFilterPresenter {
     this.#films.forEach((film) => this.#getFilterValueCounter(film));
   }
 
-  #resetCounters() {
-    this.#watchListCounter = START;
-    this.#watchedCounter = START;
-    this.#favoriteCounter = START;
+  #createFilterFilmsComponent () {
+    return new FiltersFilmsView({
+      watchListCounter: this.#watchListCounter,
+      watchedCounter: this.#watchedCounter,
+      favoriteCounter: this.#favoriteCounter,
+      currentFilter: this.#currentFilter,
+      onFilterChange: this.#handleFilterChange
+    });
   }
 
   #getFilterValueCounter(film) {
@@ -43,14 +47,15 @@ export default class filmsFilterPresenter {
     }
   }
 
-  #createFilterFilmsView () {
-    return new FiltersFilmsView({
-      watchListCounter: this.#watchListCounter,
-      watchedCounter: this.#watchedCounter,
-      favoriteCounter: this.#favoriteCounter,
-      currentFilter: this.#currentFilter,
-      onFilterChange: this.#handleFilterChange
-    });
+  #resetCounters() {
+    this.#watchListCounter = START;
+    this.#watchedCounter = START;
+    this.#favoriteCounter = START;
+  }
+
+  #renderFilmsFilter(place) {
+    this.#filmsFilterComponent = this.#createFilterFilmsComponent();
+    render(this.#filmsFilterComponent, place);
   }
 
   destroy() {
@@ -59,16 +64,14 @@ export default class filmsFilterPresenter {
 
   rerenderFilters() {
     this.#calculateFilterValueCounter();
-    const updateFilters = this.#createFilterFilmsView();
+    const updateFilters = this.#createFilterFilmsComponent();
     replace(updateFilters, this.#filmsFilterComponent);
     this.#filmsFilterComponent = updateFilters;
   }
 
   init(place) {
     this.#calculateFilterValueCounter();
-    this.#filmsFilterComponent = this.#createFilterFilmsView();
-
-    render(this.#filmsFilterComponent, place);
+    this.#renderFilmsFilter(place);
   }
 
 }

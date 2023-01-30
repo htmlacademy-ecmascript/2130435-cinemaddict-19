@@ -4,6 +4,9 @@ const ONE_HOUR = 60;
 const COMMENTS_LIST_LENGTH = 9;
 const MAX_SENTENCES = 4;
 
+const MIN_DESCRIPTION_TEXT_LENGTH = 0;
+const MAX_DESCRIPTION_TEXT_LENGTH = 139;
+
 const TypeButton = {
   WATCHLIST: 'watchlist',
   WATCHED: 'watched',
@@ -22,19 +25,18 @@ const SortType = {
   DATA_ATTRIBUTE: 'data-sort-type'
 };
 
+const FilterType = {
+  ALL: 'all',
+  WATCHLIST: 'watchlist',
+  HISTORY: 'watched',
+  FAVORITE: 'favorite',
+};
+
 const TitleEmptyList = {
   ALL: 'There are no movies in our database',
   WATCHLIST: 'There are no movies to watch now',
   WATCHED: 'There are no watched movies now',
   FAVORITE: 'There are no favorite movies now',
-};
-
-
-const FilterType = {
-  ALL: 'all',
-  WATCHLIST: 'watchlist',
-  HISTORY: 'watched',
-  FAVORITE: 'favorite'
 };
 
 const UserAction = {
@@ -49,4 +51,5 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList };
+export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList, MIN_DESCRIPTION_TEXT_LENGTH
+  , MAX_DESCRIPTION_TEXT_LENGTH };

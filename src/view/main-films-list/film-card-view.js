@@ -1,12 +1,11 @@
 import AbstractView from '../../framework/view/abstract-view.js';
+import { MAX_DESCRIPTION_TEXT_LENGTH, MIN_DESCRIPTION_TEXT_LENGTH } from '../../utils/const.js';
 import { setHumanizeDateFilmYear } from '../../utils/utils.js';
 
-const MIN_TEXT_LENGTH = 0;
-const MAX_TEXT_LENGTH = 139;
 
 function createDescriptionText(description) {
-  if (description.length > MAX_TEXT_LENGTH) {
-    return `${description.substring(MIN_TEXT_LENGTH, MAX_TEXT_LENGTH)}...`;
+  if (description.length > MAX_DESCRIPTION_TEXT_LENGTH) {
+    return `${description.substring(MIN_DESCRIPTION_TEXT_LENGTH, MAX_DESCRIPTION_TEXT_LENGTH)}...`;
   }
   return `${description}`;
 }

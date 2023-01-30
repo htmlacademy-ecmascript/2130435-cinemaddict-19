@@ -19,9 +19,7 @@ export default class FilmsModel extends Observable {
 
   deleteFilmComment(updateType, update) {
     const filmIndex = this.#films.findIndex((film) => film.id === update.id);
-    const commentsList = [
-      ...update.comments
-    ];
+    const commentsList = [...update.comments];
 
     this.#films[filmIndex].comments = commentsList;
     this._notify(updateType, update);

@@ -11,8 +11,8 @@ const STEP_PER_LOAD_MORE_FILMS = 5;
 export default class FilmsListPresenter {
   #place;
   #isExtra;
-  #cardsFilmsPresenters;
   #listTitle;
+  #cardsFilmsPresenters;
   #currentFilterType;
 
   #start = START_ELEMENT;
@@ -23,7 +23,6 @@ export default class FilmsListPresenter {
   #showMoreButtonComponent = null;
 
   #emptyListComponent = null;
-
 
   /**
    * @param {HTMLElement} place Место добавления объекта управления презентером
@@ -38,12 +37,19 @@ export default class FilmsListPresenter {
     this.#listTitle = listTitle;
     this.#currentFilterType = currentFilterType;
 
-    this.#sectionFilmsListComponent = new SectionFilmsListView({
+    this.#sectionFilmsListComponent = this.#createSectionFilmList();
+    this.#showMoreButtonComponent = this.#createShowMoreButton();
+  }
+
+  #createSectionFilmList() {
+    return new SectionFilmsListView({
       isExtra: this.#isExtra,
       listTitle: this.#listTitle
     });
+  }
 
-    this.#showMoreButtonComponent = new ShowMoreButtonView({
+  #createShowMoreButton() {
+    return new ShowMoreButtonView({
       onClick: this.#handleLoadMoreButtonClick
     });
   }
@@ -52,24 +58,26 @@ export default class FilmsListPresenter {
     film.init(this.#filmsListContainerComponent.element);
   }
 
-  #renderCardsInCurrentRange() {
+  #renderCardsFilmsInCurrentRange() {
     this.#cardsFilmsPresenters
       .slice(this.#start, this.#start += this.#step)
       .forEach((film) => this.#renderCardFilm(film));
   }
 
-  #handleLoadMoreButtonClick = () => {
-    this.#renderCardsInCurrentRange();
-    if (this.#start >= this.#cardsFilmsPresenters.length) {
-      remove(this.#showMoreButtonComponent);
-    }
-  };
+  #renderEmptyList() {
+    this.#emptyListComponent = new SectionFilmsListEmptyView(this.#currentFilterType);
+    render(this.#emptyListComponent, this.#place);
+  }
 
-  destroy() {
-    this.#start = START_ELEMENT;
-    remove(this.#sectionFilmsListComponent);
-    remove(this.#filmsListContainerComponent);
-    remove(this.#showMoreButtonComponent);
+  #renderFilmListContainers() {
+    render(this.#sectionFilmsListComponent, this.#place);
+    render(this.#filmsListContainerComponent, this.#sectionFilmsListComponent.element);
+  }
+
+  #renderShowMoreButton() {
+    if (this.#start < this.#cardsFilmsPresenters.length) {
+      render(this.#showMoreButtonComponent, this.#sectionFilmsListComponent.element);
+    }
   }
 
   #renderFilmList() {
@@ -80,25 +88,26 @@ export default class FilmsListPresenter {
       return;
     }
 
-    render(this.#sectionFilmsListComponent, this.#place);
-    render(this.#filmsListContainerComponent, this.#sectionFilmsListComponent.element);
+    this.#renderFilmListContainers();
 
     if (this.#isExtra) {
+      // Тут должны быть списки экстра-классов. Доделать в 8 модуле.
       this.#cardsFilmsPresenters[0].init(this.#filmsListContainerComponent.element);
       this.#cardsFilmsPresenters[1].init(this.#filmsListContainerComponent.element);
     } else {
-      this.#renderCardsInCurrentRange();
-      if (this.#start < this.#cardsFilmsPresenters.length) {
-        render(this.#showMoreButtonComponent, this.#sectionFilmsListComponent.element);
-      }
+      this.#renderCardsFilmsInCurrentRange();
+      this.#renderShowMoreButton();
     }
   }
 
-  #renderEmptyList() {
-    this.#emptyListComponent = new SectionFilmsListEmptyView(this.#currentFilterType);
-    render(this.#emptyListComponent, this.#place);
-  }
+  #handleLoadMoreButtonClick = () => {
+    this.#renderCardsFilmsInCurrentRange();
+    if (this.#start >= this.#cardsFilmsPresenters.length) {
+      remove(this.#showMoreButtonComponent);
+    }
+  };
 
+  //Пересобираю
   #renderList() {
     const filmCount = this.#cardsFilmsPresenters.length;
 
@@ -109,6 +118,13 @@ export default class FilmsListPresenter {
     render(this.#sectionFilmsListComponent, this.#place);
     render(this.#filmsListContainerComponent, this.#sectionFilmsListComponent.element);
 
+  }
+
+  destroy() {
+    this.#start = START_ELEMENT;
+    remove(this.#sectionFilmsListComponent);
+    remove(this.#filmsListContainerComponent);
+    remove(this.#showMoreButtonComponent);
   }
 
   init() {
