@@ -22,29 +22,6 @@ export default class FilmPresenter {
     this.#handleOpenPopup = onFilmClick;
   }
 
-  #openPopupHandler = () => {
-    this.#handleOpenPopup({
-      film: this.#film,
-      commentsModel: this.#commentsModel,
-      handleDataChange: this.#handleDataChange,
-      onButtonFilterClick: this.#handleFilmControlButtonFilterClick
-    });
-  };
-
-  #findCommentsFilm(film) {
-    return this.#commentsModel.slice().
-      filter((comment) => film.comments.some((filmId) => filmId === comment.id));
-  }
-
-  #handleFilmControlButtonFilterClick = (filterType) => {
-    this.#film.user_details[filterType] = !this.#film.user_details[filterType];
-    this.#handleDataChange(
-      UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
-      this.#film
-    );
-  };
-
   #createFilmCard() {
     this.#currentCommentsFilm = this.#findCommentsFilm(this.#film);
     return new FilmCardView({
@@ -54,6 +31,29 @@ export default class FilmPresenter {
       onFilmClick: this.#openPopupHandler
     });
   }
+
+  #findCommentsFilm(film) {
+    return this.#commentsModel.slice().
+      filter((comment) => film.comments.some((filmId) => filmId === comment.id));
+  }
+
+  #openPopupHandler = () => {
+    this.#handleOpenPopup({
+      film: this.#film,
+      commentsModel: this.#commentsModel,
+      handleDataChange: this.#handleDataChange,
+      onButtonFilterClick: this.#handleFilmControlButtonFilterClick
+    });
+  };
+
+  #handleFilmControlButtonFilterClick = (filterType) => {
+    this.#film.user_details[filterType] = !this.#film.user_details[filterType];
+    this.#handleDataChange(
+      UserAction.UPDATE_FILM,
+      UpdateType.MINOR,
+      this.#film
+    );
+  };
 
   #rerenderCard() {
     const updateFilmCard = this.#createFilmCard();
