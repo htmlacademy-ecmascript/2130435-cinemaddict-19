@@ -51,10 +51,11 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-const ModeListUpdate = {
-  NORMAL: 'normal',
-  UPDATE: 'update'
+const ModeRenderList = {
+  NEW: 'normal',
+  UPDATE: 'update',
+  LOAD: 'load'
 };
 
 export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList, MIN_DESCRIPTION_TEXT_LENGTH
-  , MAX_DESCRIPTION_TEXT_LENGTH, ModeListUpdate };
+  , MAX_DESCRIPTION_TEXT_LENGTH, ModeRenderList };

@@ -1,6 +1,6 @@
 import { remove, render } from '../framework/render.js';
 import { sortFilmDate, sortFilmRating } from '../utils/common.js';
-import { FilterType, SortType, UpdateType, UserAction } from '../utils/const.js';
+import { FilterType, ModeRenderList, SortType, UpdateType, UserAction } from '../utils/const.js';
 import SectionFilmsView from '../view/main-films-list/sections/section-films-view.js';
 import SortFilmsView from '../view/main-films-list/sort-view.js';
 import FilmPresenter from './film-presenter.js';
@@ -63,7 +63,7 @@ export default class AppPresenter {
     return this.films;
   }
 
-  #clearBoard({ resetSortType = false } = {}) {
+  #clearBoard({resetSortType} = {resetSortType: false}) {
     this.#filmPresenters.forEach((presenter) => presenter.destroy());
     this.#filmPresenters.clear();
     this.#mainFilmsListPresenter.destroy();
@@ -93,8 +93,10 @@ export default class AppPresenter {
   }
 
   #createMainFilmsListPresenter() {
+    if (this.#mainFilmsListPresenter) {
+      return this.#mainFilmsListPresenter;
+    }
     this.#mainFilmsListPresenter = new MainFilmsListPresenter({
-      place: this.#sectionFilmsComponent.element,
       filmsPresenters: this.#filmPresenters,
       currentFilterType: this.#currentFilterType
     });
@@ -121,11 +123,11 @@ export default class AppPresenter {
       case UpdateType.PATCH:
         this.#filmPresenters.get(update.id).init(this.#sectionFilmsComponent.element);
         this.#filtersFilmsPresenter.rerenderFilters();
-        this.#filmPresenters.get(update.id).openPopupHandler();
+        this.#filmPresenters?.get(update.id).openPopupHandler();
         break;
       case UpdateType.MINOR:
         this.#clearBoard();
-        this.#renderBoard();
+        this.#renderBoard(ModeRenderList.UPDATE);
         break;
       case UpdateType.MAJOR:
         this.#clearBoard({ resetSortType: true });
@@ -148,22 +150,20 @@ export default class AppPresenter {
     if (this.#currentSortType === sortTypeValue) {
       return;
     }
-
     this.#currentSortType = sortTypeValue;
 
     this.#clearBoard();
-    this.#renderBoard();
+    this.#renderBoard(ModeRenderList.UPDATE);
   };
 
   #handleFilterTypeChange = (filterTypeValue) => {
     if (this.#currentFilterType === filterTypeValue) {
       return;
     }
-
     this.#currentFilterType = filterTypeValue;
 
     this.#clearBoard({ resetSortType: true });
-    this.#renderBoard();
+    this.#renderBoard(ModeRenderList.NEW);
   };
 
   #renderFilter() {
@@ -187,7 +187,15 @@ export default class AppPresenter {
     }
   }
 
-  #renderBoard() {
+  #getSettingsMainList(mode = ModeRenderList.NEW) {
+    return {
+      place: this.#sectionFilmsComponent.element,
+      filmsPresenters: this.#filmPresenters,
+      mode
+    };
+  }
+
+  #renderBoard(sortMode) {
     this.#sectionFilmsComponent = new SectionFilmsView();
     this.#createFilmsPresenters();
     this.#createMainFilmsListPresenter();
@@ -196,7 +204,7 @@ export default class AppPresenter {
     this.#renderSort();
 
     render(this.#sectionFilmsComponent, this.#place);
-    this.#mainFilmsListPresenter.init();
+    this.#mainFilmsListPresenter.init(this.#getSettingsMainList(sortMode));
   }
 
   init() {

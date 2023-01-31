@@ -1,5 +1,5 @@
 import { render, remove } from '../framework/render.js';
-import { ModeListUpdate } from '../utils/const.js';
+import { ModeRenderList } from '../utils/const.js';
 import FilmsListContainerView from '../view/main-films-list/containers/films-list-container-view.js';
 import SectionFilmsListEmptyView from '../view/main-films-list/sections/section-films-list-empty-view.js';
 import SectionFilmsListView from '../view/main-films-list/sections/section-films-list-view.js';
@@ -32,8 +32,7 @@ export default class MainFilmsListPresenter {
    * @param {string} listTitle Название раздела
    * @param {collection} filmsCardsPresenter Презентер карточек фильма? Пока не нужен
    */
-  constructor({ place, filmsPresenters, currentFilterType }) {
-    this.#place = place; //this.#sectionFilmsComponent.element
+  constructor({ filmsPresenters, currentFilterType }) {
     this.#cardsFilmsPresenters = [...filmsPresenters.values()];
     this.#currentFilterType = currentFilterType;
   }
@@ -55,16 +54,22 @@ export default class MainFilmsListPresenter {
     film.init(this.#filmsListContainerComponent.element);
   }
 
-  #renderCardsFilmsInCurrentRange(mode = ModeListUpdate.NORMAL) {
+  #renderCardsFilmsInCurrentRange(mode = ModeRenderList.NEW) {
     switch (mode) {
-      case ModeListUpdate.NORMAL:
+      case ModeRenderList.NEW:
+        this.#end = START_ELEMENT;
         this.#cardsFilmsPresenters
-          .slice(this.#end, this.#end += this.#step)
+          .slice(this.#start, this.#end += this.#step)
           .forEach((film) => this.#renderCardFilm(film));
         break;
-      case ModeListUpdate.UPDATE:
+      case ModeRenderList.UPDATE:
         this.#cardsFilmsPresenters
           .slice(this.#start, this.#end)
+          .forEach((film) => this.#renderCardFilm(film));
+        break;
+      case ModeRenderList.LOAD:
+        this.#cardsFilmsPresenters
+          .slice(this.#start, this.#end += this.#step)
           .forEach((film) => this.#renderCardFilm(film));
         break;
     }
@@ -78,7 +83,6 @@ export default class MainFilmsListPresenter {
   #renderFilmListContainers() {
     this.#filmsListContainerComponent = new FilmsListContainerView();
     this.#sectionFilmsListComponent = this.#createSectionFilmList();
-
     render(this.#sectionFilmsListComponent, this.#place);
     render(this.#filmsListContainerComponent, this.#sectionFilmsListComponent.element);
   }
@@ -92,19 +96,17 @@ export default class MainFilmsListPresenter {
 
   #renderFilmList(mode) {
     const filmCount = this.#cardsFilmsPresenters.length;
-
     if (!filmCount) {
       this.#renderEmptyList();
     }
 
     this.#renderFilmListContainers();
-
     this.#renderCardsFilmsInCurrentRange(mode);
     this.#renderShowMoreButton();
   }
 
   #handleLoadMoreButtonClick = () => {
-    this.#renderCardsFilmsInCurrentRange();
+    this.#renderCardsFilmsInCurrentRange(ModeRenderList.LOAD);
     if (this.#end >= this.#cardsFilmsPresenters.length) {
       remove(this.#showMoreButtonComponent);
     }
@@ -114,9 +116,18 @@ export default class MainFilmsListPresenter {
     remove(this.#sectionFilmsListComponent);
     remove(this.#filmsListContainerComponent);
     remove(this.#showMoreButtonComponent);
+    this.#cardsFilmsPresenters = null;
   }
 
-  init(mode) {
+  /**
+   * @param {HTMLElement} place Место рендера списка
+   * @param {string} mode Режим отрисовки карточек фильмов. По умолчанию отрисовка первого ряда элементов.
+   * @param {Map} filmsPresenters Презентеры фильмов. По умолчанию список при создании объекта
+   */
+  init({place, mode, filmsPresenters = this.#cardsFilmsPresenters}) {
+    this.#place = place;
+    this.#cardsFilmsPresenters = [...filmsPresenters.values()];
     this.#renderFilmList(mode);
   }
+
 }
