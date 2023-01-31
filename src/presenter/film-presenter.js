@@ -28,7 +28,7 @@ export default class FilmPresenter {
       film: this.#film,
       currentComments: this.#currentCommentsFilm,
       onFilmControlButtonFilterClick: this.#handleFilmControlButtonFilterClick,
-      onFilmClick: this.#openPopupHandler
+      onFilmClick: this.openPopupHandler
     });
   }
 
@@ -37,7 +37,7 @@ export default class FilmPresenter {
       filter((comment) => film.comments.some((filmId) => filmId === comment.id));
   }
 
-  #openPopupHandler = () => {
+  openPopupHandler = () => {
     this.#handleOpenPopup({
       film: this.#film,
       commentsModel: this.#commentsModel,
@@ -50,7 +50,7 @@ export default class FilmPresenter {
     this.#film.user_details[filterType] = !this.#film.user_details[filterType];
     this.#handleDataChange(
       UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
+      UpdateType.PATCH,
       this.#film
     );
   };

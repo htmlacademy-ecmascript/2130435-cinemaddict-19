@@ -5,7 +5,7 @@ import SectionFilmsView from '../view/main-films-list/sections/section-films-vie
 import SortFilmsView from '../view/main-films-list/sort-view.js';
 import FilmPresenter from './film-presenter.js';
 import filmsFilterPresenter from './films-filters-presenter.js';
-import FilmsListPresenter from './films-list-presenter.js';
+import MainFilmsListPresenter from './main-list-presenter.js';
 import PopupPresenter from './popup-presenter.js';
 
 const main = document.querySelector('.main');
@@ -93,7 +93,7 @@ export default class AppPresenter {
   }
 
   #createMainFilmsListPresenter() {
-    this.#mainFilmsListPresenter = new FilmsListPresenter({
+    this.#mainFilmsListPresenter = new MainFilmsListPresenter({
       place: this.#sectionFilmsComponent.element,
       filmsPresenters: this.#filmPresenters,
       currentFilterType: this.#currentFilterType
@@ -121,20 +121,15 @@ export default class AppPresenter {
       case UpdateType.PATCH:
         this.#filmPresenters.get(update.id).init(this.#sectionFilmsComponent.element);
         this.#filtersFilmsPresenter.rerenderFilters();
-        this.#popupPresenter?.rerenderFilters();
-        this.#popupPresenter?.rerenderComments();
+        this.#filmPresenters.get(update.id).openPopupHandler();
         break;
       case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderBoard();
-        this.#popupPresenter?.rerenderFilters();
-        this.#popupPresenter?.rerenderComments();
         break;
       case UpdateType.MAJOR:
         this.#clearBoard({ resetSortType: true });
         this.#renderBoard();
-        this.#popupPresenter?.rerenderFilters();
-        this.#popupPresenter?.rerenderComments();
         break;
     }
   };

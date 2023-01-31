@@ -52,7 +52,7 @@ function createFilmDetailsBottomContainer(comments, {emojiValue, userText}) {
         </div>
 
         <label class="film-details__comment-label">
-          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(commentText)}</textarea>
+          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${commentText}</textarea>
         </label>
 
         <div class="film-details__emoji-list">
@@ -82,8 +82,8 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
     this._restoreHandlers();
   }
 
-  #enterKeyDownHandler = (evt) => {
-    if(evt.key === 'Enter' && evt.ctrlKey) {
+  #enterCtrlKeyDownHandler = (evt) => {
+    if (evt.key === 'Enter' && (evt.ctrlKey || evt.metaKey)) {
       this.#parseStateToComment(this._state);
       this.updateElement(this._state);
     }
@@ -98,10 +98,9 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
   #textareaInputHandler = (evt) => {
     evt.preventDefault();
     this._setState({
-      userText: evt.target.value
+      userText: he.encode(evt.target.value)
     });
   };
-
 
   #getCurrentIndex = (evt) => {
     this.#currentIndex = [...evt.currentTarget.parentElement.children].indexOf(evt.currentTarget);
@@ -122,18 +121,10 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
         emotion: state.emojiValue,
         id: getCommentUniqueId()
       });
-      this.#resetInputComment();
     } catch (err) {
       return err.message;
     }
   };
-
-  #resetInputComment() {
-    this.updateElement({
-      emojiValue: null,
-      userText: null
-    });
-  }
 
   _restoreHandlers() {
     this.element.querySelectorAll('.film-details__comment').forEach((deleteButton) => {
@@ -143,7 +134,7 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
     this.element.querySelector('.film-details__comment-input').
       addEventListener('input', this.#textareaInputHandler);
     this.element.querySelector('.film-details__comment-input').
-      addEventListener('keydown', this.#enterKeyDownHandler);
+      addEventListener('keydown', this.#enterCtrlKeyDownHandler);
 
     this.element.querySelector('.film-details__emoji-list').
       addEventListener('change', this.#inputChangeHandler);

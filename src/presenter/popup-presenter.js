@@ -1,4 +1,4 @@
-import { remove, render, replace } from '../framework/render.js';
+import { remove, render } from '../framework/render.js';
 import { UpdateType, UserAction } from '../utils/const.js';
 import FilmDetailsBottomContainerView from '../view/popup/containers/film-details-bottom-container-view.js';
 import FilmDetailsInnerPopupView from '../view/popup/containers/film-details-inner-view.js';
@@ -96,12 +96,14 @@ export default class PopupPresenter {
 
   #handleButtonCloseClick = () => {
     this.removePopup();
+    window.popupScrollPosition = 0;
   };
 
   #onEscapeKeydown = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       this.removePopup();
+      window.popupScrollPosition = 0;
     }
   };
 
@@ -112,28 +114,15 @@ export default class PopupPresenter {
     render(this.#filmsDetailsBottomContainerComponent, this.#filmDetailsInnerPopupComponent.element);
   }
 
-  rerenderComments() {
-    const updateFilmsBottomContainerView = this.#createFilmsBottomContainerView();
-
-    this.#currentComments = this.#findCommentsFilm(this.#film);
-    replace(updateFilmsBottomContainerView, this.#filmsDetailsBottomContainerComponent);
-    this.#filmsDetailsBottomContainerComponent = updateFilmsBottomContainerView;
-  }
-
-  rerenderFilters() {
-    const updateFilmsTopContainerView = this.#createFilmsTopContainerView();
-
-    replace(updateFilmsTopContainerView, this.#filmsDetailsTopContainerComponent);
-    this.#filmsDetailsTopContainerComponent = updateFilmsTopContainerView;
-  }
-
   removePopup() {
+    window.popupScrollPosition = this.#sectionFilmDetailsComponent.element.scrollTop;
     document.body.classList.remove('hide-overflow');
-    document.removeEventListener('keydown', this.onEscapeKeydown);
+    document.removeEventListener('keydown', this.#onEscapeKeydown);
     remove(this.#sectionFilmDetailsComponent);
   }
 
   init() {
     this.#renderPopup();
+    this.#sectionFilmDetailsComponent.element.scrollTo(0, window.popupScrollPosition);
   }
 }
