@@ -8,7 +8,6 @@ export default class FilmPresenter {
 
   #handleDataChange;
   #handleOpenPopup;
-
   #currentCommentsFilm;
 
   #filmCardComponent = null;
@@ -42,7 +41,6 @@ export default class FilmPresenter {
       film: this.#film,
       commentsModel: this.#commentsModel,
       handleDataChange: this.#handleDataChange,
-      onButtonFilterClick: this.#handleFilmControlButtonFilterClick
     });
   };
 
@@ -50,7 +48,7 @@ export default class FilmPresenter {
     this.#film.user_details[filterType] = !this.#film.user_details[filterType];
     this.#handleDataChange(
       UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
+      UpdateType.CLOSED_POPUP,
       this.#film
     );
   };

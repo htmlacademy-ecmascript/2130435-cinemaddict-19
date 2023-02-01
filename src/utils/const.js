@@ -28,14 +28,14 @@ const SortType = {
 const FilterType = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
-  HISTORY: 'watched',
+  HISTORY: 'history',
   FAVORITE: 'favorite',
 };
 
 const TitleEmptyList = {
   ALL: 'There are no movies in our database',
   WATCHLIST: 'There are no movies to watch now',
-  WATCHED: 'There are no watched movies now',
+  HISTORY: 'There are no watched movies now',
   FAVORITE: 'There are no favorite movies now',
 };
 
@@ -46,9 +46,8 @@ const UserAction = {
 };
 
 const UpdateType = {
-  PATCH: 'PATCH',
-  MINOR: 'MINOR',
-  MAJOR: 'MAJOR',
+  OPENED_POPUP: 'OPEN_POPUP',
+  CLOSED_POPUP: 'CLOSED_POPUP'
 };
 
 const ModeRenderList = {

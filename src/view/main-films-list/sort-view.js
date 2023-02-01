@@ -1,12 +1,22 @@
 import AbstractView from '../../framework/view/abstract-view.js';
 import { SortType } from '../../utils/const.js';
 
+function sortHTMLAttribute (currentSortType, sortType) {
+  return `
+  <li><a href="#" class="sort__button ${
+  currentSortType === sortType
+    ? 'sort__button--active'
+    : ''}"
+    data-sort-type="${sortType}">
+  `;
+}
+
 function createSortFilms(currentSortType) {
   return `
   <ul class="sort">
-    <li><a href="#" class="sort__button ${currentSortType === SortType.DEFAULT ? 'sort__button--active' : ''}" data-sort-type="${SortType.DEFAULT}">Sort by default</a></li>
-    <li><a href="#" class="sort__button ${currentSortType === SortType.DATE ? 'sort__button--active' : ''}" data-sort-type="${SortType.DATE}">Sort by date</a></li>
-    <li><a href="#" class="sort__button ${currentSortType === SortType.RATING ? 'sort__button--active' : ''}" data-sort-type="${SortType.RATING}">Sort by rating</a></li>
+    ${sortHTMLAttribute(currentSortType, SortType.DEFAULT)}Sort by default</a></li>
+    ${sortHTMLAttribute(currentSortType, SortType.DATE)}Sort by date</a></li>
+    ${sortHTMLAttribute(currentSortType, SortType.RATING)}Sort by rating</a></li>
   </ul>`;
 }
 

@@ -26,15 +26,8 @@ export default class MainFilmsListPresenter {
 
   #emptyListComponent = null;
 
-  /**
-   * @param {HTMLElement} place Место добавления объекта управления презентером
-   * @param {boolean} isExtra Это экстра раздел?
-   * @param {string} listTitle Название раздела
-   * @param {collection} filmsCardsPresenter Презентер карточек фильма? Пока не нужен
-   */
-  constructor({ filmsPresenters, currentFilterType }) {
+  constructor({ filmsPresenters }) {
     this.#cardsFilmsPresenters = [...filmsPresenters.values()];
-    this.#currentFilterType = currentFilterType;
   }
 
   #createSectionFilmList() {
@@ -124,8 +117,9 @@ export default class MainFilmsListPresenter {
    * @param {string} mode Режим отрисовки карточек фильмов. По умолчанию отрисовка первого ряда элементов.
    * @param {Map} filmsPresenters Презентеры фильмов. По умолчанию список при создании объекта
    */
-  init({place, mode, filmsPresenters = this.#cardsFilmsPresenters}) {
+  init({place, mode, filmsPresenters = this.#cardsFilmsPresenters, currentFilterType }) {
     this.#place = place;
+    this.#currentFilterType = currentFilterType;
     this.#cardsFilmsPresenters = [...filmsPresenters.values()];
     this.#renderFilmList(mode);
   }

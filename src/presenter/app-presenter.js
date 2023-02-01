@@ -120,30 +120,27 @@ export default class AppPresenter {
 
   #handleModelEvent = (updateType, update) => {
     switch (updateType) {
-      case UpdateType.PATCH:
-        this.#filmPresenters.get(update.id).init(this.#sectionFilmsComponent.element);
-        this.#filtersFilmsPresenter.rerenderFilters();
-        this.#filmPresenters?.get(update.id).openPopupHandler();
-        break;
-      case UpdateType.MINOR:
+      case UpdateType.OPENED_POPUP:
         this.#clearBoard();
         this.#renderBoard(ModeRenderList.UPDATE);
+        this.#filmPresenters?.get(update.id).openPopupHandler();
         break;
-      case UpdateType.MAJOR:
-        this.#clearBoard({ resetSortType: true });
-        this.#renderBoard();
+      case UpdateType.CLOSED_POPUP:
+        this.#clearBoard();
+        this.#renderBoard(ModeRenderList.UPDATE);
         break;
     }
   };
 
   #handleOpenPopup = (dataCardFilm) => {
     if (this.#popupPresenter) {
-      this.#popupPresenter.removePopup();
+      this.#popupPresenter.destroy();
     }
 
     document.body.classList.add('hide-overflow');
     this.#popupPresenter = new PopupPresenter(dataCardFilm);
     this.#popupPresenter.init();
+    return this.#popupPresenter;
   };
 
   #handleSortTypeChange = (sortTypeValue) => {
@@ -191,6 +188,7 @@ export default class AppPresenter {
     return {
       place: this.#sectionFilmsComponent.element,
       filmsPresenters: this.#filmPresenters,
+      currentFilterType: this.#currentFilterType,
       mode
     };
   }

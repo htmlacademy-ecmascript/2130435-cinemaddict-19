@@ -5,6 +5,8 @@ import FilmDetailsInnerPopupView from '../view/popup/containers/film-details-inn
 import FilmsDetailsTopContainerView from '../view/popup/containers/film-details-top-container-view.js';
 import SectionFilmDetailsView from '../view/popup/sections/section-film-details-view.js';
 
+const START_POSITION = 0;
+
 export default class PopupPresenter {
   #place = document.body;
 
@@ -12,7 +14,6 @@ export default class PopupPresenter {
   #commentsModel;
 
   #handleDataChange;
-  #handleButtonFilterClick;
 
   #currentComments;
 
@@ -21,11 +22,10 @@ export default class PopupPresenter {
   #filmsDetailsTopContainerComponent;
   #filmsDetailsBottomContainerComponent;
 
-  constructor({ film, commentsModel, handleDataChange, onButtonFilterClick }) {
+  constructor({ film, commentsModel, handleDataChange }) {
     this.#film = film;
     this.#commentsModel = commentsModel;
     this.#handleDataChange = handleDataChange;
-    this.#handleButtonFilterClick = onButtonFilterClick;
 
     this.#currentComments = this.#findCommentsFilm(this.#film);
 
@@ -56,6 +56,15 @@ export default class PopupPresenter {
       filter((comment) => film.comments.some((filmId) => filmId === comment.id));
   }
 
+  #handleButtonFilterClick = (filterType) => {
+    this.#film.user_details[filterType] = !this.#film.user_details[filterType];
+    this.#handleDataChange(
+      UserAction.UPDATE_FILM,
+      UpdateType.OPENED_POPUP,
+      this.#film
+    );
+  };
+
   #handleCommentsDelete = (comment) => {
     const index = this.#film.comments.findIndex((id) => id === comment.id);
     const update = {
@@ -70,7 +79,7 @@ export default class PopupPresenter {
 
     this.#handleDataChange(
       UserAction.DELETE_COMMENT,
-      UpdateType.PATCH,
+      UpdateType.OPENED_POPUP,
       update
     );
 
@@ -89,21 +98,21 @@ export default class PopupPresenter {
     };
     this.#handleDataChange(
       UserAction.ADD_COMMENT,
-      UpdateType.PATCH,
+      UpdateType.OPENED_POPUP,
       update
     );
   };
 
   #handleButtonCloseClick = () => {
-    this.removePopup();
-    window.popupScrollPosition = 0;
+    this.destroy();
+    window.popupScrollPosition = START_POSITION;
   };
 
   #onEscapeKeydown = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      this.removePopup();
-      window.popupScrollPosition = 0;
+      this.destroy();
+      window.popupScrollPosition = START_POSITION;
     }
   };
 
@@ -114,7 +123,7 @@ export default class PopupPresenter {
     render(this.#filmsDetailsBottomContainerComponent, this.#filmDetailsInnerPopupComponent.element);
   }
 
-  removePopup() {
+  destroy() {
     window.popupScrollPosition = this.#sectionFilmDetailsComponent.element.scrollTop;
     document.body.classList.remove('hide-overflow');
     document.removeEventListener('keydown', this.#onEscapeKeydown);
@@ -123,6 +132,6 @@ export default class PopupPresenter {
 
   init() {
     this.#renderPopup();
-    this.#sectionFilmDetailsComponent.element.scrollTo(0, window.popupScrollPosition);
+    this.#sectionFilmDetailsComponent.element.scrollTo(START_POSITION, window.popupScrollPosition);
   }
 }

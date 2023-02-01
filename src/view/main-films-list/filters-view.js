@@ -1,13 +1,25 @@
 import AbstractView from '../../framework/view/abstract-view.js';
 import { FilterType, TypeButton } from '../../utils/const.js';
 
+function filterHTMLAttribute (currentFilter, filterType, isMainNav = true) {
+  return `
+  <a href="#${filterType}"
+  class="main-navigation__item ${
+  currentFilter === filterType
+    ? 'main-navigation__item--active'
+    : '' }"
+  data-filter-type=${filterType}>
+  ${filterType[0].toUpperCase()}${filterType.substring(1)}
+  ${ isMainNav ? '<span class="main-navigation__item-count">' : ''}`;
+}
+
 function createFiltersFilms({ watchlist, watched, favorite }, currentFilter) {
   return `
   <nav class="main-navigation">
-    <a href="#all" class="main-navigation__item ${currentFilter === FilterType.ALL ? 'main-navigation__item--active' : ''}" data-filter-type=${FilterType.ALL}>All movies</a>
-    <a href="#watchlist" class="main-navigation__item ${currentFilter === FilterType.WATCHLIST ? 'main-navigation__item--active' : ''}" data-filter-type=${FilterType.WATCHLIST}>Watchlist <span class="main-navigation__item-count">${watchlist}</span></a>
-    <a href="#history" class="main-navigation__item ${currentFilter === FilterType.HISTORY ? 'main-navigation__item--active' : ''}" data-filter-type=${FilterType.HISTORY}>History <span class="main-navigation__item-count">${watched}</span></a>
-    <a href="#favorites" class="main-navigation__item ${currentFilter === FilterType.FAVORITE ? 'main-navigation__item--active' : ''}" data-filter-type=${FilterType.FAVORITE}>Favorites <span class="main-navigation__item-count">${favorite}</span></a>
+    ${filterHTMLAttribute(currentFilter, FilterType.ALL, false)} movies</a>
+    ${filterHTMLAttribute(currentFilter, FilterType.WATCHLIST)}${watchlist}</span></a>
+    ${filterHTMLAttribute(currentFilter, FilterType.HISTORY)}${watched}</span></a>
+    ${filterHTMLAttribute(currentFilter, FilterType.FAVORITE)}${favorite}</span></a>
   </nav>`;
 }
 
