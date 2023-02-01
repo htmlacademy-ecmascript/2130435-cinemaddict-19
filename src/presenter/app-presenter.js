@@ -123,7 +123,7 @@ export default class AppPresenter {
       case UpdateType.OPENED_POPUP:
         this.#clearBoard();
         this.#renderBoard(ModeRenderList.UPDATE);
-        this.#filmPresenters?.get(update.id).openPopupHandler();
+        this.#filmPresenters.get(update.id)?.openPopupHandler();
         break;
       case UpdateType.CLOSED_POPUP:
         this.#clearBoard();

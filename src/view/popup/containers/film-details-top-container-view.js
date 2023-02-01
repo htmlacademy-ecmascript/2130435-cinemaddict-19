@@ -90,9 +90,18 @@ export default class FilmsDetailsTopContainerView extends AbstractView {
     this.#film = currentFilmModel;
     this.#handleButtonCloseClick = onButtonCloseClick;
 
-    this.#watchlistClickHandler = () => onFilmControlButtonFilterClick('watchlist');
-    this.#alreadyWatchedClickHandler = () => onFilmControlButtonFilterClick('already_watched');
-    this.#favoriteClickHandler = () => onFilmControlButtonFilterClick('favorite');
+    this.#watchlistClickHandler = (evt) => {
+      onFilmControlButtonFilterClick('watchlist');
+      evt.target.classList.toggle('film-details__control-button--active');
+    };
+    this.#alreadyWatchedClickHandler = (evt) => {
+      onFilmControlButtonFilterClick('already_watched');
+      evt.target.classList.toggle('film-details__control-button--active');
+    };
+    this.#favoriteClickHandler = (evt) => {
+      onFilmControlButtonFilterClick('favorite');
+      evt.target.classList.toggle('film-details__control-button--active');
+    };
 
     this.#initHandlers();
 
