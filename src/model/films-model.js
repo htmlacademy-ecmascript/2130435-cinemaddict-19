@@ -3,8 +3,25 @@ import { createMockFilm } from '../mocks/films.js';
 
 const FILMS_LIST_LENGTH = 12;
 
+function snakeToCamel(str) {
+  const regexp = /_+\w/g;
+  const transformCamel = (match) => match.slice(1).toUpperCase();
+  const newStrCamelCase = str.replace(regexp, transformCamel);
+  return newStrCamelCase;
+}
+
 export default class FilmsModel extends Observable {
   #films = Array.from({ length: FILMS_LIST_LENGTH }, createMockFilm);
+  #filmsApiService = null;
+
+  constructor({filmsApiService}) {
+    super();
+    this.#filmsApiService = filmsApiService;
+
+    this.#filmsApiService.films.then((films) => {
+      console.log(films);
+    });
+  }
 
   get films() {
     return this.#films;
