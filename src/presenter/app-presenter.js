@@ -1,6 +1,6 @@
 import { remove, render } from '../framework/render.js';
 import { sortFilmDate, sortFilmRating } from '../utils/common.js';
-import { FilterType, ModeRenderList, SortType, UpdateType, UserAction } from '../utils/const.js';
+import { ModeRenderList, SortType, UpdateType, UserAction } from '../utils/const.js';
 import SectionFilmsView from '../view/main-films-list/sections/section-films-view.js';
 import SortFilmsView from '../view/main-films-list/sort-view.js';
 import FilmPresenter from './film-presenter.js';
@@ -13,7 +13,6 @@ const main = document.querySelector('.main');
 export default class AppPresenter {
   #place = main;
   #currentSortType = SortType.DEFAULT;
-  #currentFilterType = FilterType.ALL;
 
   #filmsModel;
   #commentsModel;
@@ -31,6 +30,7 @@ export default class AppPresenter {
     this.#commentsModel = commentsModel;
 
     this.#filmsModel.addObserver(this.#handleModelEvent);
+    this.#commentsModel.addObserver(this.#handleModelEvent);
   }
 
   get comments() {
@@ -40,27 +40,16 @@ export default class AppPresenter {
   get films() {
     switch (this.#currentSortType) {
       case (SortType.DATE):
-        return [...this.#filmsModel.films].sort(sortFilmDate);
+        return [...this.#filmsModel.filmsFilter].sort(sortFilmDate);
       case (SortType.RATING):
-        return [...this.#filmsModel.films].sort(sortFilmRating);
+        return [...this.#filmsModel.filmsFilter].sort(sortFilmRating);
+      default:
+        return this.#filmsModel.filmsFilter;
     }
-    return this.#filmsModel.films;
   }
 
   set films(filmList) {
     this.#filmsModel.films = filmList;
-  }
-
-  get filmsFilter() {
-    switch (this.#currentFilterType) {
-      case (FilterType.WATCHLIST):
-        return this.films.filter((film) => film.user_details.watchlist);
-      case (FilterType.HISTORY):
-        return this.films.filter((film) => film.user_details.already_watched);
-      case (FilterType.FAVORITE):
-        return this.films.filter((film) => film.user_details.favorite);
-    }
-    return this.films;
   }
 
   #clearBoard({resetSortType} = {resetSortType: false}) {
@@ -86,7 +75,7 @@ export default class AppPresenter {
   }
 
   #createFilmsPresenters() {
-    this.filmsFilter.forEach((film) => {
+    this.films.forEach((film) => {
       const filmPresenter = this.#createFilmPresenter(film);
       this.#filmPresenters.set(film.id, filmPresenter);
     });
@@ -98,7 +87,7 @@ export default class AppPresenter {
     }
     this.#mainFilmsListPresenter = new MainFilmsListPresenter({
       filmsPresenters: this.#filmPresenters,
-      currentFilterType: this.#currentFilterType
+      currentFilterType: this.#filmsModel.filterType
     });
   }
 
@@ -108,12 +97,10 @@ export default class AppPresenter {
         this.#filmsModel.updateFilm(updateType, update);
         break;
       case UserAction.ADD_COMMENT:
-        this.#commentsModel.addComment(update.comment);
-        this.#filmsModel.addFilmComment(updateType, update.film);
+        this.#commentsModel.addComment(updateType, update.comment, update.film);
         break;
       case UserAction.DELETE_COMMENT:
-        this.#commentsModel.deleteComment(update.comment);
-        this.#filmsModel.deleteFilmComment(updateType, update.film);
+        this.#commentsModel.deleteComment(updateType, update.comment, update.film);
         break;
     }
   };
@@ -154,10 +141,10 @@ export default class AppPresenter {
   };
 
   #handleFilterTypeChange = (filterTypeValue) => {
-    if (this.#currentFilterType === filterTypeValue) {
+    if (this.#filmsModel.filterType === filterTypeValue) {
       return;
     }
-    this.#currentFilterType = filterTypeValue;
+    this.#filmsModel.filterType = filterTypeValue;
 
     this.#clearBoard({ resetSortType: true });
     this.#renderBoard(ModeRenderList.NEW);
@@ -165,8 +152,8 @@ export default class AppPresenter {
 
   #renderFilter() {
     this.#filtersFilmsPresenter = new filmsFilterPresenter({
-      films: this.films,
-      currentFilter: this.#currentFilterType,
+      films: this.#filmsModel,
+      currentFilter:  this.#filmsModel.filterType,
       onFilterChange: this.#handleFilterTypeChange
     });
 
@@ -188,7 +175,7 @@ export default class AppPresenter {
     return {
       place: this.#sectionFilmsComponent.element,
       filmsPresenters: this.#filmPresenters,
-      currentFilterType: this.#currentFilterType,
+      currentFilterType: this.#filmsModel.filterType,
       mode
     };
   }

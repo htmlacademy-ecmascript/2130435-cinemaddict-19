@@ -66,14 +66,8 @@ export default class PopupPresenter {
   };
 
   #handleCommentsDelete = (comment) => {
-    const index = this.#film.comments.findIndex((id) => id === comment.id);
     const update = {
-      film:  {...this.#film,
-        comments: [
-          ...this.#film.comments.slice(0, index),
-          ...this.#film.comments.slice(index + 1),
-        ]
-      },
+      film: this.#film,
       comment: comment
     };
 
@@ -87,13 +81,7 @@ export default class PopupPresenter {
 
   #handleCommentsAdd = (comment) => {
     const update = {
-      film:  {
-        ...this.#film,
-        comments : [
-          ...this.#film.comments,
-          comment.id
-        ]
-      },
+      film: this.#film,
       comment: comment
     };
     this.#handleDataChange(

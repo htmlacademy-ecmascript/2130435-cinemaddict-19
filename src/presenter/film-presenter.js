@@ -32,8 +32,8 @@ export default class FilmPresenter {
   }
 
   #findCommentsFilm(film) {
-    return this.#commentsModel.slice().
-      filter((comment) => film.comments.some((filmId) => filmId === comment.id));
+    return this.#commentsModel
+      .filter((comment) => film.comments.some((filmId) => filmId === comment.id));
   }
 
   openPopupHandler = () => {
