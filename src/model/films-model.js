@@ -1,5 +1,5 @@
 import Observable from '../framework/observable.js';
-import { UpdateType } from '../utils/const.js';
+import { FilterType, UpdateType } from '../utils/const.js';
 
 function snakeToCamel(str) {
   const regexp = /_+\w/g;
@@ -11,27 +11,49 @@ function snakeToCamel(str) {
 export default class FilmsModel extends Observable {
   #films = [];
   #filmsApiService = null;
+  #currentFilterType = FilterType.ALL;
+
 
   constructor({filmsApiService}) {
     super();
     this.#filmsApiService = filmsApiService;
   }
 
+  get watchlist() {
+    return this.films.filter((film) => film.user_details.watchlist).length;
+  }
+
+  get history() {
+    return this.films.filter((film) => film.user_details.already_watched).length;
+  }
+
+  get favorite() {
+    return this.films.filter((film) => film.user_details.favorite).length;
+  }
+
   get films() {
     return this.#films;
   }
 
-  async changeFilmComment(updateType, update) {
-    const filmIndex = this.#films.findIndex((film) => film.id === update.id);
+  get filterType() {
+    return this.#currentFilterType;
+  }
 
-    try {
-      const response = await this.#filmsApiService.updateFilm(update);
-      this.#films[filmIndex].comments = [...response.comments];
-      this._notify(updateType, response);
-    } catch(err) {
-      throw new Error('Can\'t update change list comments by film');
+  set filterType(type) {
+    this.#currentFilterType = type;
+  }
+
+  get filmsFilter() {
+    switch (this.#currentFilterType) {
+      case (FilterType.WATCHLIST):
+        return this.films.filter((film) => film.user_details.watchlist);
+      case (FilterType.HISTORY):
+        return this.films.filter((film) => film.user_details.already_watched);
+      case (FilterType.FAVORITE):
+        return this.films.filter((film) => film.user_details.favorite);
+      default:
+        return this.films;
     }
-
   }
 
   async updateFilm(updateType, update) {
