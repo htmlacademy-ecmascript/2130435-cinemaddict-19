@@ -1,6 +1,5 @@
 import he from 'he';
 import AbstractStatefulView from '../../../framework/view/abstract-stateful-view.js';
-import { getCommentUniqueId } from '../../../mocks/comments.js';
 import { setHumanizeDateAgoComment } from '../../../utils/utils.js';
 
 const emojiNameList = [
@@ -119,7 +118,6 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
         comment: state.userText,
         date: Date.now(),
         emotion: state.emojiValue,
-        id: getCommentUniqueId()
       });
     } catch (err) {
       return err.message;

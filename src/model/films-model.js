@@ -1,7 +1,5 @@
 import Observable from '../framework/observable.js';
-import { createMockFilm } from '../mocks/films.js';
-
-const FILMS_LIST_LENGTH = 12;
+import { UpdateType } from '../utils/const.js';
 
 function snakeToCamel(str) {
   const regexp = /_+\w/g;
@@ -11,42 +9,51 @@ function snakeToCamel(str) {
 }
 
 export default class FilmsModel extends Observable {
-  #films = Array.from({ length: FILMS_LIST_LENGTH }, createMockFilm);
+  #films = [];
   #filmsApiService = null;
 
   constructor({filmsApiService}) {
     super();
     this.#filmsApiService = filmsApiService;
-
-    this.#filmsApiService.films.then((films) => {
-      console.log(films);
-    });
   }
 
   get films() {
     return this.#films;
   }
 
-  addFilmComment(updateType, update) {
+  async changeFilmComment(updateType, update) {
     const filmIndex = this.#films.findIndex((film) => film.id === update.id);
 
-    this.#films[filmIndex].comments = [...update.comments];
-    this._notify(updateType, update);
+    try {
+      const response = await this.#filmsApiService.updateFilm(update);
+      this.#films[filmIndex].comments = [...response.comments];
+      this._notify(updateType, response);
+    } catch(err) {
+      throw new Error('Can\'t update change list comments by film');
+    }
+
   }
 
-  deleteFilmComment(updateType, update) {
+  async updateFilm(updateType, update) {
     const filmIndex = this.#films.findIndex((film) => film.id === update.id);
-    const commentsList = [...update.comments];
-
-    this.#films[filmIndex].comments = commentsList;
-    this._notify(updateType, update);
+    try {
+      const response = await this.#filmsApiService.updateFilm(update);
+      this.#films[filmIndex] = response;
+      this._notify(updateType, response);
+    } catch(err) {
+      throw new Error('Can\'t update film');
+    }
   }
 
-  updateFilm(updateType, update) {
-    const filmIndex = this.#films.findIndex((film) => film.id === update.id);
+  async init() {
+    try {
+      const films = await this.#filmsApiService.films;
+      this.#films = films;
+    } catch(err) {
+      this.#films = [];
+    }
 
-    this.#films[filmIndex] = update;
-    this._notify(updateType, update);
+    this._notify(UpdateType.INIT);
   }
 
 }

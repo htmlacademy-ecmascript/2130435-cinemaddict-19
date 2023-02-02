@@ -1,6 +1,7 @@
-import { remove, render } from '../framework/render.js';
+import { remove, render, RenderPosition } from '../framework/render.js';
 import { sortFilmDate, sortFilmRating } from '../utils/common.js';
 import { FilterType, ModeRenderList, SortType, UpdateType, UserAction } from '../utils/const.js';
+import LoadingView from '../view/loading-view.js';
 import SectionFilmsView from '../view/main-films-list/sections/section-films-view.js';
 import SortFilmsView from '../view/main-films-list/sort-view.js';
 import FilmPresenter from './film-presenter.js';
@@ -17,6 +18,9 @@ export default class AppPresenter {
 
   #filmsModel;
   #commentsModel;
+
+  #loadingComponent = new LoadingView();
+  #isLoading = true;
 
   #popupPresenter = null;
   #filmPresenters = new Map();
@@ -109,11 +113,11 @@ export default class AppPresenter {
         break;
       case UserAction.ADD_COMMENT:
         this.#commentsModel.addComment(update.comment);
-        this.#filmsModel.addFilmComment(updateType, update.film);
+        this.#filmsModel.changeFilmComment(updateType, update.film);
         break;
       case UserAction.DELETE_COMMENT:
         this.#commentsModel.deleteComment(update.comment);
-        this.#filmsModel.deleteFilmComment(updateType, update.film);
+        this.#filmsModel.changeFilmComment(updateType, update.film);
         break;
     }
   };
@@ -128,6 +132,11 @@ export default class AppPresenter {
       case UpdateType.CLOSED_POPUP:
         this.#clearBoard();
         this.#renderBoard(ModeRenderList.UPDATE);
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderBoard();
         break;
     }
   };
@@ -163,6 +172,10 @@ export default class AppPresenter {
     this.#renderBoard(ModeRenderList.NEW);
   };
 
+  #renderLoading() {
+    render(this.#loadingComponent, this.#place, RenderPosition.AFTERBEGIN);
+  }
+
   #renderFilter() {
     this.#filtersFilmsPresenter = new filmsFilterPresenter({
       films: this.films,
@@ -194,6 +207,11 @@ export default class AppPresenter {
   }
 
   #renderBoard(sortMode) {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     this.#sectionFilmsComponent = new SectionFilmsView();
     this.#createFilmsPresenters();
     this.#createMainFilmsListPresenter();

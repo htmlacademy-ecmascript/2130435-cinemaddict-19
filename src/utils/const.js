@@ -47,7 +47,8 @@ const UserAction = {
 
 const UpdateType = {
   OPENED_POPUP: 'OPEN_POPUP',
-  CLOSED_POPUP: 'CLOSED_POPUP'
+  CLOSED_POPUP: 'CLOSED_POPUP',
+  INIT: 'INIT'
 };
 
 const ModeRenderList = {

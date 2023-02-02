@@ -21,3 +21,4 @@ const appPresenter = new AppPresenter({
 });
 
 appPresenter.init();
+filmsModel.init();
