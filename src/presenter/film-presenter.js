@@ -30,7 +30,6 @@ export default class FilmPresenter {
   openPopupHandler = () => {
     this.#handleOpenPopup({
       film: this.#film,
-      commentsModel: this.#commentsModel,
       handleDataChange: this.#handleDataChange,
     });
     this.#handleDataChange(

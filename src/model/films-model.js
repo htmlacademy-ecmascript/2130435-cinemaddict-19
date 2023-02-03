@@ -1,12 +1,12 @@
 import Observable from '../framework/observable.js';
 import { FilterType, UpdateType } from '../utils/const.js';
 
-function snakeToCamel(str) {
-  const regexp = /_+\w/g;
-  const transformCamel = (match) => match.slice(1).toUpperCase();
-  const newStrCamelCase = str.replace(regexp, transformCamel);
-  return newStrCamelCase;
-}
+// function snakeToCamel(str) {
+//   const regexp = /_+\w/g;
+//   const transformCamel = (match) => match.slice(1).toUpperCase();
+//   const newStrCamelCase = str.replace(regexp, transformCamel);
+//   return newStrCamelCase;
+// }
 
 export default class FilmsModel extends Observable {
   #films = [];
@@ -71,7 +71,6 @@ export default class FilmsModel extends Observable {
     try {
       const films = await this.#filmsApiService.films;
       this.#films = films;
-      console.log(films)
     } catch(err) {
       this.#films = [];
     }

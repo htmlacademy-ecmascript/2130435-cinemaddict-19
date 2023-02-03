@@ -61,6 +61,7 @@ export default class AppPresenter {
     this.#filmPresenters?.clear();
     this.#mainFilmsListPresenter?.destroy();
     this.#filtersFilmsPresenter?.destroy();
+    // this.#popupPresenter?.destroy();
     remove(this.#sortFilmsComponent);
     remove(this.#sectionFilmsComponent);
 
@@ -213,7 +214,6 @@ export default class AppPresenter {
     }
 
     this.#createMainFilmsListPresenter();
-
 
     this.#mainFilmsListPresenter.init(this.#getSettingsMainList(sortMode));
   }

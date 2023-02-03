@@ -9,23 +9,17 @@ const START_POSITION = 0;
 
 export default class PopupPresenter {
   #place = document.body;
-
   #film;
-  #commentsModel;
-
   #handleDataChange;
-
-  #commentsComments;
 
   #sectionFilmDetailsComponent = new SectionFilmDetailsView();
   #filmDetailsInnerPopupComponent = new FilmDetailsInnerPopupView();
   #filmsDetailsTopContainerComponent;
   #filmsDetailsBottomContainerComponent;
 
-  constructor({ film, commentsModel, handleDataChange }) {
+  constructor({ film, handleDataChange }) {
     this.#film = film;
     this.#handleDataChange = handleDataChange;
-    this.#commentsComments = commentsModel;
 
     this.#filmsDetailsTopContainerComponent = this.#createFilmsTopContainerView();
     document.addEventListener('keydown', this.#onEscapeKeydown);
@@ -56,20 +50,6 @@ export default class PopupPresenter {
     );
   };
 
-  #handleCommentsDelete = (comment) => {
-    const update = {
-      film: this.#film,
-      comment: comment
-    };
-
-    this.#handleDataChange(
-      UserAction.DELETE_COMMENT,
-      UpdateType.OPENED_POPUP,
-      update
-    );
-
-  };
-
   #handleCommentsAdd = (comment) => {
     const update = {
       film: this.#film,
@@ -80,6 +60,20 @@ export default class PopupPresenter {
       UpdateType.GET_COMMENT,
       update
     );
+  };
+
+  #handleCommentsDelete = (comment) => {
+    const update = {
+      film: this.#film,
+      comment: comment
+    };
+
+    this.#handleDataChange(
+      UserAction.DELETE_COMMENT,
+      UpdateType.GET_COMMENT,
+      update
+    );
+
   };
 
   #handleButtonCloseClick = () => {
@@ -114,14 +108,19 @@ export default class PopupPresenter {
       const update = this.#createFilmsBottomContainerView(comment);
       replace(update, this.#filmsDetailsBottomContainerComponent);
       this.#filmsDetailsBottomContainerComponent = update;
-    } else {
-      this.#filmsDetailsBottomContainerComponent = this.#createFilmsBottomContainerView(comment);
-      render(this.#filmsDetailsBottomContainerComponent, this.#filmDetailsInnerPopupComponent.element);
+      this.#sectionFilmDetailsComponent.element.scrollTo(START_POSITION, window.popupScrollPosition);
+
+      return;
     }
+
+    this.#filmsDetailsBottomContainerComponent = this.#createFilmsBottomContainerView(comment);
+    render(this.#filmsDetailsBottomContainerComponent, this.#filmDetailsInnerPopupComponent.element);
+    this.#sectionFilmDetailsComponent.element.scrollTo(START_POSITION, window.popupScrollPosition);
+
+
   }
 
   init() {
     this.#renderPopup();
-    this.#sectionFilmDetailsComponent.element.scrollTo(START_POSITION, window.popupScrollPosition);
   }
 }

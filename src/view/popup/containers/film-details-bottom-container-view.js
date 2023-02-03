@@ -109,10 +109,7 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
         throw new Error('Not selected emoji smile');
       }
       this.#addCommentHandler({
-        author: 'Unknown',
         comment: state.userText,
-        date: new Date(),
-        // date: '2023-01-21T17:43:36.042Z',
         emotion: state.emojiValue,
       });
     } catch (err) {
