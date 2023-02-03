@@ -37,17 +37,16 @@ function createFilmCardControls({ already_watched: watched, favorite, watchlist 
   </div>`;
 }
 
-function createFilmCard(film, comments) {
+function createFilmCard(film) {
   return `
   <article class="film-card">
-    ${createFilmCardLink(film.film_info, comments)}
+    ${createFilmCardLink(film.film_info, film.comments)}
     ${createFilmCardControls(film.user_details)}
   </article>`;
 }
 
 export default class FilmCardView extends AbstractView {
   #film;
-  #commentsFilm;
 
   #handleFilmClick = null;
 
@@ -55,10 +54,9 @@ export default class FilmCardView extends AbstractView {
   #alreadyWatchedClickHandler = null;
   #favoriteClickHandler = null;
 
-  constructor({ film, currentComments, onFilmControlButtonFilterClick, onFilmClick }) {
+  constructor({ film, onFilmControlButtonFilterClick, onFilmClick }) {
     super();
     this.#film = film;
-    this.#commentsFilm = currentComments;
     this.#handleFilmClick = onFilmClick;
 
     this.#watchlistClickHandler = () => onFilmControlButtonFilterClick('watchlist');
@@ -86,6 +84,6 @@ export default class FilmCardView extends AbstractView {
   };
 
   get template() {
-    return createFilmCard(this.#film, this.#commentsFilm);
+    return createFilmCard(this.#film);
   }
 }

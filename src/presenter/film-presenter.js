@@ -8,32 +8,23 @@ export default class FilmPresenter {
 
   #handleDataChange;
   #handleOpenPopup;
-  #currentCommentsFilm;
 
   #filmCardComponent = null;
 
   constructor({ film, commentsModel, onDataChange, onFilmClick }) {
     this.#film = film;
     this.#commentsModel = commentsModel;
-    this.#handleDataChange = onDataChange;
-    this.#currentCommentsFilm = this.#findCommentsFilm(this.#film);
 
+    this.#handleDataChange = onDataChange;
     this.#handleOpenPopup = onFilmClick;
   }
 
   #createFilmCard() {
-    this.#currentCommentsFilm = this.#findCommentsFilm(this.#film);
     return new FilmCardView({
       film: this.#film,
-      currentComments: this.#currentCommentsFilm,
       onFilmControlButtonFilterClick: this.#handleFilmControlButtonFilterClick,
       onFilmClick: this.openPopupHandler
     });
-  }
-
-  #findCommentsFilm(film) {
-    return this.#commentsModel
-      .filter((comment) => film.comments.some((filmId) => filmId === comment.id));
   }
 
   openPopupHandler = () => {
@@ -42,6 +33,11 @@ export default class FilmPresenter {
       commentsModel: this.#commentsModel,
       handleDataChange: this.#handleDataChange,
     });
+    this.#handleDataChange(
+      UserAction.OPEN_POPUP,
+      UpdateType.GET_COMMENT,
+      this.#film
+    );
   };
 
   #handleFilmControlButtonFilterClick = (filterType) => {

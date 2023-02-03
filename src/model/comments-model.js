@@ -1,12 +1,31 @@
-import { COMMENTS_LIST_LENGTH } from '../utils/const.js';
-import { createMockComment } from '../mocks/comments.js';
+import { UpdateType } from '../utils/const.js';
 import Observable from '../framework/observable.js';
 
 export default class CommentsModel extends Observable {
-  #comments = Array.from({ length: COMMENTS_LIST_LENGTH }, createMockComment);
+  #comments = [];
+  #commentsApiService;
+
+  constructor({commentsApiService}) {
+    super();
+    this.#commentsApiService = commentsApiService;
+  }
 
   get comments() {
     return this.#comments;
+  }
+
+  set comments(newComments) {
+    this.#comments = newComments;
+  }
+
+  async getComments(updateType, film) {
+    try {
+      const response = await this.#commentsApiService.getComments(film);
+      this.comments = response;
+      this._notify(updateType, this.comments);
+    } catch (err) {
+      this.comments = [];
+    }
   }
 
   #deleteElem(film, comment) {
@@ -27,10 +46,15 @@ export default class CommentsModel extends Observable {
     ];
   }
 
-  addComment(updateType, comment, film) {
-    this.#comments.push(comment);
-    film.comments.push(comment.id);
-    this._notify(updateType, film);
+  async addComment(updateType, comment, film) {
+    comment.date.toISOString();
+    try {
+      const response = await this.#commentsApiService.addComment(film, comment);
+      this.#comments = [...this.#comments, response];
+      this._notify(updateType, this.#comments);
+    } catch(err) {
+      throw new Error('Can\'t add task');
+    }
   }
 
   deleteComment(updateType, comment, film) {

@@ -43,12 +43,14 @@ const UserAction = {
   UPDATE_FILM: 'UPDATE_FILM',
   ADD_COMMENT: 'ADD_COMMENT',
   DELETE_COMMENT: 'DELETE_COMMENT',
+  OPEN_POPUP: 'OPEN_POPUP'
 };
 
 const UpdateType = {
   OPENED_POPUP: 'OPEN_POPUP',
   CLOSED_POPUP: 'CLOSED_POPUP',
-  INIT: 'INIT'
+  INIT: 'INIT',
+  GET_COMMENT: 'GET_COMMENT'
 };
 
 const ModeRenderList = {
