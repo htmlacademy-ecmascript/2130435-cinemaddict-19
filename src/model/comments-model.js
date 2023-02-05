@@ -1,25 +1,34 @@
-import { COMMENTS_LIST_LENGTH } from '../utils/const.js';
-import { createMockComment } from '../mocks/comments.js';
+import { UpdateType } from '../utils/const.js';
 import Observable from '../framework/observable.js';
 
 export default class CommentsModel extends Observable {
-  #comments = Array.from({ length: COMMENTS_LIST_LENGTH }, createMockComment);
+  #comments = [];
+  #commentsApiService;
+
+  constructor({commentsApiService}) {
+    super();
+    this.#commentsApiService = commentsApiService;
+  }
 
   get comments() {
     return this.#comments;
   }
 
-  #deleteElem(film, comment) {
-    const index = this.#comments.findIndex((element) => element.id === comment.id);
-    if (index === -1) {
-      throw new Error('Can\'t delete unexisting task');
+  set comments(newComments) {
+    this.#comments = newComments;
+  }
+
+  async getComments(updateType, film) {
+    try {
+      const response = await this.#commentsApiService.getComments(film);
+      this.comments = response;
+      this._notify(updateType, this.comments);
+    } catch (err) {
+      this.comments = [];
     }
+  }
 
-    this.#comments = [
-      ...this.#comments.slice(0, index),
-      ...this.#comments.slice(index + 1),
-    ];
-
+  #deleteCommentFilm(film, comment) {
     const indexFilm = film.comments.findIndex((id) => id === comment.id);
     film.comments = [
       ...film.comments.slice(0, indexFilm),
@@ -27,15 +36,27 @@ export default class CommentsModel extends Observable {
     ];
   }
 
-  addComment(updateType, comment, film) {
-    this.#comments.push(comment);
-    film.comments.push(comment.id);
-    this._notify(updateType, film);
+  async addComment(updateType, comment, film) {
+    try {
+      const response = await this.#commentsApiService.addComment(film, comment);
+      film.comments = response.movie.comments;
+      this._notify(UpdateType.OPENED_POPUP, film);
+      await this.getComments(updateType, film);
+    } catch(err) {
+      throw new Error('Can\'t add comment');
+    }
   }
 
-  deleteComment(updateType, comment, film) {
-    this.#deleteElem(film, comment);
-    this._notify(updateType, film);
+  async deleteComment(updateType, comment, film) {
+    try {
+      await this.#commentsApiService.deleteComment(comment);
+      this.#deleteCommentFilm(film, comment);
+      this._notify(UpdateType.OPENED_POPUP, film);
+      await this.getComments(updateType, film);
+    } catch(err) {
+      throw new Error('Can\'t delete comment');
+    }
+
   }
 
 }

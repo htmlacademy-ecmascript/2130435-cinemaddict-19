@@ -1,6 +1,5 @@
 import he from 'he';
 import AbstractStatefulView from '../../../framework/view/abstract-stateful-view.js';
-import { getCommentUniqueId } from '../../../mocks/comments.js';
 import { setHumanizeDateAgoComment } from '../../../utils/utils.js';
 
 const emojiNameList = [
@@ -41,20 +40,16 @@ function createFilmDetailsBottomContainer(comments, {emojiValue, userText}) {
   <div class="film-details__bottom-container">
     <section class="film-details__comments-wrap">
       <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
-
       <ul class="film-details__comments-list">
         ${comments.map(createCommentItem).join('')}
       </ul>
-
       <form class="film-details__new-comment" action="" method="get">
         <div class="film-details__add-emoji-label">
         ${emojiValue ? `<img src="images/emoji/${emojiValue}.png" width="55" height="55" alt="emoji-smile">` : '' }
         </div>
-
         <label class="film-details__comment-label">
           <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${commentText}</textarea>
         </label>
-
         <div class="film-details__emoji-list">
           ${emojiNameList.map(createEmojiItem).join('')}
         </div>
@@ -114,11 +109,8 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
         throw new Error('Not selected emoji smile');
       }
       this.#addCommentHandler({
-        author: 'Unknown',
         comment: state.userText,
-        date: Date.now(),
         emotion: state.emojiValue,
-        id: getCommentUniqueId()
       });
     } catch (err) {
       return err.message;
@@ -143,4 +135,3 @@ export default class FilmDetailsBottomContainerView extends AbstractStatefulView
     return createFilmDetailsBottomContainer(this.#comments, this._state);
   }
 }
-

@@ -1,6 +1,7 @@
-import { remove, render } from '../framework/render.js';
+import { remove, render, RenderPosition } from '../framework/render.js';
 import { sortFilmDate, sortFilmRating } from '../utils/common.js';
 import { ModeRenderList, SortType, UpdateType, UserAction } from '../utils/const.js';
+import LoadingView from '../view/loading-view.js';
 import SectionFilmsView from '../view/main-films-list/sections/section-films-view.js';
 import SortFilmsView from '../view/main-films-list/sort-view.js';
 import FilmPresenter from './film-presenter.js';
@@ -16,6 +17,9 @@ export default class AppPresenter {
 
   #filmsModel;
   #commentsModel;
+
+  #loadingComponent = new LoadingView();
+  #isLoading = true;
 
   #popupPresenter = null;
   #filmPresenters = new Map();
@@ -53,10 +57,11 @@ export default class AppPresenter {
   }
 
   #clearBoard({resetSortType} = {resetSortType: false}) {
-    this.#filmPresenters.forEach((presenter) => presenter.destroy());
-    this.#filmPresenters.clear();
-    this.#mainFilmsListPresenter.destroy();
-    this.#filtersFilmsPresenter.destroy();
+    this.#filmPresenters?.forEach((presenter) => presenter.destroy());
+    this.#filmPresenters?.clear();
+    this.#mainFilmsListPresenter?.destroy();
+    this.#filtersFilmsPresenter?.destroy();
+    // this.#popupPresenter?.destroy();
     remove(this.#sortFilmsComponent);
     remove(this.#sectionFilmsComponent);
 
@@ -68,7 +73,7 @@ export default class AppPresenter {
   #createFilmPresenter(film) {
     return new FilmPresenter({
       film,
-      commentsModel: this.comments,
+      commentsModel: this.#commentsModel,
       onFilmClick: this.#handleOpenPopup,
       onDataChange: this.#handleViewAction
     });
@@ -93,6 +98,9 @@ export default class AppPresenter {
 
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
+      case UserAction.OPEN_POPUP:
+        this.#commentsModel.getComments(updateType, update);
+        break;
       case UserAction.UPDATE_FILM:
         this.#filmsModel.updateFilm(updateType, update);
         break;
@@ -112,9 +120,18 @@ export default class AppPresenter {
         this.#renderBoard(ModeRenderList.UPDATE);
         this.#filmPresenters.get(update.id)?.openPopupHandler();
         break;
+      case UpdateType.GET_COMMENT:
+        this.#popupPresenter.renderComments(update);
+        break;
       case UpdateType.CLOSED_POPUP:
         this.#clearBoard();
         this.#renderBoard(ModeRenderList.UPDATE);
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#clearBoard();
+        this.#renderBoard();
         break;
     }
   };
@@ -150,6 +167,10 @@ export default class AppPresenter {
     this.#renderBoard(ModeRenderList.NEW);
   };
 
+  #renderLoading() {
+    render(this.#loadingComponent, this.#sectionFilmsComponent.element, RenderPosition.AFTERBEGIN);
+  }
+
   #renderFilter() {
     this.#filtersFilmsPresenter = new filmsFilterPresenter({
       films: this.#filmsModel,
@@ -183,12 +204,17 @@ export default class AppPresenter {
   #renderBoard(sortMode) {
     this.#sectionFilmsComponent = new SectionFilmsView();
     this.#createFilmsPresenters();
-    this.#createMainFilmsListPresenter();
-
     this.#renderFilter();
     this.#renderSort();
-
     render(this.#sectionFilmsComponent, this.#place);
+
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
+    this.#createMainFilmsListPresenter();
+
     this.#mainFilmsListPresenter.init(this.#getSettingsMainList(sortMode));
   }
 
