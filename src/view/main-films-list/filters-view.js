@@ -1,26 +1,54 @@
 import AbstractView from '../../framework/view/abstract-view.js';
+import { FilterType, TypeButton } from '../../utils/const.js';
 
-function createFiltersFilms(filmsModel) {
+function filterHTMLAttribute (currentFilter, filterType, isMainNav = true) {
+  return `
+  <a href="#${filterType}"
+  class="main-navigation__item ${
+  currentFilter === filterType
+    ? 'main-navigation__item--active'
+    : '' }"
+  data-filter-type=${filterType}>
+  ${filterType[0].toUpperCase()}${filterType.substring(1)}
+  ${ isMainNav ? '<span class="main-navigation__item-count">' : ''}`;
+}
+
+function createFiltersFilms({ watchlist, watched, favorite }, currentFilter) {
   return `
   <nav class="main-navigation">
-    <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-    <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">${filmsModel.watchlist}</span></a>
-    <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">${filmsModel.watched}</span></a>
-    <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">${filmsModel.favorite}</span></a>
+    ${filterHTMLAttribute(currentFilter, FilterType.ALL, false)} movies</a>
+    ${filterHTMLAttribute(currentFilter, FilterType.WATCHLIST)}${watchlist}</span></a>
+    ${filterHTMLAttribute(currentFilter, FilterType.HISTORY)}${watched}</span></a>
+    ${filterHTMLAttribute(currentFilter, FilterType.FAVORITE)}${favorite}</span></a>
   </nav>`;
 }
 
 export default class FiltersFilmsView extends AbstractView {
-  #filmsModel;
+  #counters = {};
+  #currentFilter;
+  #handleFilterTypeChange = null;
 
-  constructor(filmsModel) {
+  constructor({ watchListCounter, watchedCounter, favoriteCounter, onFilterChange, currentFilter }) {
     super();
+    this.#counters[TypeButton.WATCHLIST] = watchListCounter;
+    this.#counters[TypeButton.WATCHED] = watchedCounter;
+    this.#counters[TypeButton.FAVORITE] = favoriteCounter;
+    this.#currentFilter = currentFilter;
+    this.#handleFilterTypeChange = onFilterChange;
 
-    this.#filmsModel = filmsModel;
-    this.#filmsModel.updateCounter();
+    this.element.addEventListener('click', this.#filterTypeChangeHandler);
   }
 
   get template() {
-    return createFiltersFilms(this.#filmsModel);
+    return createFiltersFilms(this.#counters, this.#currentFilter);
   }
+
+  #filterTypeChangeHandler = (evt) => {
+    if (evt.target.tagName !== 'A') {
+      return;
+    }
+
+    evt.preventDefault();
+    this.#handleFilterTypeChange(evt.target.dataset.filterType);
+  };
 }

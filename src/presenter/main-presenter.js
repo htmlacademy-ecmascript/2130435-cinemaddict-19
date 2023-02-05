@@ -1,5 +1,4 @@
 import { render, replace } from '../framework/render.js';
-import { updateItem } from '../utils/common.js';
 import FooterView from '../view/footer/footer-view.js';
 import HeaderView from '../view/header/header-view.js';
 import FiltersFilmsView from '../view/main-films-list/filters-view.js';
@@ -117,8 +116,7 @@ export default class MainPresenter {
     render(this.#footerComponent, this.#footer);
   }
 
-  #initPopup = (cardFilmData, film) => {
-    this.#films = updateItem(this.#films, film);
+  #initPopup = (cardFilmData) => {
     if (this.#popupPresenter) {
       this.#popupPresenter.removePopup();
     }

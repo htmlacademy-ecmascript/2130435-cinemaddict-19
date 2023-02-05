@@ -78,41 +78,43 @@ function createFilmDetailsTopContainer(film) {
 
 export default class FilmsDetailsTopContainerView extends AbstractView {
   #film;
+
   #handleButtonCloseClick = null;
 
   #watchlistClickHandler = null;
   #alreadyWatchedClickHandler = null;
   #favoriteClickHandler = null;
-  #update;
 
-  constructor({currentFilmModel, onButtonCloseClick, updateControlButton, onControlButtonClick}) {
+  constructor({ currentFilmModel, onButtonCloseClick, onFilmControlButtonFilterClick }) {
     super();
     this.#film = currentFilmModel;
     this.#handleButtonCloseClick = onButtonCloseClick;
 
-    this.#update = updateControlButton;
-
-    this.#watchlistClickHandler = () => {
-      onControlButtonClick('watchlist');
-      this.#update();
+    this.#watchlistClickHandler = (evt) => {
+      onFilmControlButtonFilterClick('watchlist');
+      evt.target.classList.toggle('film-details__control-button--active');
     };
-    this.#alreadyWatchedClickHandler = () => {
-      onControlButtonClick('already_watched');
-      this.#update();
+    this.#alreadyWatchedClickHandler = (evt) => {
+      onFilmControlButtonFilterClick('already_watched');
+      evt.target.classList.toggle('film-details__control-button--active');
     };
-    this.#favoriteClickHandler = () => {
-      onControlButtonClick('favorite');
-      this.#update();
+    this.#favoriteClickHandler = (evt) => {
+      onFilmControlButtonFilterClick('favorite');
+      evt.target.classList.toggle('film-details__control-button--active');
     };
 
-    this.element.querySelector('.film-details__close-btn').
-      addEventListener('click', this.#buttonCloseClickHandler);
-
-    this.#addHandlerForControlButton();
+    this.#initHandlers();
 
   }
 
-  #addHandlerForControlButton() {
+  #buttonCloseClickHandler = () => {
+    this.#handleButtonCloseClick();
+  };
+
+  #initHandlers() {
+    this.element.querySelector('.film-details__close-btn').
+      addEventListener('click', this.#buttonCloseClickHandler);
+
     this.element.querySelector('.film-details__control-button--watchlist').
       addEventListener('click', this.#watchlistClickHandler);
     this.element.querySelector('.film-details__control-button--watched').
@@ -120,10 +122,6 @@ export default class FilmsDetailsTopContainerView extends AbstractView {
     this.element.querySelector('.film-details__control-button--favorite').
       addEventListener('click', this.#favoriteClickHandler);
   }
-
-  #buttonCloseClickHandler = () => {
-    this.#handleButtonCloseClick();
-  };
 
   get template() {
     return createFilmDetailsTopContainer(this.#film);

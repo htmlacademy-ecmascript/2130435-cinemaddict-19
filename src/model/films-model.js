@@ -1,52 +1,55 @@
+import Observable from '../framework/observable.js';
 import { createMockFilm } from '../mocks/films.js';
+import { FilterType } from '../utils/const.js';
 
 const FILMS_LIST_LENGTH = 12;
 
-export default class FilmsModel {
-  #wathclistCounter = 0;
-  #watchedCounter = 0;
-  #favoriteCounter = 0;
-  #filmsModel = Array.from({ length: FILMS_LIST_LENGTH }, createMockFilm);
-
-  get films() {
-    return this.#filmsModel;
-  }
-
-  #resetCounter() {
-    this.#wathclistCounter = 0;
-    this.#watchedCounter = 0;
-    this.#favoriteCounter = 0;
-  }
-
-  updateCounter() {
-    this.#resetCounter();
-    this.#filmsModel.forEach((film) => {
-      if (film.user_details.watchlist) {
-        this.#wathclistCounter++;
-      }
-      if (film.user_details.already_watched) {
-        this.#watchedCounter++;
-      }
-      if (film.user_details.favorite) {
-        this.#favoriteCounter++;
-      }
-    });
-
-  }
+export default class FilmsModel extends Observable {
+  #films = Array.from({ length: FILMS_LIST_LENGTH }, createMockFilm);
+  #currentFilterType = FilterType.ALL;
 
   get watchlist() {
-    this.updateCounter();
-    return this.#wathclistCounter;
+    return this.films.filter((film) => film.user_details.watchlist).length;
   }
 
-  get watched() {
-    this.updateCounter();
-    return this.#watchedCounter;
+  get history() {
+    return this.films.filter((film) => film.user_details.already_watched).length;
   }
 
   get favorite() {
-    this.updateCounter();
-    return this.#favoriteCounter;
+    return this.films.filter((film) => film.user_details.favorite).length;
+  }
+
+  get films() {
+    return this.#films;
+  }
+
+  get filterType() {
+    return this.#currentFilterType;
+  }
+
+  set filterType(type) {
+    this.#currentFilterType = type;
+  }
+
+  get filmsFilter() {
+    switch (this.#currentFilterType) {
+      case (FilterType.WATCHLIST):
+        return this.films.filter((film) => film.user_details.watchlist);
+      case (FilterType.HISTORY):
+        return this.films.filter((film) => film.user_details.already_watched);
+      case (FilterType.FAVORITE):
+        return this.films.filter((film) => film.user_details.favorite);
+      default:
+        return this.films;
+    }
+  }
+
+  updateFilm(updateType, update) {
+    const filmIndex = this.#films.findIndex((film) => film.id === update.id);
+    this.#films[filmIndex] = update;
+
+    this._notify(updateType, update);
   }
 
 }

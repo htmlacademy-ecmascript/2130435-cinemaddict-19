@@ -35,4 +35,4 @@ const createMockComment = () => ({
   'emotion': getRandomElementArray(COMMENT_EMOTION)
 });
 
-export { createMockComment };
+export { createMockComment, getCommentUniqueId };
