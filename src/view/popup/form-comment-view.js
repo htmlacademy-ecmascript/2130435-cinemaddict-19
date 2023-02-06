@@ -29,7 +29,7 @@ function createForm({emojiValue, userText}) {
       <div class="film-details__emoji-list">
           ${emojiNameList.map(createEmojiItem).join('')}
       </div>
-    </form>`
+    </form>`;
 }
 
 export default class FormCommentView extends AbstractStatefulView {
@@ -41,9 +41,9 @@ export default class FormCommentView extends AbstractStatefulView {
     this._setState({
       userText: null,
       emojiValue: null
-    })
+    });
 
-    this._restoreHandlers()
+    this._restoreHandlers();
   }
 
   #enterCtrlKeyDownHandler = (evt) => {
@@ -74,15 +74,15 @@ export default class FormCommentView extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('.film-details__comment-input').
-      addEventListener('keydown', this.#enterCtrlKeyDownHandler)
+      addEventListener('keydown', this.#enterCtrlKeyDownHandler);
     this.element.querySelector('.film-details__comment-input').
-    addEventListener('input', this.#textareaInputHandler);
+      addEventListener('input', this.#textareaInputHandler);
     this.element.querySelector('.film-details__emoji-list').
-    addEventListener('change', this.#radioChangeHandler);
+      addEventListener('change', this.#radioChangeHandler);
   }
 
   get template() {
-    return createForm(this._state)
+    return createForm(this._state);
   }
 
 }
