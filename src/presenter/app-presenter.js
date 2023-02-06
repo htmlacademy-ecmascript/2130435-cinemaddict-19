@@ -1,7 +1,7 @@
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
 import { sortFilmDate, sortFilmRating } from '../utils/common.js';
-import { ModeRenderList, SortType, UpdateType, UserAction } from '../utils/const.js';
+import { ModeRenderList, SortType, TitleList, UpdateType, UserAction } from '../utils/const.js';
 import LoadingView from '../view/loading-view.js';
 import SectionFilmsView from '../view/main-films-list/sections/section-films-view.js';
 import SortFilmsView from '../view/main-films-list/sort-view.js';
@@ -9,6 +9,7 @@ import FilmPresenter from './film-presenter.js';
 import filmsFilterPresenter from './films-filters-presenter.js';
 import MainFilmsListPresenter from './main-list-presenter.js';
 import PopupPresenter from './popup-presenter.js';
+import ExtraFilmsListPresenter from './extra-films-list-presenter.js';
 
 const main = document.querySelector('.main');
 const TimeLimit = {
@@ -28,8 +29,13 @@ export default class AppPresenter {
 
   #popupPresenter = null;
   #filmPresenters = new Map();
+  #ratedFilmPresenters = new Map();
+  #commentedFilmPresenters = new Map();
   #filtersFilmsPresenter;
+
   #mainFilmsListPresenter = null;
+  #topRatedFilmsListPresenter = null;
+  #mostCommentedFilmsListPresenter = null;
 
   #sortFilmsComponent = null;
   #sectionFilmsComponent = null;
@@ -96,6 +102,20 @@ export default class AppPresenter {
     });
   }
 
+  #createRatedFilmsPresenters() {
+    this.#filmsModel.topRated.slice(0, 2).forEach((film) => {
+      const filmPresenter = this.#createFilmPresenter(film);
+      this.#ratedFilmPresenters.set(film.id, filmPresenter);
+    });
+  }
+
+  #createCommentedFilmsPresenters() {
+    this.#filmsModel.mostCommented.slice(0, 2).forEach((film) => {
+      const filmPresenter = this.#createFilmPresenter(film);
+      this.#commentedFilmPresenters.set(film.id, filmPresenter);
+    });
+  }
+
   #createMainFilmsListPresenter() {
     if (this.#mainFilmsListPresenter) {
       return this.#mainFilmsListPresenter;
@@ -103,6 +123,26 @@ export default class AppPresenter {
     this.#mainFilmsListPresenter = new MainFilmsListPresenter({
       filmsPresenters: this.#filmPresenters,
       currentFilterType: this.#filmsModel.filterType
+    });
+  }
+
+  #createTopRatedFilmsListPresenter() {
+    if (this.#topRatedFilmsListPresenter) {
+      return this.#topRatedFilmsListPresenter;
+    }
+    this.#topRatedFilmsListPresenter = new ExtraFilmsListPresenter({
+      films: this.#ratedFilmPresenters,
+      listTitle: TitleList.RATED
+    });
+  }
+
+  #createMostCommentedFilmsListPresenter() {
+    if (this.#mostCommentedFilmsListPresenter) {
+      return this.#mostCommentedFilmsListPresenter;
+    }
+    this.#mostCommentedFilmsListPresenter = new ExtraFilmsListPresenter({
+      films: this.#commentedFilmPresenters,
+      listTitle: TitleList.COMMENTED
     });
   }
 
@@ -237,7 +277,11 @@ export default class AppPresenter {
 
   #renderBoard(sortMode) {
     this.#sectionFilmsComponent = new SectionFilmsView();
+
     this.#createFilmsPresenters();
+    this.#createRatedFilmsPresenters();
+    this.#createCommentedFilmsPresenters();
+
     this.#renderFilter();
     this.#renderSort();
     render(this.#sectionFilmsComponent, this.#place);
@@ -248,8 +292,12 @@ export default class AppPresenter {
     }
 
     this.#createMainFilmsListPresenter();
+    this.#createTopRatedFilmsListPresenter();
+    this.#createMostCommentedFilmsListPresenter();
 
     this.#mainFilmsListPresenter.init(this.#getSettingsMainList(sortMode));
+    this.#topRatedFilmsListPresenter.init({ place: this.#sectionFilmsComponent.element });
+    this.#mostCommentedFilmsListPresenter.init({ place: this.#sectionFilmsComponent.element });
   }
 
   init() {

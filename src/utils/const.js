@@ -60,5 +60,10 @@ const ModeRenderList = {
   LOAD: 'load'
 };
 
+const TitleList = {
+  RATED: 'Top rated',
+  COMMENTED: 'Most commented'
+};
+
 export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList, MIN_DESCRIPTION_TEXT_LENGTH
-  , MAX_DESCRIPTION_TEXT_LENGTH, ModeRenderList };
+  , MAX_DESCRIPTION_TEXT_LENGTH, ModeRenderList, TitleList };

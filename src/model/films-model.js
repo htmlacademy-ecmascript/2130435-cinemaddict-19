@@ -1,5 +1,6 @@
 import Observable from '../framework/observable.js';
 import { FilterType, UpdateType } from '../utils/const.js';
+import { sortMostCommented, sortTopRated } from '../utils/sort.js';
 
 // function snakeToCamel(str) {
 //   const regexp = /_+\w/g;
@@ -54,6 +55,14 @@ export default class FilmsModel extends Observable {
       default:
         return this.films;
     }
+  }
+
+  get topRated() {
+    return this.films.filter((film) => film.film_info.total_rating).sort(sortTopRated);
+  }
+
+  get mostCommented() {
+    return this.films.filter((film) => film.comments.length).sort(sortMostCommented);
   }
 
   async updateFilm(updateType, update) {
