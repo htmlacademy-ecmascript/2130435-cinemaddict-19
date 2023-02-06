@@ -1,6 +1,6 @@
 import Observable from '../framework/observable.js';
-import { FilterType, UpdateType } from '../utils/const.js';
-import { sortMostCommented, sortTopRated } from '../utils/sort.js';
+import {FilterType, UpdateType} from '../utils/const.js';
+import {sortMostCommented, sortTopRated} from '../utils/sort.js';
 
 // function snakeToCamel(str) {
 //   const regexp = /_+\w/g;
@@ -78,8 +78,7 @@ export default class FilmsModel extends Observable {
 
   async init() {
     try {
-      const films = await this.#filmsApiService.films;
-      this.#films = films;
+      this.#films = await this.#filmsApiService.films;
     } catch(err) {
       this.#films = [];
     }

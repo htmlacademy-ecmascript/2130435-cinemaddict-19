@@ -1,4 +1,4 @@
-import { UpdateType } from '../utils/const.js';
+import {UpdateType} from '../utils/const.js';
 import Observable from '../framework/observable.js';
 
 export default class CommentsModel extends Observable {
@@ -20,8 +20,7 @@ export default class CommentsModel extends Observable {
 
   async getComments(updateType, film) {
     try {
-      const response = await this.#commentsApiService.getComments(film);
-      this.comments = response;
+      this.comments = await this.#commentsApiService.getComments(film);
       this._notify(updateType, this.comments);
     } catch (err) {
       this.comments = [];
@@ -38,7 +37,7 @@ export default class CommentsModel extends Observable {
 
   async addComment(updateType, comment, film) {
     try {
-      const response = await this.#commentsApiService.addComment(film, comment);
+      const response = await this.#commentsApiService.addComment(film, comment).movie.comments;
       film.comments = response.movie.comments;
       this._notify(UpdateType.OPENED_POPUP, film);
       await this.getComments(updateType, film);
