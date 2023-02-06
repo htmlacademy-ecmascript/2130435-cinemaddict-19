@@ -27,15 +27,10 @@ export default class CommentsPresenter {
     this.#film = film;
     this.#filmsComments = comments;
     this.#handleDataChange = onDataChange;
-    this.#setCommentsMap();
-  }
-
-  #setCommentsMap() {
-    this.#filmsComments.forEach((comment) => this.#commentList.set(comment.id, comment));
   }
 
   #renderComments(place) {
-    this.#commentList.forEach((comment) => {
+    this.#filmsComments.forEach((comment) => {
       const commentComponent = new CommentItemView({
         comment,
         onCommentDelete: () => this.#handleCommentsDelete(comment)
