@@ -21,16 +21,15 @@ function createCommentItem(comment) {
 export default class CommentItemView extends AbstractStatefulView {
   #deleteCommentHandler = null;
 
-  constructor(comment, onCommentDelete) {
+  constructor({comment, onCommentDelete}) {
     super();
 
     this._setState({
-      ...comment.comment,
+      ...comment,
       isDeleting: false
     });
-    console.log(this._state)
 
-    this.#deleteCommentHandler = onCommentDelete;
+    this.#deleteCommentHandler = () => onCommentDelete();
     this._restoreHandlers();
   }
 

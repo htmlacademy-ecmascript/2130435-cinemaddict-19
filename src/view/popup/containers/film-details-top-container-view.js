@@ -1,4 +1,4 @@
-import AbstractView from '../../../framework/view/abstract-view.js';
+import AbstractStatefulView from '../../../framework/view/abstract-stateful-view.js';
 import {setHumanizeDateFilmRelease} from '../../../utils/utils.js';
 
 function createFilmDetailsInfoHead(film) {
@@ -76,9 +76,7 @@ function createFilmDetailsTopContainer(film) {
     </div>`;
 }
 
-export default class FilmsDetailsTopContainerView extends AbstractView {
-  #film;
-
+export default class FilmsDetailsTopContainerView extends AbstractStatefulView {
   #handleButtonCloseClick = null;
 
   #watchlistClickHandler = null;
@@ -87,23 +85,22 @@ export default class FilmsDetailsTopContainerView extends AbstractView {
 
   constructor({ currentFilmModel, onButtonCloseClick, onFilmControlButtonFilterClick }) {
     super();
-    this.#film = currentFilmModel;
+    this._setState({
+      ...currentFilmModel
+    });
     this.#handleButtonCloseClick = onButtonCloseClick;
 
-    this.#watchlistClickHandler = (evt) => {
+    this.#watchlistClickHandler = () => {
       onFilmControlButtonFilterClick('watchlist');
-      evt.target.classList.toggle('film-details__control-button--active');
     };
-    this.#alreadyWatchedClickHandler = (evt) => {
+    this.#alreadyWatchedClickHandler = () => {
       onFilmControlButtonFilterClick('already_watched');
-      evt.target.classList.toggle('film-details__control-button--active');
     };
-    this.#favoriteClickHandler = (evt) => {
+    this.#favoriteClickHandler = () => {
       onFilmControlButtonFilterClick('favorite');
-      evt.target.classList.toggle('film-details__control-button--active');
     };
 
-    this.#initHandlers();
+    this._restoreHandlers();
 
   }
 
@@ -111,7 +108,7 @@ export default class FilmsDetailsTopContainerView extends AbstractView {
     this.#handleButtonCloseClick();
   };
 
-  #initHandlers() {
+  _restoreHandlers() {
     this.element.querySelector('.film-details__close-btn').
       addEventListener('click', this.#buttonCloseClickHandler);
 
@@ -124,6 +121,6 @@ export default class FilmsDetailsTopContainerView extends AbstractView {
   }
 
   get template() {
-    return createFilmDetailsTopContainer(this.#film);
+    return createFilmDetailsTopContainer(this._state);
   }
 }

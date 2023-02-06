@@ -1,3 +1,4 @@
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
 import { sortFilmDate, sortFilmRating } from '../utils/common.js';
 import { ModeRenderList, SortType, UpdateType, UserAction } from '../utils/const.js';
@@ -10,6 +11,10 @@ import MainFilmsListPresenter from './main-list-presenter.js';
 import PopupPresenter from './popup-presenter.js';
 
 const main = document.querySelector('.main');
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
 
 export default class AppPresenter {
   #place = main;
@@ -28,6 +33,11 @@ export default class AppPresenter {
 
   #sortFilmsComponent = null;
   #sectionFilmsComponent = null;
+
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  });
 
   constructor({ filmsModel, commentsModel }) {
     this.#filmsModel = filmsModel;
@@ -96,21 +106,45 @@ export default class AppPresenter {
     });
   }
 
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
     switch (actionType) {
       case UserAction.OPEN_POPUP:
         this.#commentsModel.getComments(updateType, update);
         break;
+      case UserAction.UPDATE_FILM_CARD:
+        try {
+          await this.#filmsModel.updateFilm(updateType, update);
+        } catch {
+          this.#filmPresenters.get(update.id)?.setUpdateAborting();
+        }
+        break;
       case UserAction.UPDATE_FILM:
-        this.#filmsModel.updateFilm(updateType, update);
+        try {
+          await this.#filmsModel.updateFilm(updateType, update);
+        } catch {
+          this.#popupPresenter.setUpdateAborting();
+        }
         break;
       case UserAction.ADD_COMMENT:
-        this.#commentsModel.addComment(updateType, update.comment, update.film);
+        this.#popupPresenter.setAdding();
+        try {
+          await this.#commentsModel.addComment(updateType, update.comment, update.film);
+        } catch {
+          this.#popupPresenter.setAddAborting();
+        }
         break;
       case UserAction.DELETE_COMMENT:
-        this.#commentsModel.deleteComment(updateType, update.comment, update.film);
+        this.#popupPresenter.setDeleting();
+        try {
+          await this.#commentsModel.deleteComment(updateType, update.comment, update.film);
+        } catch {
+          this.#popupPresenter.setDeleteAborting();
+        }
         break;
     }
+    this.#uiBlocker.unblock();
+
   };
 
   #handleModelEvent = (updateType, update) => {

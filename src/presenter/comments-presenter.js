@@ -1,7 +1,7 @@
 import ListCommentsView from '../view/popup/list-comments-view';
 import CommentsWrapView from '../view/popup/comments-wrap-view';
 import BottomContainerView from '../view/popup/bottom-container-view';
-import {render} from '../framework/render';
+import {remove, render} from '../framework/render';
 import FormCommentView from '../view/popup/form-comment-view';
 import CommentItemView from '../view/popup/comment-item-view';
 import {UpdateType, UserAction} from '../utils/const';
@@ -13,7 +13,10 @@ export default class CommentsPresenter {
   #filmsComments;
   #handleDataChange = null;
 
+  #currentComment = null;
+
   #commentList = new Map();
+  #commentsComponents = new Map();
 
   #bottomContainerComponent = new BottomContainerView();
   #commentWrapperComponent = null;
@@ -33,7 +36,11 @@ export default class CommentsPresenter {
 
   #renderComments(place) {
     this.#commentList.forEach((comment) => {
-      const commentComponent = new CommentItemView({comment, onCommentDelete: null})
+      const commentComponent = new CommentItemView({
+        comment,
+        onCommentDelete: () => this.#handleCommentsDelete(comment)
+      });
+      this.#commentsComponents.set(comment.id, commentComponent);
       render(commentComponent, place);
     });
   }
@@ -41,8 +48,8 @@ export default class CommentsPresenter {
   #renderFormComment() {
     this.#commentFormComponent = new FormCommentView({
       onCommentAdd: this.#handleCommentAdd
-    })
-    render(this.#commentFormComponent, this.#commentWrapperComponent.element)
+    });
+    render(this.#commentFormComponent, this.#commentWrapperComponent.element);
   }
 
   #renderBlockComments() {
@@ -68,6 +75,7 @@ export default class CommentsPresenter {
   };
 
   #handleCommentsDelete = (comment) => {
+    this.#currentComment = comment.id;
     const update = {
       film: this.#film,
       comment: comment
@@ -81,11 +89,49 @@ export default class CommentsPresenter {
 
   };
 
+  destroy() {
+    remove(this.#bottomContainerComponent);
+    remove(this.#commentWrapperComponent);
+    remove(this.#commentFormComponent);
+    remove(this.#listCommentsComponent);
+  }
+
   init(place) {
     this.#place = place;
     this.#renderBlockComments();
   }
 
+  setDeleting() {
+    this.#commentsComponents.get(this.#currentComment).updateElement({
+      isDeleting: true,
+    });
+  }
 
+  setDeleteAborting() {
+    const resetFormState = () => {
+      this.#commentsComponents.get(this.#currentComment).updateElement({
+        isDisabled: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#commentsComponents.get(this.#currentComment).shake(resetFormState);
+  }
+
+  setAdding() {
+    this.#commentFormComponent.updateElement({
+      isDisabled: true,
+    });
+  }
+
+  setAddAborting() {
+    const resetFormState = () => {
+      this.#commentFormComponent.updateElement({
+        isDisabled: false,
+      });
+    };
+
+    this.#commentFormComponent.shake(resetFormState);
+  }
 
 }
