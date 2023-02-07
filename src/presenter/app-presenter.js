@@ -29,6 +29,7 @@ export default class AppPresenter {
 
   #popupPresenter = null;
   #filmPresenters = new Map();
+  #mainFilmPresenters = new Map();
   #ratedFilmPresenters = new Map();
   #commentedFilmPresenters = new Map();
   #filtersFilmsPresenter;
@@ -75,6 +76,8 @@ export default class AppPresenter {
   #clearBoard({resetSortType} = {resetSortType: false}) {
     this.#filmPresenters?.forEach((presenter) => presenter.destroy());
     this.#filmPresenters?.clear();
+    this.#mainFilmPresenters?.forEach((presenter) => presenter.destroy());
+    this.#mainFilmPresenters?.clear();
     this.#mainFilmsListPresenter?.destroy();
     this.#filtersFilmsPresenter?.destroy();
     // this.#popupPresenter?.destroy();
@@ -96,9 +99,16 @@ export default class AppPresenter {
   }
 
   #createFilmsPresenters() {
-    this.films.forEach((film) => {
+    this.#filmsModel.films.forEach((film) => {
       const filmPresenter = this.#createFilmPresenter(film);
       this.#filmPresenters.set(film.id, filmPresenter);
+    });
+  }
+
+  #createMainFilmsPresenters() {
+    this.films.forEach((film) => {
+      const filmPresenter = this.#createFilmPresenter(film);
+      this.#mainFilmPresenters.set(film.id, filmPresenter);
     });
   }
 
@@ -121,7 +131,7 @@ export default class AppPresenter {
       return this.#mainFilmsListPresenter;
     }
     this.#mainFilmsListPresenter = new MainFilmsListPresenter({
-      filmsPresenters: this.#filmPresenters,
+      filmsPresenters: this.#mainFilmPresenters,
       currentFilterType: this.#filmsModel.filterType
     });
   }
@@ -148,6 +158,7 @@ export default class AppPresenter {
 
   #createFilmsListsPresenters() {
     this.#createFilmsPresenters();
+    this.#createMainFilmsPresenters();
     this.#createRatedFilmsPresenters();
     this.#createCommentedFilmsPresenters();
   }
@@ -274,7 +285,7 @@ export default class AppPresenter {
   #getSettingsMainList(mode = ModeRenderList.NEW) {
     return {
       place: this.#sectionFilmsComponent.element,
-      filmsPresenters: this.#filmPresenters,
+      filmsPresenters: this.#mainFilmPresenters,
       currentFilterType: this.#filmsModel.filterType,
       mode
     };
