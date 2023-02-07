@@ -6,11 +6,11 @@ function createFilmDetailsInfoHead(film) {
   <div class="film-details__info-head">
     <div class="film-details__title-wrap">
       <h3 class="film-details__title">${film.title}</h3>
-      <p class="film-details__title-original">${film.alternative_title}</p>
+      <p class="film-details__title-original">${film.alternativeTitle}</p>
     </div>
 
     <div class="film-details__rating">
-      <p class="film-details__total-rating">${film.total_rating}</p>
+      <p class="film-details__total-rating">${film.totalRating}</p>
     </div>
   </div>`;
 }
@@ -36,12 +36,12 @@ function createFilmDetailsTable(film) {
     ${createFilmDetailsRow('Actors', film.actors.join(', '))}
     ${createFilmDetailsRow('Release Date', setHumanizeDateFilmRelease(film.release.date))}
     ${createFilmDetailsRow('Duration', getDuration(Number(film.duration)))}
-    ${createFilmDetailsRow('Country', film.release.release_country)}
+    ${createFilmDetailsRow('Country', film.release.releaseCountry)}
     ${createFilmDetailsRow(genreSubtitleText, createGenresItems(film.genre))}
   </table>`;
 }
 
-function createFilmDetailsControls({ already_watched: watched, favorite, watchlist }) {
+function createFilmDetailsControls({ alreadyWatched: watched, favorite, watchlist }) {
   return `
   <section class="film-details__controls">
     <button type="button" class="film-details__control-button film-details__control-button--watchlist ${watchlist ? 'film-details__control-button--active' : ''}" id="watchlist" name="watchlist">Add to watchlist</button>
@@ -58,21 +58,21 @@ function createFilmDetailsTopContainer(film) {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./${film.film_info.poster}" alt="">
+          <img class="film-details__poster-img" src="./${film.filmInfo.poster}" alt="">
 
-          <p class="film-details__age">${film.film_info.age_rating}+</p>
+          <p class="film-details__age">${film.filmInfo.ageRating}+</p>
         </div>
 
         <div class="film-details__info">
-          ${createFilmDetailsInfoHead(film.film_info)}
-          ${createFilmDetailsTable(film.film_info)}
+          ${createFilmDetailsInfoHead(film.filmInfo)}
+          ${createFilmDetailsTable(film.filmInfo)}
           <p class="film-details__film-description">
-            ${film.film_info.description}
+            ${film.filmInfo.description}
           </p>
         </div>
       </div>
 
-      ${createFilmDetailsControls(film.user_details)}
+      ${createFilmDetailsControls(film.userDetails)}
     </div>`;
 }
 
@@ -94,7 +94,7 @@ export default class FilmsDetailsTopContainerView extends AbstractStatefulView {
       onFilmControlButtonFilterClick('watchlist');
     };
     this.#alreadyWatchedClickHandler = () => {
-      onFilmControlButtonFilterClick('already_watched');
+      onFilmControlButtonFilterClick('alreadyWatched');
     };
     this.#favoriteClickHandler = () => {
       onFilmControlButtonFilterClick('favorite');

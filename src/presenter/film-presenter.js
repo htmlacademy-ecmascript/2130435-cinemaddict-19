@@ -40,7 +40,7 @@ export default class FilmPresenter {
   };
 
   #handleFilmControlButtonFilterClick = (filterType) => {
-    this.#film.user_details[filterType] = !this.#film.user_details[filterType];
+    this.#film.userDetails[filterType] = !this.#film.userDetails[filterType];
     this.#handleDataChange(
       UserAction.UPDATE_FILM_CARD,
       UpdateType.CLOSED_POPUP,

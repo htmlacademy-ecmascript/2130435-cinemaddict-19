@@ -2,19 +2,12 @@ import Observable from '../framework/observable.js';
 import {FilterType, UpdateType} from '../utils/const.js';
 import {sortMostCommented, sortTopRated} from '../utils/sort.js';
 import {Filter} from '../utils/filter';
-
-// function snakeToCamel(str) {
-//   const regexp = /_+\w/g;
-//   const transformCamel = (match) => match.slice(1).toUpperCase();
-//   const newStrCamelCase = str.replace(regexp, transformCamel);
-//   return newStrCamelCase;
-// }
+import {adaptiveToApp} from '../utils/adaptive';
 
 export default class FilmsModel extends Observable {
   #films = [];
   #filmsApiService = null;
   #currentFilterType = FilterType.ALL;
-
 
   constructor({filmsApiService}) {
     super();
@@ -68,8 +61,8 @@ export default class FilmsModel extends Observable {
     const filmIndex = this.#films.findIndex((film) => film.id === update.id);
     try {
       const response = await this.#filmsApiService.updateFilm(update);
-      this.#films[filmIndex] = response;
-      this._notify(updateType, response);
+      this.#films[filmIndex] = adaptiveToApp(response);
+      this._notify(updateType, adaptiveToApp(response));
     } catch(err) {
       throw new Error('Can\'t update film');
     }
@@ -77,11 +70,11 @@ export default class FilmsModel extends Observable {
 
   async init() {
     try {
-      this.#films = await this.#filmsApiService.films;
+      const response = await this.#filmsApiService.films;
+      this.#films = response.map(adaptiveToApp);
     } catch(err) {
       this.#films = [];
     }
-
     this._notify(UpdateType.INIT);
   }
 

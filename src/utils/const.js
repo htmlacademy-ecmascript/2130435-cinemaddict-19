@@ -69,5 +69,17 @@ const FilmsMoreButtonDownloadParameters = {
   STEP: 5,
 };
 
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+};
+
+const Url = {
+  FILMS: 'movies',
+  COMMENTS: 'comments'
+};
+
 export { COMMENTS_EMOTIONS, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList, MIN_DESCRIPTION_TEXT_LENGTH
-  , MAX_DESCRIPTION_TEXT_LENGTH, ModeRenderList, TitleList, FilmsMoreButtonDownloadParameters };
+  , MAX_DESCRIPTION_TEXT_LENGTH, ModeRenderList, TitleList, FilmsMoreButtonDownloadParameters, Method, Url };

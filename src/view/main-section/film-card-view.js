@@ -11,7 +11,7 @@ function createDescriptionText(description) {
 }
 
 function createFilmCardLink(
-  {title, total_rating: rating, release, duration, genre, poster, description},
+  {title, totalRating: rating, release, duration, genre, poster, description},
   comments) {
   return `
   <a class="film-card__link">
@@ -28,7 +28,7 @@ function createFilmCardLink(
   </a>`;
 }
 
-function createFilmCardControls({ already_watched: watched, favorite, watchlist }) {
+function createFilmCardControls({ alreadyWatched: watched, favorite, watchlist }) {
   return `
   <div class="film-card__controls">
     <button class="film-card__controls-item film-card__controls-item--add-to-watchlist ${watchlist ? 'film-card__controls-item--active' : ''}" type="button">Add to watchlist</button>
@@ -40,8 +40,8 @@ function createFilmCardControls({ already_watched: watched, favorite, watchlist 
 function createFilmCard(film) {
   return `
   <article class="film-card">
-    ${createFilmCardLink(film.film_info, film.comments)}
-    ${createFilmCardControls(film.user_details)}
+    ${createFilmCardLink(film.filmInfo, film.comments)}
+    ${createFilmCardControls(film.userDetails)}
   </article>`;
 }
 

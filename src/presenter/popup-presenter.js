@@ -44,7 +44,7 @@ export default class PopupPresenter {
 
   #handleButtonFilterClick = (filterType) => {
     this.#currentFilterChange = filterType;
-    this.#film.user_details[filterType] = !this.#film.user_details[filterType];
+    this.#film.userDetails[filterType] = !this.#film.userDetails[filterType];
     this.#handleDataChange(
       UserAction.UPDATE_FILM,
       UpdateType.OPENED_POPUP,
@@ -111,7 +111,7 @@ export default class PopupPresenter {
   }
 
   setUpdateAborting() {
-    this.#film.user_details[this.#currentFilterChange] = !this.#film.user_details[this.#currentFilterChange];
+    this.#film.userDetails[this.#currentFilterChange] = !this.#film.userDetails[this.#currentFilterChange];
     const resetFormState = () => {
       this.#filmsDetailsTopContainerComponent.updateElement({
         ...this.#film
