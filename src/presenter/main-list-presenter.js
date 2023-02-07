@@ -1,24 +1,20 @@
 import { render, remove } from '../framework/render.js';
-import { ModeRenderList } from '../utils/const.js';
-import FilmsListContainerView from '../view/main-films-list/containers/films-list-container-view.js';
-import SectionFilmsListEmptyView from '../view/main-films-list/sections/section-films-list-empty-view.js';
-import SectionFilmsListView from '../view/main-films-list/sections/section-films-list-view.js';
-import ShowMoreButtonView from '../view/main-films-list/show-more-button-view.js';
-
-const STANDARD_LIST_TITLE = 'All movies. Upcoming';
-const START_ELEMENT = 0;
-const STEP_PER_LOAD_MORE_FILMS = 5;
+import {FilmsMoreButtonDownloadParameters, ModeRenderList, TitleList} from '../utils/const.js';
+import FilmsListContainerView from '../view/main-section/containers/films-list-container-view.js';
+import SectionFilmsListEmptyView from '../view/main-section/sections/section-films-list-empty-view.js';
+import SectionFilmsListView from '../view/main-section/sections/section-films-list-view.js';
+import ShowMoreButtonView from '../view/main-section/show-more-button-view.js';
 
 export default class MainFilmsListPresenter {
   #place;
   #isExtra = false;
-  #listTitle = STANDARD_LIST_TITLE;
+  #listTitle = TitleList.STANDARD_LIST_TITLE;
   #cardsFilmsPresenters;
   #currentFilterType;
 
-  #start = START_ELEMENT;
-  #end = START_ELEMENT;
-  #step = STEP_PER_LOAD_MORE_FILMS;
+  #start = FilmsMoreButtonDownloadParameters.START;
+  #end = FilmsMoreButtonDownloadParameters.START;
+  #step = FilmsMoreButtonDownloadParameters.STEP;
 
   #sectionFilmsListComponent;
   #filmsListContainerComponent;
@@ -38,7 +34,7 @@ export default class MainFilmsListPresenter {
   }
 
   #createShowMoreButton() {
-    return new ShowMoreButtonView({
+    this.#showMoreButtonComponent = new ShowMoreButtonView({
       onClick: this.#handleLoadMoreButtonClick
     });
   }
@@ -50,7 +46,7 @@ export default class MainFilmsListPresenter {
   #renderCardsFilmsInCurrentRange(mode = ModeRenderList.NEW) {
     switch (mode) {
       case ModeRenderList.NEW:
-        this.#end = START_ELEMENT;
+        this.#end = FilmsMoreButtonDownloadParameters.START;
         this.#cardsFilmsPresenters
           .slice(this.#start, this.#end += this.#step)
           .forEach((film) => this.#renderCardFilm(film));
@@ -81,7 +77,7 @@ export default class MainFilmsListPresenter {
   }
 
   #renderShowMoreButton() {
-    this.#showMoreButtonComponent = this.#createShowMoreButton();
+    this.#createShowMoreButton();
     if (this.#end < this.#cardsFilmsPresenters.length) {
       render(this.#showMoreButtonComponent, this.#sectionFilmsListComponent.element);
     }
@@ -116,6 +112,7 @@ export default class MainFilmsListPresenter {
    * @param {HTMLElement} place Место рендера списка
    * @param {string} mode Режим отрисовки карточек фильмов. По умолчанию отрисовка первого ряда элементов.
    * @param {Map} filmsPresenters Презентеры фильмов. По умолчанию список при создании объекта
+   * @param {string} currentFilterType Значение текущего выбранного фильтра в приложении
    */
   init({place, mode, filmsPresenters = this.#cardsFilmsPresenters, currentFilterType }) {
     this.#place = place;

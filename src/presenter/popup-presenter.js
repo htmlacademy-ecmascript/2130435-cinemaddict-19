@@ -2,7 +2,7 @@ import { remove, render } from '../framework/render.js';
 import { UpdateType, UserAction } from '../utils/const.js';
 import FilmDetailsInnerPopupView from '../view/popup/containers/film-details-inner-view.js';
 import FilmsDetailsTopContainerView from '../view/popup/containers/film-details-top-container-view.js';
-import SectionFilmDetailsView from '../view/popup/sections/section-film-details-view.js';
+import SectionFilmDetailsView from '../view/popup/film-information/section-film-details-view.js';
 import CommentsPresenter from './comments-presenter';
 
 const START_POSITION = 0;

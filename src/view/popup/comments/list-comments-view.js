@@ -1,4 +1,4 @@
-import AbstractView from '../../framework/view/abstract-view';
+import AbstractView from '../../../framework/view/abstract-view';
 
 function createListComments() {
   return '<ul class="film-details__comments-list"></ul>';

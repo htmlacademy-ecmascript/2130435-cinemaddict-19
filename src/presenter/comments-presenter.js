@@ -1,9 +1,9 @@
-import ListCommentsView from '../view/popup/list-comments-view';
-import CommentsWrapView from '../view/popup/comments-wrap-view';
-import BottomContainerView from '../view/popup/bottom-container-view';
+import ListCommentsView from '../view/popup/comments/list-comments-view';
+import CommentsWrapView from '../view/popup/comments/comments-wrap-view';
+import BottomContainerView from '../view/popup/containers/bottom-container-view';
 import {remove, render} from '../framework/render';
-import FormCommentView from '../view/popup/form-comment-view';
-import CommentItemView from '../view/popup/comment-item-view';
+import FormCommentView from '../view/popup/comments/form-comment-view';
+import CommentItemView from '../view/popup/comments/comment-item-view';
 import {UpdateType, UserAction} from '../utils/const';
 
 export default class CommentsPresenter {
@@ -15,7 +15,6 @@ export default class CommentsPresenter {
 
   #currentComment = null;
 
-  #commentList = new Map();
   #commentsComponents = new Map();
 
   #bottomContainerComponent = new BottomContainerView();
@@ -98,6 +97,7 @@ export default class CommentsPresenter {
 
   setDeleting() {
     this.#commentsComponents.get(this.#currentComment).updateElement({
+      isDisabled: true,
       isDeleting: true,
     });
   }

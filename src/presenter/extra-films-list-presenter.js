@@ -1,6 +1,6 @@
 import { remove, render } from '../framework/render.js';
-import FilmsListContainerView from '../view/main-films-list/containers/films-list-container-view.js';
-import SectionFilmsListView from '../view/main-films-list/sections/section-films-list-view.js';
+import FilmsListContainerView from '../view/main-section/containers/films-list-container-view.js';
+import SectionFilmsListView from '../view/main-section/sections/section-films-list-view.js';
 
 export default class ExtraFilmsListPresenter {
   #place;

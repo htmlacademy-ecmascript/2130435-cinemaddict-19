@@ -1,5 +1,5 @@
 import { remove, render } from '../framework/render.js';
-import FiltersFilmsView from '../view/main-films-list/filters-view.js';
+import FiltersFilmsView from '../view/main-section/filters-view.js';
 
 export default class filmsFilterPresenter {
   #films;

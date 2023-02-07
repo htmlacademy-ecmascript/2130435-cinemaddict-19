@@ -1,10 +1,10 @@
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
-import { sortFilmDate, sortFilmRating } from '../utils/common.js';
+import { sortFilmDate, sortFilmRating } from '../utils/sort.js';
 import { ModeRenderList, SortType, TitleList, UpdateType, UserAction } from '../utils/const.js';
-import LoadingView from '../view/loading-view.js';
-import SectionFilmsView from '../view/main-films-list/sections/section-films-view.js';
-import SortFilmsView from '../view/main-films-list/sort-view.js';
+import LoadingView from '../view/others/loading-view.js';
+import SectionFilmsView from '../view/main-section/sections/section-films-view.js';
+import SortFilmsView from '../view/main-section/sort-view.js';
 import FilmPresenter from './film-presenter.js';
 import filmsFilterPresenter from './films-filters-presenter.js';
 import MainFilmsListPresenter from './main-list-presenter.js';
@@ -146,6 +146,12 @@ export default class AppPresenter {
     });
   }
 
+  #createFilmsListsPresenters() {
+    this.#createFilmsPresenters();
+    this.#createRatedFilmsPresenters();
+    this.#createCommentedFilmsPresenters();
+  }
+
   #handleViewAction = async (actionType, updateType, update) => {
     this.#uiBlocker.block();
     switch (actionType) {
@@ -184,10 +190,9 @@ export default class AppPresenter {
         break;
     }
     this.#uiBlocker.unblock();
-
   };
 
-  #handleModelEvent = (updateType, update) => {
+  #handleModelEvent = async (updateType, update) => {
     switch (updateType) {
       case UpdateType.OPENED_POPUP:
         this.#clearBoard();
@@ -195,7 +200,7 @@ export default class AppPresenter {
         this.#filmPresenters.get(update.id)?.openPopupHandler();
         break;
       case UpdateType.GET_COMMENT:
-        this.#popupPresenter.renderComments(update);
+        await this.#popupPresenter.renderComments(update);
         break;
       case UpdateType.CLOSED_POPUP:
         this.#clearBoard();
@@ -275,13 +280,20 @@ export default class AppPresenter {
     };
   }
 
+  #renderFilmsLists(sortMode) {
+    this.#createMainFilmsListPresenter();
+    this.#createTopRatedFilmsListPresenter();
+    this.#createMostCommentedFilmsListPresenter();
+
+    this.#mainFilmsListPresenter.init(this.#getSettingsMainList(sortMode));
+    this.#topRatedFilmsListPresenter.init({ place: this.#sectionFilmsComponent.element });
+    this.#mostCommentedFilmsListPresenter.init({ place: this.#sectionFilmsComponent.element });
+  }
+
   #renderBoard(sortMode) {
+    this.#createFilmsListsPresenters();
+
     this.#sectionFilmsComponent = new SectionFilmsView();
-
-    this.#createFilmsPresenters();
-    this.#createRatedFilmsPresenters();
-    this.#createCommentedFilmsPresenters();
-
     this.#renderFilter();
     this.#renderSort();
     render(this.#sectionFilmsComponent, this.#place);
@@ -291,13 +303,7 @@ export default class AppPresenter {
       return;
     }
 
-    this.#createMainFilmsListPresenter();
-    this.#createTopRatedFilmsListPresenter();
-    this.#createMostCommentedFilmsListPresenter();
-
-    this.#mainFilmsListPresenter.init(this.#getSettingsMainList(sortMode));
-    this.#topRatedFilmsListPresenter.init({ place: this.#sectionFilmsComponent.element });
-    this.#mostCommentedFilmsListPresenter.init({ place: this.#sectionFilmsComponent.element });
+    this.#renderFilmsLists(sortMode);
   }
 
   init() {

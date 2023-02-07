@@ -27,17 +27,9 @@ export default class CommentsModel extends Observable {
     }
   }
 
-  #deleteCommentFilm(film, comment) {
-    const indexFilm = film.comments.findIndex((id) => id === comment.id);
-    film.comments = [
-      ...film.comments.slice(0, indexFilm),
-      ...film.comments.slice(indexFilm + 1)
-    ];
-  }
-
   async addComment(updateType, comment, film) {
     try {
-      const response = await this.#commentsApiService.addComment(film, comment).movie.comments;
+      const response = await this.#commentsApiService.addComment(film, comment);
       film.comments = response.movie.comments;
       this._notify(UpdateType.OPENED_POPUP, film);
       await this.getComments(updateType, film);
@@ -55,7 +47,14 @@ export default class CommentsModel extends Observable {
     } catch(err) {
       throw new Error('Can\'t delete comment');
     }
+  }
 
+  #deleteCommentFilm(film, comment) {
+    const indexFilm = film.comments.findIndex((id) => id === comment.id);
+    film.comments = [
+      ...film.comments.slice(0, indexFilm),
+      ...film.comments.slice(indexFilm + 1)
+    ];
   }
 
 }

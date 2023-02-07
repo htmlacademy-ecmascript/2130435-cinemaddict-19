@@ -1,8 +1,4 @@
-const COMMENT_EMOTION = ['smile', 'sleeping', 'puke', 'angry'];
-const ONE_HOUR = 60;
-
-const COMMENTS_LIST_LENGTH = 9;
-const MAX_SENTENCES = 4;
+const COMMENTS_EMOTIONS = ['smile', 'sleeping', 'puke', 'angry'];
 
 const MIN_DESCRIPTION_TEXT_LENGTH = 0;
 const MAX_DESCRIPTION_TEXT_LENGTH = 139;
@@ -30,6 +26,8 @@ const FilterType = {
   WATCHLIST: 'watchlist',
   HISTORY: 'history',
   FAVORITE: 'favorite',
+  TOP_RATING: 'rated',
+  MOST_COMMENTED: 'commented',
 };
 
 const TitleEmptyList = {
@@ -62,8 +60,14 @@ const ModeRenderList = {
 
 const TitleList = {
   RATED: 'Top rated',
-  COMMENTED: 'Most commented'
+  COMMENTED: 'Most commented',
+  STANDARD_LIST_TITLE: 'All movies. Upcoming',
 };
 
-export { COMMENT_EMOTION, ONE_HOUR, COMMENTS_LIST_LENGTH, MAX_SENTENCES, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList, MIN_DESCRIPTION_TEXT_LENGTH
-  , MAX_DESCRIPTION_TEXT_LENGTH, ModeRenderList, TitleList };
+const FilmsMoreButtonDownloadParameters = {
+  START: 0,
+  STEP: 5,
+};
+
+export { COMMENTS_EMOTIONS, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList, MIN_DESCRIPTION_TEXT_LENGTH
+  , MAX_DESCRIPTION_TEXT_LENGTH, ModeRenderList, TitleList, FilmsMoreButtonDownloadParameters };

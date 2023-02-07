@@ -1,5 +1,5 @@
-import {setHumanizeDateAgoComment} from '../../utils/utils';
-import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
+import {setHumanizeDateAgoComment} from '../../../utils/utils';
+import AbstractStatefulView from '../../../framework/view/abstract-stateful-view';
 
 function createCommentItem(comment) {
   return `
@@ -12,7 +12,9 @@ function createCommentItem(comment) {
       <p class="film-details__comment-info">
         <span class="film-details__comment-author">${comment.author}</span>
         <span class="film-details__comment-day">${setHumanizeDateAgoComment(comment.date)}</span>
-        <button class="film-details__comment-delete">${ comment.isDeleting ? 'Deleting...' : 'Delete' }</button>
+        <button
+        class="film-details__comment-delete"
+        ${ comment.isDisabled ? 'disabled' : '' }>${ comment.isDeleting ? 'Deleting...' : 'Delete' }</button>
       </p>
     </div>
   </li>`;
@@ -26,7 +28,8 @@ export default class CommentItemView extends AbstractStatefulView {
 
     this._setState({
       ...comment,
-      isDeleting: false
+      isDeleting: false,
+      isDisabled: false
     });
 
     this.#deleteCommentHandler = () => onCommentDelete();

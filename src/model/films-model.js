@@ -1,6 +1,7 @@
 import Observable from '../framework/observable.js';
 import {FilterType, UpdateType} from '../utils/const.js';
 import {sortMostCommented, sortTopRated} from '../utils/sort.js';
+import {Filter} from '../utils/filter';
 
 // function snakeToCamel(str) {
 //   const regexp = /_+\w/g;
@@ -21,15 +22,15 @@ export default class FilmsModel extends Observable {
   }
 
   get watchlist() {
-    return this.films.filter((film) => film.user_details.watchlist).length;
+    return this.films.filter(Filter[FilterType.WATCHLIST]).length;
   }
 
   get history() {
-    return this.films.filter((film) => film.user_details.already_watched).length;
+    return this.films.filter(Filter[FilterType.HISTORY]).length;
   }
 
   get favorite() {
-    return this.films.filter((film) => film.user_details.favorite).length;
+    return this.films.filter(Filter[FilterType.FAVORITE]).length;
   }
 
   get films() {
@@ -47,22 +48,20 @@ export default class FilmsModel extends Observable {
   get filmsFilter() {
     switch (this.#currentFilterType) {
       case (FilterType.WATCHLIST):
-        return this.films.filter((film) => film.user_details.watchlist);
       case (FilterType.HISTORY):
-        return this.films.filter((film) => film.user_details.already_watched);
       case (FilterType.FAVORITE):
-        return this.films.filter((film) => film.user_details.favorite);
+        return this.films.filter(Filter[this.#currentFilterType]);
       default:
         return this.films;
     }
   }
 
   get topRated() {
-    return this.films.filter((film) => film.film_info.total_rating).sort(sortTopRated);
+    return this.films.filter(Filter[FilterType.TOP_RATING]).sort(sortTopRated);
   }
 
   get mostCommented() {
-    return this.films.filter((film) => film.comments.length).sort(sortMostCommented);
+    return this.films.filter(Filter[FilterType.MOST_COMMENTED]).sort(sortMostCommented);
   }
 
   async updateFilm(updateType, update) {

@@ -1,12 +1,6 @@
-import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
+import AbstractStatefulView from '../../../framework/view/abstract-stateful-view';
+import {COMMENTS_EMOTIONS} from '../../../utils/const';
 import he from 'he';
-
-const emojiNameList = [
-  'smile',
-  'sleeping',
-  'puke',
-  'angry'
-];
 
 function createEmojiItem(emoji) {
   return `
@@ -16,7 +10,7 @@ function createEmojiItem(emoji) {
   </label>`;
 }
 
-function createForm({emojiValue, userText}) {
+function createForm({emojiValue, userText, isDisabled}) {
   const commentText = `${userText ? `${userText.trim()}` : ''}`;
   return `
     <form class="film-details__new-comment" action="" method="get">
@@ -24,10 +18,14 @@ function createForm({emojiValue, userText}) {
         ${emojiValue ? `<img src="images/emoji/${emojiValue}.png" width="55" height="55" alt="emoji-smile">` : '' }
       </div>
       <label class="film-details__comment-label">
-          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${commentText}</textarea>
+          <textarea
+          class="film-details__comment-input"
+          placeholder="Select reaction below and write comment here"
+          name="comment"
+          ${ isDisabled ? 'disabled' : '' }>${commentText}</textarea>
       </label>
       <div class="film-details__emoji-list">
-          ${emojiNameList.map(createEmojiItem).join('')}
+          ${COMMENTS_EMOTIONS.map(createEmojiItem).join('')}
       </div>
     </form>`;
 }
@@ -40,7 +38,8 @@ export default class FormCommentView extends AbstractStatefulView {
     this.#addCommentHandler = onCommentAdd;
     this._setState({
       userText: null,
-      emojiValue: null
+      emojiValue: null,
+      isDisabled: false
     });
 
     this._restoreHandlers();
