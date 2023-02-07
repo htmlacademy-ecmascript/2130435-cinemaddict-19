@@ -23,7 +23,7 @@ export default class filmsFilterPresenter {
   }
 
   #createFilterFilmsComponent () {
-    return new FiltersFilmsView({
+    this.#filmsFilterComponent = new FiltersFilmsView({
       watchListCounter: this.#watchListCounter,
       watchedCounter: this.#watchedCounter,
       favoriteCounter: this.#favoriteCounter,
@@ -33,7 +33,7 @@ export default class filmsFilterPresenter {
   }
 
   #renderFilmsFilter(place) {
-    this.#filmsFilterComponent = this.#createFilterFilmsComponent();
+    this.#createFilterFilmsComponent();
     render(this.#filmsFilterComponent, place);
   }
 

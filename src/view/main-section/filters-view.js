@@ -44,11 +44,11 @@ export default class FiltersFilmsView extends AbstractView {
   }
 
   #filterTypeChangeHandler = (evt) => {
-    if (evt.target.tagName !== 'A') {
+    if (evt.target.tagName !== 'A' && evt.target.tagName !== 'SPAN' ) {
       return;
     }
 
     evt.preventDefault();
-    this.#handleFilterTypeChange(evt.target.dataset.filterType);
+    this.#handleFilterTypeChange(evt.target.closest('a').dataset.filterType);
   };
 }
