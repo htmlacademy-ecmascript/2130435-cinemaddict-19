@@ -1,6 +1,6 @@
 import AbstractView from '../../framework/view/abstract-view.js';
 import { MAX_DESCRIPTION_TEXT_LENGTH, MIN_DESCRIPTION_TEXT_LENGTH } from '../../utils/const.js';
-import { setHumanizeDateFilmYear } from '../../utils/utils.js';
+import {getDuration, setHumanizeDateFilmYear} from '../../utils/utils.js';
 
 
 function createDescriptionText(description) {
@@ -19,7 +19,7 @@ function createFilmCardLink(
     <p class="film-card__rating">${rating}</p>
     <p class="film-card__info">
       <span class="film-card__year">${ setHumanizeDateFilmYear(release.date) }</span>
-      <span class="film-card__duration">${duration}</span>
+      <span class="film-card__duration">${getDuration(Number(duration))}</span>
       <span class="film-card__genre">${genre.join(', ')}</span>
     </p>
     <img src="${poster}" alt="" class="film-card__poster">

@@ -1,5 +1,5 @@
 import AbstractStatefulView from '../../../framework/view/abstract-stateful-view.js';
-import {setHumanizeDateFilmRelease} from '../../../utils/utils.js';
+import {getDuration, setHumanizeDateFilmRelease} from '../../../utils/utils.js';
 
 function createFilmDetailsInfoHead(film) {
   return `
@@ -35,7 +35,7 @@ function createFilmDetailsTable(film) {
     ${createFilmDetailsRow('Writers', film.writers.join(', '))}
     ${createFilmDetailsRow('Actors', film.actors.join(', '))}
     ${createFilmDetailsRow('Release Date', setHumanizeDateFilmRelease(film.release.date))}
-    ${createFilmDetailsRow('Duration', film.duration)}
+    ${createFilmDetailsRow('Duration', getDuration(Number(film.duration)))}
     ${createFilmDetailsRow('Country', film.release.release_country)}
     ${createFilmDetailsRow(genreSubtitleText, createGenresItems(film.genre))}
   </table>`;
@@ -60,7 +60,7 @@ function createFilmDetailsTopContainer(film) {
         <div class="film-details__poster">
           <img class="film-details__poster-img" src="./${film.film_info.poster}" alt="">
 
-          <p class="film-details__age">18+</p>
+          <p class="film-details__age">${film.film_info.age_rating}+</p>
         </div>
 
         <div class="film-details__info">

@@ -13,4 +13,10 @@ function setHumanizeDateAgoComment (dateValue) {
   return dateValue ? dayjs(dateValue).fromNow() : '';
 }
 
-export { setHumanizeDateFilmYear, setHumanizeDateFilmRelease, setHumanizeDateAgoComment };
+function getDuration(time) {
+  const hours = Math.trunc(time / 60);
+  const minutes = time % 60;
+  return `${hours ? `${hours}h` : ''} ${minutes ? `${minutes}m` : ''}`;
+}
+
+export { setHumanizeDateFilmYear, setHumanizeDateFilmRelease, setHumanizeDateAgoComment, getDuration };
