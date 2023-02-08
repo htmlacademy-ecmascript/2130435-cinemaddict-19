@@ -4,14 +4,15 @@ import BottomContainerView from '../view/popup/containers/bottom-container-view'
 import {remove, render} from '../framework/render';
 import FormCommentView from '../view/popup/comments/form-comment-view';
 import CommentItemView from '../view/popup/comments/comment-item-view';
-import {UpdateType, UserAction} from '../utils/const';
 
 export default class CommentsPresenter {
   #place = null;
 
   #film;
   #filmsComments;
-  #handleDataChange = null;
+
+  #handleCommentAdd;
+  #handleCommentsDelete;
 
   #currentComment = null;
 
@@ -22,10 +23,14 @@ export default class CommentsPresenter {
   #commentFormComponent = null;
   #listCommentsComponent = new ListCommentsView();
 
-  constructor({ film, comments, onDataChange }) {
+  constructor({ film, comments, handleCommentAdd, onCommentsDelete }) {
     this.#film = film;
     this.#filmsComments = comments;
-    this.#handleDataChange = onDataChange;
+    this.#handleCommentAdd = handleCommentAdd;
+    this.#handleCommentsDelete = (comment) => {
+      this.#currentComment = comment.id;
+      onCommentsDelete(comment);
+    };
   }
 
   #renderComments(place) {
@@ -54,34 +59,6 @@ export default class CommentsPresenter {
     this.#renderComments(this.#listCommentsComponent.element);
     this.#renderFormComment();
   }
-
-
-  #handleCommentAdd = (comment) => {
-    const update = {
-      film: this.#film,
-      comment: comment
-    };
-    this.#handleDataChange(
-      UserAction.ADD_COMMENT,
-      UpdateType.GET_COMMENT,
-      update
-    );
-  };
-
-  #handleCommentsDelete = (comment) => {
-    this.#currentComment = comment.id;
-    const update = {
-      film: this.#film,
-      comment: comment
-    };
-
-    this.#handleDataChange(
-      UserAction.DELETE_COMMENT,
-      UpdateType.GET_COMMENT,
-      update
-    );
-
-  };
 
   destroy() {
     remove(this.#bottomContainerComponent);

@@ -46,10 +46,9 @@ const UserAction = {
 };
 
 const UpdateType = {
-  OPENED_POPUP: 'OPEN_POPUP',
-  CLOSED_POPUP: 'CLOSED_POPUP',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
   INIT: 'INIT',
-  GET_COMMENT: 'GET_COMMENT'
 };
 
 const ModeRenderList = {

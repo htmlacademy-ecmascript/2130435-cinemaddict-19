@@ -1,4 +1,4 @@
-import { remove, render } from '../framework/render.js';
+import {remove, render, replace} from '../framework/render.js';
 import { UpdateType, UserAction } from '../utils/const.js';
 import FilmDetailsInnerPopupView from '../view/popup/containers/film-details-inner-view.js';
 import FilmsDetailsTopContainerView from '../view/popup/containers/film-details-top-container-view.js';
@@ -38,7 +38,8 @@ export default class PopupPresenter {
     return new CommentsPresenter({
       film: this.#film,
       comments,
-      onDataChange: this.#handleDataChange
+      onCommentsDelete: this.#handleCommentsDelete,
+      handleCommentAdd: this.#handleCommentAdd
     });
   }
 
@@ -47,7 +48,7 @@ export default class PopupPresenter {
     this.#film.userDetails[filterType] = !this.#film.userDetails[filterType];
     this.#handleDataChange(
       UserAction.UPDATE_FILM,
-      UpdateType.OPENED_POPUP,
+      UpdateType.MINOR,
       this.#film
     );
   };
@@ -55,6 +56,34 @@ export default class PopupPresenter {
   #handleButtonCloseClick = () => {
     this.destroy();
     window.popupScrollPosition = START_POSITION;
+  };
+
+  #handleCommentAdd = (comment) => {
+    window.popupScrollPosition = this.#sectionFilmDetailsComponent.element.scrollTop;
+    const update = {
+      film: this.#film,
+      comment: comment
+    };
+    this.#handleDataChange(
+      UserAction.ADD_COMMENT,
+      UpdateType.MAJOR,
+      update
+    );
+  };
+
+  #handleCommentsDelete = (comment) => {
+    window.popupScrollPosition = this.#sectionFilmDetailsComponent.element.scrollTop;
+    const update = {
+      film: this.#film,
+      comment: comment
+    };
+
+    this.#handleDataChange(
+      UserAction.DELETE_COMMENT,
+      UpdateType.MAJOR,
+      update
+    );
+
   };
 
   #onEscapeKeydown = (evt) => {
@@ -70,7 +99,6 @@ export default class PopupPresenter {
     render(this.#filmDetailsInnerPopupComponent, this.#sectionFilmDetailsComponent.element);
     this.#filmsDetailsTopContainerComponent = this.#createFilmsTopContainerView();
     render(this.#filmsDetailsTopContainerComponent, this.#filmDetailsInnerPopupComponent.element);
-
   }
 
   destroy() {
@@ -92,6 +120,13 @@ export default class PopupPresenter {
 
   init() {
     this.#renderPopup();
+  }
+
+  updateInformation({film}) {
+    this.#film = film;
+    const updateFilmInformation = this.#createFilmsTopContainerView();
+    replace(updateFilmInformation, this.#filmsDetailsTopContainerComponent);
+    this.#filmsDetailsTopContainerComponent = updateFilmInformation;
   }
 
   setDeleting() {

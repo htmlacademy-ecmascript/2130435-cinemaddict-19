@@ -34,7 +34,7 @@ export default class FilmPresenter {
     });
     this.#handleDataChange(
       UserAction.OPEN_POPUP,
-      UpdateType.GET_COMMENT,
+      UpdateType.MAJOR,
       this.#film
     );
   };
@@ -43,7 +43,7 @@ export default class FilmPresenter {
     this.#film.userDetails[filterType] = !this.#film.userDetails[filterType];
     this.#handleDataChange(
       UserAction.UPDATE_FILM_CARD,
-      UpdateType.CLOSED_POPUP,
+      UpdateType.MINOR,
       this.#film
     );
   };

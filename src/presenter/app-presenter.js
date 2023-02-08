@@ -205,17 +205,15 @@ export default class AppPresenter {
 
   #handleModelEvent = async (updateType, update) => {
     switch (updateType) {
-      case UpdateType.OPENED_POPUP:
+      case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderBoard(ModeRenderList.UPDATE);
-        this.#filmPresenters.get(update.id)?.openPopupHandler();
+        this.#popupPresenter?.updateInformation({ film: update });
         break;
-      case UpdateType.GET_COMMENT:
+      case UpdateType.MAJOR:
+        this.#clearBoard();
+        this.#renderBoard(ModeRenderList.UPDATE);
         await this.#popupPresenter.renderComments(update);
-        break;
-      case UpdateType.CLOSED_POPUP:
-        this.#clearBoard();
-        this.#renderBoard(ModeRenderList.UPDATE);
         break;
       case UpdateType.INIT:
         this.#isLoading = false;
@@ -229,6 +227,8 @@ export default class AppPresenter {
   #handleOpenPopup = (dataCardFilm) => {
     if (this.#popupPresenter) {
       this.#popupPresenter.destroy();
+      this.#popupPresenter = null;
+      window.popupScrollPosition = 0;
     }
 
     document.body.classList.add('hide-overflow');
@@ -306,7 +306,9 @@ export default class AppPresenter {
 
     this.#sectionFilmsComponent = new SectionFilmsView();
     this.#renderFilter();
-    this.#renderSort();
+    if (this.films.length) {
+      this.#renderSort();
+    }
     render(this.#sectionFilmsComponent, this.#place);
 
     if (this.#isLoading) {

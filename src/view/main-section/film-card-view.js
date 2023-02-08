@@ -5,7 +5,7 @@ import {getDuration, setHumanizeDateFilmYear} from '../../utils/utils.js';
 
 function createDescriptionText(description) {
   if (description.length > MAX_DESCRIPTION_TEXT_LENGTH) {
-    return `${description.substring(MIN_DESCRIPTION_TEXT_LENGTH, MAX_DESCRIPTION_TEXT_LENGTH)}...`;
+    return `${description.substring(MIN_DESCRIPTION_TEXT_LENGTH, MAX_DESCRIPTION_TEXT_LENGTH)}…`;
   }
   return `${description}`;
 }
@@ -60,7 +60,7 @@ export default class FilmCardView extends AbstractView {
     this.#handleFilmClick = onFilmClick;
 
     this.#watchlistClickHandler = () => onFilmControlButtonFilterClick('watchlist');
-    this.#alreadyWatchedClickHandler = () => onFilmControlButtonFilterClick('already_watched');
+    this.#alreadyWatchedClickHandler = () => onFilmControlButtonFilterClick('alreadyWatched');
     this.#favoriteClickHandler = () => onFilmControlButtonFilterClick('favorite');
 
     this.#initHandlers();

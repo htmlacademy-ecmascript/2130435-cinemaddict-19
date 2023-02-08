@@ -1,4 +1,3 @@
-import {UpdateType} from '../utils/const.js';
 import Observable from '../framework/observable.js';
 
 export default class CommentsModel extends Observable {
@@ -31,7 +30,6 @@ export default class CommentsModel extends Observable {
     try {
       const response = await this.#commentsApiService.addComment(film, comment);
       film.comments = response.movie.comments;
-      this._notify(UpdateType.OPENED_POPUP, film);
       await this.getComments(updateType, film);
     } catch(err) {
       throw new Error('Can\'t add comment');
@@ -42,7 +40,6 @@ export default class CommentsModel extends Observable {
     try {
       await this.#commentsApiService.deleteComment(comment);
       this.#deleteCommentFilm(film, comment);
-      this._notify(UpdateType.OPENED_POPUP, film);
       await this.getComments(updateType, film);
     } catch(err) {
       throw new Error('Can\'t delete comment');
