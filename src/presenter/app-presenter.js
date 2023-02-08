@@ -21,7 +21,9 @@ import MainFilmsListPresenter from './main-list-presenter.js';
 import PopupPresenter from './popup-presenter.js';
 import ExtraFilmsListPresenter from './extra-films-list-presenter.js';
 import FooterView from '../view/footer/footer-view';
+import HeaderView from '../view/header/header-view';
 
+const header = document.querySelector(Selector.HEADER);
 const main = document.querySelector(Selector.MAIN);
 const footer = document.querySelector(Selector.FOOTER);
 
@@ -48,6 +50,7 @@ export default class AppPresenter {
 
   #sortFilmsComponent = null;
   #sectionFilmsComponent = null;
+  #headerComponent = null;
   #footerComponent = null;
 
   #uiBlocker = new UiBlocker({
@@ -87,6 +90,7 @@ export default class AppPresenter {
     this.#filtersFilmsPresenter?.destroy();
     remove(this.#sortFilmsComponent);
     remove(this.#sectionFilmsComponent);
+    remove(this.#headerComponent);
 
     if (resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
@@ -290,6 +294,11 @@ export default class AppPresenter {
     render(this.#footerComponent, footer);
   }
 
+  #renderHeader() {
+    this.#headerComponent = new HeaderView({ watchedCounter: this.#filmsModel.history });
+    render(this.#headerComponent, header);
+  }
+
   #renderSort() {
     this.#sortFilmsComponent = new SortFilmsView({
       currentSortType: this.#currentSortType,
@@ -314,6 +323,7 @@ export default class AppPresenter {
   #renderBoard(sortMode) {
     this.#createFilmsListsPresenters();
 
+    this.#renderHeader();
     this.#sectionFilmsComponent = new SectionFilmsView();
     this.#renderFilter();
     if (this.films.length) {
