@@ -1,18 +1,13 @@
-import Observable from '../framework/observable.js';
-import { FilterType, UpdateType } from '../utils/const.js';
-
-// function snakeToCamel(str) {
-//   const regexp = /_+\w/g;
-//   const transformCamel = (match) => match.slice(1).toUpperCase();
-//   const newStrCamelCase = str.replace(regexp, transformCamel);
-//   return newStrCamelCase;
-// }
+import Observable from '../framework/observable';
+import {FilterType, UpdateType} from '../utils/const';
+import {sortMostCommented, sortTopRated} from '../utils/sort';
+import {Filter} from '../utils/filter';
+import {adaptiveToApp} from '../utils/adaptive';
 
 export default class FilmsModel extends Observable {
   #films = [];
   #filmsApiService = null;
   #currentFilterType = FilterType.ALL;
-
 
   constructor({filmsApiService}) {
     super();
@@ -20,15 +15,15 @@ export default class FilmsModel extends Observable {
   }
 
   get watchlist() {
-    return this.films.filter((film) => film.user_details.watchlist).length;
+    return this.films.filter(Filter[FilterType.WATCHLIST]).length;
   }
 
   get history() {
-    return this.films.filter((film) => film.user_details.already_watched).length;
+    return this.films.filter(Filter[FilterType.HISTORY]).length;
   }
 
   get favorite() {
-    return this.films.filter((film) => film.user_details.favorite).length;
+    return this.films.filter(Filter[FilterType.FAVORITE]).length;
   }
 
   get films() {
@@ -46,22 +41,28 @@ export default class FilmsModel extends Observable {
   get filmsFilter() {
     switch (this.#currentFilterType) {
       case (FilterType.WATCHLIST):
-        return this.films.filter((film) => film.user_details.watchlist);
       case (FilterType.HISTORY):
-        return this.films.filter((film) => film.user_details.already_watched);
       case (FilterType.FAVORITE):
-        return this.films.filter((film) => film.user_details.favorite);
+        return this.films.filter(Filter[this.#currentFilterType]);
       default:
         return this.films;
     }
+  }
+
+  get topRated() {
+    return this.films.filter(Filter[FilterType.TOP_RATING]).sort(sortTopRated);
+  }
+
+  get mostCommented() {
+    return this.films.filter(Filter[FilterType.MOST_COMMENTED]).sort(sortMostCommented);
   }
 
   async updateFilm(updateType, update) {
     const filmIndex = this.#films.findIndex((film) => film.id === update.id);
     try {
       const response = await this.#filmsApiService.updateFilm(update);
-      this.#films[filmIndex] = response;
-      this._notify(updateType, response);
+      this.#films[filmIndex] = adaptiveToApp(response);
+      this._notify(updateType, adaptiveToApp(response));
     } catch(err) {
       throw new Error('Can\'t update film');
     }
@@ -69,12 +70,11 @@ export default class FilmsModel extends Observable {
 
   async init() {
     try {
-      const films = await this.#filmsApiService.films;
-      this.#films = films;
+      const response = await this.#filmsApiService.films;
+      this.#films = response.map(adaptiveToApp);
     } catch(err) {
       this.#films = [];
     }
-
     this._notify(UpdateType.INIT);
   }
 

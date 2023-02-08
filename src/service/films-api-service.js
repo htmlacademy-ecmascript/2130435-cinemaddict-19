@@ -1,13 +1,7 @@
 import ApiService from '../framework/api-service.js';
+import {adaptiveToServer} from '../utils/adaptive';
+import { Method, Url } from '../utils/const';
 
-const Url = {
-  FILMS: 'movies'
-};
-
-const Method = {
-  GET: 'GET',
-  PUT: 'PUT',
-};
 
 export default class FilmsApiService extends ApiService {
   get films() {
@@ -19,12 +13,10 @@ export default class FilmsApiService extends ApiService {
     const response = await this._load({
       url: `${Url.FILMS}/${film.id}`,
       method: Method.PUT,
-      body: JSON.stringify(film),
+      body: JSON.stringify(adaptiveToServer(film)),
       headers: new Headers({'Content-Type': 'application/json'}),
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   }
 }

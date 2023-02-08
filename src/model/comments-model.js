@@ -1,5 +1,4 @@
-import { UpdateType } from '../utils/const.js';
-import Observable from '../framework/observable.js';
+import Observable from '../framework/observable';
 
 export default class CommentsModel extends Observable {
   #comments = [];
@@ -20,27 +19,17 @@ export default class CommentsModel extends Observable {
 
   async getComments(updateType, film) {
     try {
-      const response = await this.#commentsApiService.getComments(film);
-      this.comments = response;
+      this.comments = await this.#commentsApiService.getComments(film);
       this._notify(updateType, this.comments);
     } catch (err) {
       this.comments = [];
     }
   }
 
-  #deleteCommentFilm(film, comment) {
-    const indexFilm = film.comments.findIndex((id) => id === comment.id);
-    film.comments = [
-      ...film.comments.slice(0, indexFilm),
-      ...film.comments.slice(indexFilm + 1)
-    ];
-  }
-
   async addComment(updateType, comment, film) {
     try {
       const response = await this.#commentsApiService.addComment(film, comment);
       film.comments = response.movie.comments;
-      this._notify(UpdateType.OPENED_POPUP, film);
       await this.getComments(updateType, film);
     } catch(err) {
       throw new Error('Can\'t add comment');
@@ -51,12 +40,18 @@ export default class CommentsModel extends Observable {
     try {
       await this.#commentsApiService.deleteComment(comment);
       this.#deleteCommentFilm(film, comment);
-      this._notify(UpdateType.OPENED_POPUP, film);
       await this.getComments(updateType, film);
     } catch(err) {
       throw new Error('Can\'t delete comment');
     }
+  }
 
+  #deleteCommentFilm(film, comment) {
+    const indexFilm = film.comments.findIndex((id) => id === comment.id);
+    film.comments = [
+      ...film.comments.slice(0, indexFilm),
+      ...film.comments.slice(indexFilm + 1)
+    ];
   }
 
 }

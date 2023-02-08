@@ -1,5 +1,5 @@
-import AbstractView from '../../../framework/view/abstract-view.js';
-import { TitleEmptyList } from '../../../utils/const.js';
+import AbstractView from '../../../framework/view/abstract-view';
+import { TitleEmptyList } from '../../../utils/const';
 
 function createSectionFilmsListEmpty(currentFilterType) {
   return `

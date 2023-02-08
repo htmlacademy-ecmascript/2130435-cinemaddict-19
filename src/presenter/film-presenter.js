@@ -1,6 +1,6 @@
-import { remove, render, replace } from '../framework/render.js';
-import { UpdateType, UserAction } from '../utils/const.js';
-import FilmCardView from '../view/main-films-list/film-card-view.js';
+import { remove, render, replace } from '../framework/render';
+import { UpdateType, UserAction } from '../utils/const';
+import FilmCardView from '../view/main-section/film-card-view';
 
 export default class FilmPresenter {
   #film;
@@ -34,16 +34,16 @@ export default class FilmPresenter {
     });
     this.#handleDataChange(
       UserAction.OPEN_POPUP,
-      UpdateType.GET_COMMENT,
+      UpdateType.MAJOR,
       this.#film
     );
   };
 
   #handleFilmControlButtonFilterClick = (filterType) => {
-    this.#film.user_details[filterType] = !this.#film.user_details[filterType];
+    this.#film.userDetails[filterType] = !this.#film.userDetails[filterType];
     this.#handleDataChange(
-      UserAction.UPDATE_FILM,
-      UpdateType.CLOSED_POPUP,
+      UserAction.UPDATE_FILM_CARD,
+      UpdateType.MINOR,
       this.#film
     );
   };
@@ -65,6 +65,10 @@ export default class FilmPresenter {
 
     this.#filmCardComponent = this.#createFilmCard();
     render(this.#filmCardComponent, place);
+  }
+
+  setUpdateAborting() {
+    this.#filmCardComponent.shake();
   }
 
 }

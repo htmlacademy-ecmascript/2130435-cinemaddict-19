@@ -1,15 +1,6 @@
-import ApiService from '../framework/api-service.js';
-
-const Url = {
-  FILMS: 'movies',
-  COMMENTS: 'comments'
-};
-
-const Method = {
-  GET: 'GET',
-  POST: 'POST',
-  DELETE: 'DELETE',
-};
+import ApiService from '../framework/api-service';
+import {adaptiveToServer} from '../utils/adaptive';
+import { Method, Url } from '../utils/const';
 
 export default class CommentsApiService extends ApiService {
   getComments(film) {
@@ -21,22 +12,18 @@ export default class CommentsApiService extends ApiService {
     const response = await this._load({
       url: `${Url.COMMENTS}/${film.id}`,
       method: Method.POST,
-      body: JSON.stringify(comment),
+      body: JSON.stringify(adaptiveToServer(comment)),
       headers: new Headers({'Content-Type': 'application/json'}),
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   }
 
   async deleteComment(comment) {
-    const response = await this._load({
+    return await this._load({
       url: `${Url.COMMENTS}/${comment.id}`,
       method: Method.DELETE,
     });
-
-    return response;
   }
 
 }

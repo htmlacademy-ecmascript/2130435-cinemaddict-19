@@ -1,17 +1,17 @@
-import AbstractView from '../../framework/view/abstract-view.js';
-import { MAX_DESCRIPTION_TEXT_LENGTH, MIN_DESCRIPTION_TEXT_LENGTH } from '../../utils/const.js';
-import { setHumanizeDateFilmYear } from '../../utils/utils.js';
+import AbstractView from '../../framework/view/abstract-view';
+import { MAX_DESCRIPTION_TEXT_LENGTH, MIN_DESCRIPTION_TEXT_LENGTH } from '../../utils/const';
+import {getDuration, setHumanizeDateFilmYear} from '../../utils/utils';
 
 
 function createDescriptionText(description) {
   if (description.length > MAX_DESCRIPTION_TEXT_LENGTH) {
-    return `${description.substring(MIN_DESCRIPTION_TEXT_LENGTH, MAX_DESCRIPTION_TEXT_LENGTH)}...`;
+    return `${description.substring(MIN_DESCRIPTION_TEXT_LENGTH, MAX_DESCRIPTION_TEXT_LENGTH)}…`;
   }
   return `${description}`;
 }
 
 function createFilmCardLink(
-  {title, total_rating: rating, release, duration, genre, poster, description},
+  {title, totalRating: rating, release, duration, genre, poster, description},
   comments) {
   return `
   <a class="film-card__link">
@@ -19,7 +19,7 @@ function createFilmCardLink(
     <p class="film-card__rating">${rating}</p>
     <p class="film-card__info">
       <span class="film-card__year">${ setHumanizeDateFilmYear(release.date) }</span>
-      <span class="film-card__duration">${duration}</span>
+      <span class="film-card__duration">${getDuration(Number(duration))}</span>
       <span class="film-card__genre">${genre.join(', ')}</span>
     </p>
     <img src="${poster}" alt="" class="film-card__poster">
@@ -28,7 +28,7 @@ function createFilmCardLink(
   </a>`;
 }
 
-function createFilmCardControls({ already_watched: watched, favorite, watchlist }) {
+function createFilmCardControls({ alreadyWatched: watched, favorite, watchlist }) {
   return `
   <div class="film-card__controls">
     <button class="film-card__controls-item film-card__controls-item--add-to-watchlist ${watchlist ? 'film-card__controls-item--active' : ''}" type="button">Add to watchlist</button>
@@ -40,8 +40,8 @@ function createFilmCardControls({ already_watched: watched, favorite, watchlist 
 function createFilmCard(film) {
   return `
   <article class="film-card">
-    ${createFilmCardLink(film.film_info, film.comments)}
-    ${createFilmCardControls(film.user_details)}
+    ${createFilmCardLink(film.filmInfo, film.comments)}
+    ${createFilmCardControls(film.userDetails)}
   </article>`;
 }
 
@@ -60,7 +60,7 @@ export default class FilmCardView extends AbstractView {
     this.#handleFilmClick = onFilmClick;
 
     this.#watchlistClickHandler = () => onFilmControlButtonFilterClick('watchlist');
-    this.#alreadyWatchedClickHandler = () => onFilmControlButtonFilterClick('already_watched');
+    this.#alreadyWatchedClickHandler = () => onFilmControlButtonFilterClick('alreadyWatched');
     this.#favoriteClickHandler = () => onFilmControlButtonFilterClick('favorite');
 
     this.#initHandlers();

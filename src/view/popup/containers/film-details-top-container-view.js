@@ -1,16 +1,16 @@
-import AbstractView from '../../../framework/view/abstract-view.js';
-import {setHumanizeDateFilmRelease} from '../../../utils/utils.js';
+import AbstractStatefulView from '../../../framework/view/abstract-stateful-view';
+import {getDuration, setHumanizeDateFilmRelease} from '../../../utils/utils';
 
 function createFilmDetailsInfoHead(film) {
   return `
   <div class="film-details__info-head">
     <div class="film-details__title-wrap">
       <h3 class="film-details__title">${film.title}</h3>
-      <p class="film-details__title-original">${film.alternative_title}</p>
+      <p class="film-details__title-original">${film.alternativeTitle}</p>
     </div>
 
     <div class="film-details__rating">
-      <p class="film-details__total-rating">${film.total_rating}</p>
+      <p class="film-details__total-rating">${film.totalRating}</p>
     </div>
   </div>`;
 }
@@ -35,13 +35,13 @@ function createFilmDetailsTable(film) {
     ${createFilmDetailsRow('Writers', film.writers.join(', '))}
     ${createFilmDetailsRow('Actors', film.actors.join(', '))}
     ${createFilmDetailsRow('Release Date', setHumanizeDateFilmRelease(film.release.date))}
-    ${createFilmDetailsRow('Duration', film.duration)}
-    ${createFilmDetailsRow('Country', film.release.release_country)}
+    ${createFilmDetailsRow('Duration', getDuration(Number(film.duration)))}
+    ${createFilmDetailsRow('Country', film.release.releaseCountry)}
     ${createFilmDetailsRow(genreSubtitleText, createGenresItems(film.genre))}
   </table>`;
 }
 
-function createFilmDetailsControls({ already_watched: watched, favorite, watchlist }) {
+function createFilmDetailsControls({ alreadyWatched: watched, favorite, watchlist }) {
   return `
   <section class="film-details__controls">
     <button type="button" class="film-details__control-button film-details__control-button--watchlist ${watchlist ? 'film-details__control-button--active' : ''}" id="watchlist" name="watchlist">Add to watchlist</button>
@@ -58,27 +58,25 @@ function createFilmDetailsTopContainer(film) {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./${film.film_info.poster}" alt="">
+          <img class="film-details__poster-img" src="./${film.filmInfo.poster}" alt="">
 
-          <p class="film-details__age">18+</p>
+          <p class="film-details__age">${film.filmInfo.ageRating}+</p>
         </div>
 
         <div class="film-details__info">
-          ${createFilmDetailsInfoHead(film.film_info)}
-          ${createFilmDetailsTable(film.film_info)}
+          ${createFilmDetailsInfoHead(film.filmInfo)}
+          ${createFilmDetailsTable(film.filmInfo)}
           <p class="film-details__film-description">
-            ${film.film_info.description}
+            ${film.filmInfo.description}
           </p>
         </div>
       </div>
 
-      ${createFilmDetailsControls(film.user_details)}
+      ${createFilmDetailsControls(film.userDetails)}
     </div>`;
 }
 
-export default class FilmsDetailsTopContainerView extends AbstractView {
-  #film;
-
+export default class FilmsDetailsTopContainerView extends AbstractStatefulView {
   #handleButtonCloseClick = null;
 
   #watchlistClickHandler = null;
@@ -87,23 +85,22 @@ export default class FilmsDetailsTopContainerView extends AbstractView {
 
   constructor({ currentFilmModel, onButtonCloseClick, onFilmControlButtonFilterClick }) {
     super();
-    this.#film = currentFilmModel;
+    this._setState({
+      ...currentFilmModel
+    });
     this.#handleButtonCloseClick = onButtonCloseClick;
 
-    this.#watchlistClickHandler = (evt) => {
+    this.#watchlistClickHandler = () => {
       onFilmControlButtonFilterClick('watchlist');
-      evt.target.classList.toggle('film-details__control-button--active');
     };
-    this.#alreadyWatchedClickHandler = (evt) => {
-      onFilmControlButtonFilterClick('already_watched');
-      evt.target.classList.toggle('film-details__control-button--active');
+    this.#alreadyWatchedClickHandler = () => {
+      onFilmControlButtonFilterClick('alreadyWatched');
     };
-    this.#favoriteClickHandler = (evt) => {
+    this.#favoriteClickHandler = () => {
       onFilmControlButtonFilterClick('favorite');
-      evt.target.classList.toggle('film-details__control-button--active');
     };
 
-    this.#initHandlers();
+    this._restoreHandlers();
 
   }
 
@@ -111,7 +108,7 @@ export default class FilmsDetailsTopContainerView extends AbstractView {
     this.#handleButtonCloseClick();
   };
 
-  #initHandlers() {
+  _restoreHandlers() {
     this.element.querySelector('.film-details__close-btn').
       addEventListener('click', this.#buttonCloseClickHandler);
 
@@ -124,6 +121,6 @@ export default class FilmsDetailsTopContainerView extends AbstractView {
   }
 
   get template() {
-    return createFilmDetailsTopContainer(this.#film);
+    return createFilmDetailsTopContainer(this._state);
   }
 }

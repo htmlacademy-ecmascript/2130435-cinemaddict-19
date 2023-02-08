@@ -1,4 +1,4 @@
-import AbstractView from '../../../framework/view/abstract-view.js';
+import AbstractView from '../../../framework/view/abstract-view';
 
 function createSectionFilmDetails() {
   return '<section class="film-details"></section>';
