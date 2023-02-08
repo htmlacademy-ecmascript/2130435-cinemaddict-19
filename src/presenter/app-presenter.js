@@ -20,8 +20,10 @@ import filmsFilterPresenter from './films-filters-presenter.js';
 import MainFilmsListPresenter from './main-list-presenter.js';
 import PopupPresenter from './popup-presenter.js';
 import ExtraFilmsListPresenter from './extra-films-list-presenter.js';
+import FooterView from '../view/footer/footer-view';
 
 const main = document.querySelector(Selector.MAIN);
+const footer = document.querySelector(Selector.FOOTER);
 
 export default class AppPresenter {
   #place = main;
@@ -46,6 +48,7 @@ export default class AppPresenter {
 
   #sortFilmsComponent = null;
   #sectionFilmsComponent = null;
+  #footerComponent = null;
 
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
@@ -230,6 +233,7 @@ export default class AppPresenter {
         remove(this.#loadingComponent);
         this.#clearBoard();
         this.#renderBoard();
+        this.#renderFooter();
         break;
     }
   };
@@ -279,6 +283,11 @@ export default class AppPresenter {
     });
 
     this.#filtersFilmsPresenter.init(this.#place);
+  }
+
+  #renderFooter() {
+    this.#footerComponent = new FooterView({ allFilmsCounter: this.#filmsPresenters.size })
+    render(this.#footerComponent, footer)
   }
 
   #renderSort() {
