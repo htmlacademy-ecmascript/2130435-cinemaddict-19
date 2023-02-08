@@ -204,6 +204,7 @@ export default class AppPresenter {
         this.#popupPresenter.setAdding();
         try {
           await this.#commentsModel.addComment(updateType, update.comment, update.film);
+          await this.#filmsModel.updateFilm(UpdateType.MINOR, update.film);
         } catch {
           this.#popupPresenter.setAddAborting();
         }
@@ -212,6 +213,7 @@ export default class AppPresenter {
         this.#popupPresenter.setDeleting();
         try {
           await this.#commentsModel.deleteComment(updateType, update.comment, update.film);
+          await this.#filmsModel.updateFilm(UpdateType.MINOR, update.film);
         } catch {
           this.#popupPresenter.setDeleteAborting();
         }
