@@ -87,7 +87,8 @@ const Url = {
 };
 
 const Selector = {
-  MAIN: '.main'
+  MAIN: '.main',
+  FOOTER: '.footer'
 };
 
 const WINDOW_POPUP_CLASS = 'hide-overflow';

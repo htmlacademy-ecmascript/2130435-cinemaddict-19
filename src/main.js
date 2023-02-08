@@ -8,8 +8,6 @@ const AUTHORIZATION = 'Basic hS2adS44poi1qr2j';
 const END_POINT = 'https://19.ecmascript.pages.academy/cinemaddict/';
 
 // const header = document.querySelector('.header');
-// const main = document.querySelector('.main');
-// const footer = document.querySelector('.footer');
 
 const commentsModel = new CommentsModel({
   commentsApiService: new CommentsApiService(END_POINT, AUTHORIZATION)
