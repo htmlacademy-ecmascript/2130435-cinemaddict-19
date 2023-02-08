@@ -244,7 +244,7 @@ export default class AppPresenter {
     this.#currentSortType = sortTypeValue;
 
     this.#clearBoard();
-    this.#renderBoard(ModeRenderList.UPDATE);
+    this.#renderBoard(ModeRenderList.NEW);
   };
 
   #handleFilterTypeChange = (filterTypeValue) => {
