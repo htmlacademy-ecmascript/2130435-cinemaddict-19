@@ -88,7 +88,8 @@ const Url = {
 
 const Selector = {
   MAIN: '.main',
-  FOOTER: '.footer'
+  FOOTER: '.footer',
+  HEADER: '.header'
 };
 
 const WINDOW_POPUP_CLASS = 'hide-overflow';
@@ -97,7 +98,16 @@ const KeyName = {
   ESCAPE: 'Escape'
 };
 
+const RankWatchedRange = {
+  MIN_NOVICE: 0,
+  MAX_NOVICE: 10,
+  MIN_FAN: 11,
+  MAX_FAN: 20,
+  MIN_MOVIE_BUFF: 21
+
+};
+
 const MAX_LENGTH_EXTRA_FILM_LIST = 2;
 
 export { COMMENTS_EMOTIONS, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList, MIN_DESCRIPTION_TEXT_LENGTH
-  , MAX_DESCRIPTION_TEXT_LENGTH, ModeRenderList, TitleList, FilmsMoreButtonDownloadParameters, Method, Url, Selector, TimeLimit, START_POSITION, WINDOW_POPUP_CLASS, KeyName, MAX_LENGTH_EXTRA_FILM_LIST };
+  , MAX_DESCRIPTION_TEXT_LENGTH, ModeRenderList, TitleList, FilmsMoreButtonDownloadParameters, Method, Url, Selector, TimeLimit, START_POSITION, WINDOW_POPUP_CLASS, KeyName, MAX_LENGTH_EXTRA_FILM_LIST, RankWatchedRange };
