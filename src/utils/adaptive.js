@@ -1,3 +1,7 @@
+function isObject(type) {
+  return (typeof type === 'object' && !Array.isArray(type) && type !== null);
+}
+
 function snakeToCamel(str) {
   const regexp = /_+\w/g;
   const transformCamel = (match) => match.slice(1).toUpperCase();
@@ -15,7 +19,7 @@ function adaptiveToServer(transformObject) {
   Object.entries(transformObject).forEach(([key, values]) => {
     const adaptiveKey = camelToSnake(key);
     let adaptiveValue = values;
-    if (typeof adaptiveValue === 'object' && !Array.isArray(adaptiveValue) && adaptiveValue !== null) {
+    if (isObject(adaptiveValue)) {
       adaptiveValue = adaptiveToServer(values);
     }
     snakeObject[adaptiveKey] = adaptiveValue;
@@ -28,7 +32,7 @@ function adaptiveToApp(transformObject) {
   Object.entries(transformObject).forEach(([key, values]) => {
     const adaptiveKey = snakeToCamel(key);
     let adaptiveValue = values;
-    if (typeof adaptiveValue === 'object' && !Array.isArray(adaptiveValue) && adaptiveValue !== null) {
+    if (isObject(adaptiveValue)) {
       adaptiveValue = adaptiveToApp(values);
     }
     camelObject[adaptiveKey] = adaptiveValue;

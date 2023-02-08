@@ -1,5 +1,5 @@
-import AbstractView from '../../framework/view/abstract-view.js';
-import { FilterType, TypeButton } from '../../utils/const.js';
+import AbstractView from '../../framework/view/abstract-view';
+import { FilterType, TypeButton } from '../../utils/const';
 
 function filterHTMLAttribute (currentFilter, filterType, isMainNav = true) {
   return `

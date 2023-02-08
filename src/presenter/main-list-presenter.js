@@ -1,9 +1,9 @@
-import { render, remove } from '../framework/render.js';
-import {FilmsMoreButtonDownloadParameters, ModeRenderList, TitleList} from '../utils/const.js';
-import FilmsListContainerView from '../view/main-section/containers/films-list-container-view.js';
-import SectionFilmsListEmptyView from '../view/main-section/sections/section-films-list-empty-view.js';
-import SectionFilmsListView from '../view/main-section/sections/section-films-list-view.js';
-import ShowMoreButtonView from '../view/main-section/show-more-button-view.js';
+import { render, remove } from '../framework/render';
+import {FilmsMoreButtonDownloadParameters, ModeRenderList, TitleList} from '../utils/const';
+import FilmsListContainerView from '../view/main-section/containers/films-list-container-view';
+import SectionFilmsListEmptyView from '../view/main-section/sections/section-films-list-empty-view';
+import SectionFilmsListView from '../view/main-section/sections/section-films-list-view';
+import ShowMoreButtonView from '../view/main-section/show-more-button-view';
 
 export default class MainFilmsListPresenter {
   #place;

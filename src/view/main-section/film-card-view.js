@@ -1,6 +1,6 @@
-import AbstractView from '../../framework/view/abstract-view.js';
-import { MAX_DESCRIPTION_TEXT_LENGTH, MIN_DESCRIPTION_TEXT_LENGTH } from '../../utils/const.js';
-import {getDuration, setHumanizeDateFilmYear} from '../../utils/utils.js';
+import AbstractView from '../../framework/view/abstract-view';
+import { MAX_DESCRIPTION_TEXT_LENGTH, MIN_DESCRIPTION_TEXT_LENGTH } from '../../utils/const';
+import {getDuration, setHumanizeDateFilmYear} from '../../utils/utils';
 
 
 function createDescriptionText(description) {

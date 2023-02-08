@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
-import { DateFormat } from './const.js';
+import { DateFormat } from './const';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
+
+const ONE_HOUR = 60;
 
 function setHumanizeDateFilmYear (dateValue) {
   return dateValue ? dayjs(dateValue).format(DateFormat.FILM_YEAR) : '';
@@ -14,8 +16,8 @@ function setHumanizeDateAgoComment (dateValue) {
 }
 
 function getDuration(time) {
-  const hours = Math.trunc(time / 60);
-  const minutes = time % 60;
+  const hours = Math.trunc(time / ONE_HOUR);
+  const minutes = time % ONE_HOUR;
   return `${hours ? `${hours}h` : ''} ${minutes ? `${minutes}m` : ''}`;
 }
 

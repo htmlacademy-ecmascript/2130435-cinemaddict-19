@@ -1,4 +1,4 @@
-import ApiService from '../framework/api-service.js';
+import ApiService from '../framework/api-service';
 import {adaptiveToServer} from '../utils/adaptive';
 import { Method, Url } from '../utils/const';
 

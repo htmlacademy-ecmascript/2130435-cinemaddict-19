@@ -1,6 +1,6 @@
-import Observable from '../framework/observable.js';
-import {FilterType, UpdateType} from '../utils/const.js';
-import {sortMostCommented, sortTopRated} from '../utils/sort.js';
+import Observable from '../framework/observable';
+import {FilterType, UpdateType} from '../utils/const';
+import {sortMostCommented, sortTopRated} from '../utils/sort';
 import {Filter} from '../utils/filter';
 import {adaptiveToApp} from '../utils/adaptive';
 

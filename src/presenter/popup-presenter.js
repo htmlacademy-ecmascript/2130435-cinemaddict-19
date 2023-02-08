@@ -1,11 +1,9 @@
-import {remove, render, replace} from '../framework/render.js';
-import { UpdateType, UserAction } from '../utils/const.js';
-import FilmDetailsInnerPopupView from '../view/popup/containers/film-details-inner-view.js';
-import FilmsDetailsTopContainerView from '../view/popup/containers/film-details-top-container-view.js';
-import SectionFilmDetailsView from '../view/popup/film-information/section-film-details-view.js';
+import {remove, render, replace} from '../framework/render';
+import {KeyName, START_POSITION, UpdateType, UserAction, WINDOW_POPUP_CLASS} from '../utils/const';
+import FilmDetailsInnerPopupView from '../view/popup/containers/film-details-inner-view';
+import FilmsDetailsTopContainerView from '../view/popup/containers/film-details-top-container-view';
+import SectionFilmDetailsView from '../view/popup/film-information/section-film-details-view';
 import CommentsPresenter from './comments-presenter';
-
-const START_POSITION = 0;
 
 export default class PopupPresenter {
   #place = document.body;
@@ -87,7 +85,7 @@ export default class PopupPresenter {
   };
 
   #onEscapeKeydown = (evt) => {
-    if (evt.key === 'Escape') {
+    if (evt.key === KeyName.ESCAPE) {
       evt.preventDefault();
       this.destroy();
       window.popupScrollPosition = START_POSITION;
@@ -103,7 +101,7 @@ export default class PopupPresenter {
 
   destroy() {
     window.popupScrollPosition = this.#sectionFilmDetailsComponent.element.scrollTop;
-    document.body.classList.remove('hide-overflow');
+    document.body.classList.remove(WINDOW_POPUP_CLASS);
     document.removeEventListener('keydown', this.#onEscapeKeydown);
     remove(this.#sectionFilmDetailsComponent);
   }

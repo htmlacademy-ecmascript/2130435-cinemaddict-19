@@ -1,5 +1,5 @@
-import AbstractStatefulView from '../../../framework/view/abstract-stateful-view.js';
-import {getDuration, setHumanizeDateFilmRelease} from '../../../utils/utils.js';
+import AbstractStatefulView from '../../../framework/view/abstract-stateful-view';
+import {getDuration, setHumanizeDateFilmRelease} from '../../../utils/utils';
 
 function createFilmDetailsInfoHead(film) {
   return `
