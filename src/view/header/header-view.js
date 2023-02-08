@@ -5,7 +5,7 @@ function getRank(watchedCounter) {
   switch (true) {
     case watchedCounter > RankWatchedRange.MIN_NOVICE && watchedCounter <= RankWatchedRange.MAX_NOVICE :
       return 'Novice';
-    case watchedCounter > RankWatchedRange.MIN_FAN && watchedCounter <= RankWatchedRange.MAX_FAN :
+    case watchedCounter >= RankWatchedRange.MIN_FAN && watchedCounter <= RankWatchedRange.MAX_FAN :
       return 'Fan';
     case watchedCounter >= RankWatchedRange.MIN_MOVIE_BUFF :
       return 'Movie Buff';

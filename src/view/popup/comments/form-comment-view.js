@@ -1,6 +1,5 @@
 import AbstractStatefulView from '../../../framework/view/abstract-stateful-view';
 import {COMMENTS_EMOTIONS} from '../../../utils/const';
-import he from 'he';
 
 function createEmojiItem(emoji) {
   return `
@@ -60,7 +59,7 @@ export default class FormCommentView extends AbstractStatefulView {
   #textareaInputHandler = (evt) => {
     evt.preventDefault();
     this._setState({
-      userText: he.encode(evt.target.value)
+      userText: evt.target.value
     });
   };
 

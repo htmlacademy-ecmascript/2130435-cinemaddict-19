@@ -1,11 +1,11 @@
 import AbstractView from '../../framework/view/abstract-view';
-import { MAX_DESCRIPTION_TEXT_LENGTH, MIN_DESCRIPTION_TEXT_LENGTH } from '../../utils/const';
-import {getDuration, setHumanizeDateFilmYear} from '../../utils/utils';
+import { DescriptionTextLength } from '../../utils/const';
+import { getDuration, setHumanizeDateFilmYear } from '../../utils/utils';
 
 
 function createDescriptionText(description) {
-  if (description.length > MAX_DESCRIPTION_TEXT_LENGTH) {
-    return `${description.substring(MIN_DESCRIPTION_TEXT_LENGTH, MAX_DESCRIPTION_TEXT_LENGTH)}…`;
+  if (description.length > DescriptionTextLength.MAX) {
+    return `${description.substring(DescriptionTextLength.MIN, DescriptionTextLength.MAX)}…`;
   }
   return `${description}`;
 }

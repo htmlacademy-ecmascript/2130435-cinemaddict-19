@@ -1,8 +1,11 @@
 const COMMENTS_EMOTIONS = ['smile', 'sleeping', 'puke', 'angry'];
 
-const MIN_DESCRIPTION_TEXT_LENGTH = 0;
-const MAX_DESCRIPTION_TEXT_LENGTH = 139;
 const START_POSITION = 0;
+
+const DescriptionTextLength = {
+  MIN: 0,
+  MAX: 139
+};
 
 const TypeButton = {
   WATCHLIST: 'watchlist',
@@ -108,5 +111,4 @@ const RankWatchedRange = {
 
 const MAX_LENGTH_EXTRA_FILM_LIST = 2;
 
-export { COMMENTS_EMOTIONS, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList, MIN_DESCRIPTION_TEXT_LENGTH
-  , MAX_DESCRIPTION_TEXT_LENGTH, ModeRenderList, TitleList, FilmsMoreButtonDownloadParameters, Method, Url, Selector, TimeLimit, START_POSITION, WINDOW_POPUP_CLASS, KeyName, MAX_LENGTH_EXTRA_FILM_LIST, RankWatchedRange };
+export { COMMENTS_EMOTIONS, TypeButton, DateFormat, UserAction, UpdateType, SortType, FilterType, TitleEmptyList, DescriptionTextLength, ModeRenderList, TitleList, FilmsMoreButtonDownloadParameters, Method, Url, Selector, TimeLimit, START_POSITION, WINDOW_POPUP_CLASS, KeyName, MAX_LENGTH_EXTRA_FILM_LIST, RankWatchedRange };

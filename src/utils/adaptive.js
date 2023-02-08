@@ -1,3 +1,5 @@
+import he from 'he';
+
 function isObject(type) {
   return (typeof type === 'object' && !Array.isArray(type) && type !== null);
 }
@@ -19,10 +21,14 @@ function adaptiveToServer(transformObject) {
   Object.entries(transformObject).forEach(([key, values]) => {
     const adaptiveKey = camelToSnake(key);
     let adaptiveValue = values;
+    let screenValue = null;
     if (isObject(adaptiveValue)) {
       adaptiveValue = adaptiveToServer(values);
     }
-    snakeObject[adaptiveKey] = adaptiveValue;
+    if (typeof adaptiveValue === 'string') {
+      screenValue = he.encode(adaptiveValue);
+    }
+    snakeObject[adaptiveKey] = screenValue || adaptiveValue;
   });
   return snakeObject;
 }
@@ -32,10 +38,14 @@ function adaptiveToApp(transformObject) {
   Object.entries(transformObject).forEach(([key, values]) => {
     const adaptiveKey = snakeToCamel(key);
     let adaptiveValue = values;
+    let screenValue = null;
     if (isObject(adaptiveValue)) {
       adaptiveValue = adaptiveToApp(values);
     }
-    camelObject[adaptiveKey] = adaptiveValue;
+    if (typeof adaptiveValue === 'string') {
+      screenValue = he.encode(adaptiveValue);
+    }
+    camelObject[adaptiveKey] = screenValue || adaptiveValue;
   });
   return camelObject;
 }
