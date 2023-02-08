@@ -4,11 +4,11 @@ import {RankWatchedRange} from '../../utils/const';
 function getRank(watchedCounter) {
   switch (true) {
     case watchedCounter > RankWatchedRange.MIN_NOVICE && watchedCounter <= RankWatchedRange.MAX_NOVICE :
-      return '<p class="profile__rating">Novice</p>';
+      return 'Novice';
     case watchedCounter > RankWatchedRange.MIN_FAN && watchedCounter <= RankWatchedRange.MAX_FAN :
-      return '<p class="profile__rating">Fan</p>';
+      return 'Fan';
     case watchedCounter >= RankWatchedRange.MIN_MOVIE_BUFF :
-      return '<p class="profile__rating">Movie Buff</p>';
+      return 'Movie Buff';
     default:
       return '';
   }
@@ -17,7 +17,7 @@ function getRank(watchedCounter) {
 function createHeader(watchedCounter) {
   return `
   <section class="header__profile profile">
-    ${getRank(watchedCounter)}
+    <p class="profile__rating">${getRank(watchedCounter)}</p>
     <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
   </section>`;
 }
