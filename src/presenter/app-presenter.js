@@ -286,8 +286,8 @@ export default class AppPresenter {
   }
 
   #renderFooter() {
-    this.#footerComponent = new FooterView({ allFilmsCounter: this.#filmsPresenters.size })
-    render(this.#footerComponent, footer)
+    this.#footerComponent = new FooterView({ allFilmsCounter: this.#filmsPresenters.size });
+    render(this.#footerComponent, footer);
   }
 
   #renderSort() {

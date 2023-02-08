@@ -12,7 +12,7 @@ export default class FooterView extends AbstractView {
 
   constructor({allFilmsCounter}) {
     super();
-    this.#filmsCounter = allFilmsCounter
+    this.#filmsCounter = allFilmsCounter;
   }
 
   get template() {
